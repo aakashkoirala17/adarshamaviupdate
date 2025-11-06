@@ -31,7 +31,7 @@ const Notices = () => {
               <Bell className="text-primary" size={36} />
               <h1 className="text-4xl font-bold text-primary">Notices & Announcements</h1>
             </div>
-            <p className="text-lg font-nepali text-primary">सूचना तथा घोषणाहरू</p>
+            <p className="text-lg font-nepali text-primary">सूचनाहरू</p>
           </div>
 
           <div className="space-y-6">

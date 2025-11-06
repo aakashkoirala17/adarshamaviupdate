@@ -209,6 +209,9 @@ const Index = () => {
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold text-primary mb-4">Programs Offered</h3>
                 <ul className="space-y-2 text-muted-foreground">
+                  <li>• ECD</li>
+                  <li>• Primary Education</li>
+                  <li>• Secondary Education</li>
                   <li>• Computer Engineering (Grade 9-12)</li>
                   <li>• +2 Computer Science (NEB)</li>
                   <li>• +2 Management (NEB)</li>
@@ -219,7 +222,7 @@ const Index = () => {
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold text-primary mb-4">School Timing</h3>
                 <ul className="space-y-2 text-muted-foreground">
-                  <li>• Monday - Friday: 10:00 AM - 4:00 PM</li>
+                  <li>• Sunday - Friday: 09:00 AM - 4:00 PM</li>
                   <li>• Saturday: Closed</li>
                   <li>• Office Hours: 9:00 AM - 5:00 PM</li>
                 </ul>
