@@ -31,7 +31,7 @@ const Navigation = () => {
               <div>
                 <h1 className="text-lg font-bold text-primary leading-tight">Adarsha Secondary School</h1>
                 <p className="text-base font-nepali text-primary font-semibold">आदर्श माध्यमिक विद्यालय</p>
-                <p className="text-xs text-muted-foreground">Sanothimi, Bhaktapur</p>
+                <p className="text-xs text-brandRed">Sanothimi, Bhaktapur</p>
               </div>
             </div>
           </div>

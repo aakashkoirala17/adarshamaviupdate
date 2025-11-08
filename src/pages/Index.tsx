@@ -53,7 +53,7 @@ const Index = () => {
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">Welcome to Adarsha Secondary School</h1>
               <p className="text-lg font-nepali text-primary mb-2">आदर्श माध्यमिक विद्यालय मा स्वागत छ</p>
-              <p className="text-muted-foreground mb-6">
+              <p className=" text-brandRed mb-6">
                 Empowering Future through Technical Education in Sanothimi, Bhaktapur
               </p>
               <div className="flex flex-wrap gap-4">
@@ -106,7 +106,7 @@ const Index = () => {
               <div className="flex items-center gap-2 mb-4">
                 <Bell className="text-primary" size={24} />
                 <h2 className="text-2xl font-bold text-primary">Notice Board</h2>
-                <span className="text-sm font-nepali text-muted-foreground ml-2">सूचना पाटी</span>
+                <span className="text-sm font-nepali  text-brandRed ml-2">सूचना पाटी</span>
               </div>
 
               <div className="space-y-3">
