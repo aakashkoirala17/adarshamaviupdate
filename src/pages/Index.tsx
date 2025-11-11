@@ -7,6 +7,14 @@ import { BookOpen, Users, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 const Index = () => {
   const [heroImages, setHeroImages] = useState<any[]>([]);
@@ -157,49 +165,86 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ✅ Our Team Section (Updated) */}
-      <section className="py-16 bg-background">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-primary mb-2">Our Team</h2>
-          <p className="text-center font-nepali text-muted-foreground mb-12">हाम्रो टोली</p>
+     {/* ✅ Our Team Section (Dialog View More + Centered Button) */}
+<section className="py-16 bg-background">
+  <div className="max-w-7xl mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center text-primary mb-2">Our Team</h2>
+    <p className="text-center font-nepali text-muted-foreground mb-12">हाम्रो टोली</p>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {visibleTeam.map((member) => (
-              <Card key={member.id} className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="bg-muted rounded-full w-32 h-32 mx-auto mb-4 flex items-center justify-center overflow-hidden">
-                    {member.image_url ? (
-                      <img src={member.image_url} alt={member.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <Users size={48} className="text-muted-foreground" />
-                    )}
-                  </div>
-                  <h3 className="font-semibold text-primary mb-1">{member.name}</h3>
-                  {member.name_nepali && (
-                    <p className="text-sm font-nepali text-muted-foreground mb-2">{member.name_nepali}</p>
-                  )}
-                  <p className="text-sm text-muted-foreground">{member.position}</p>
-                  {member.position_nepali && (
-                    <p className="text-xs font-nepali text-muted-foreground">{member.position_nepali}</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {teamMembers.length > 6 && (
-            <div className="text-center mt-8">
-              <Button
-                size="lg"
-                onClick={() => setShowAllTeams(!showAllTeams)}
-                className="bg-primary hover:bg-primary/90"
-              >
-                {showAllTeams ? "View Less" : "View More"}
-              </Button>
+    {/* Show only first 8 members */}
+    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {visibleTeam.map((member) => (
+        <Card key={member.id} className="text-center hover:shadow-lg transition-shadow">
+          <CardContent className="p-6">
+            <div className="bg-muted rounded-full w-32 h-32 mx-auto mb-4 flex items-center justify-center overflow-hidden">
+              {member.image_url ? (
+                <img src={member.image_url} alt={member.name} className="w-full h-full object-cover" />
+              ) : (
+                <Users size={48} className="text-muted-foreground" />
+              )}
             </div>
-          )}
-        </div>
-      </section>
+            <h3 className="font-semibold text-primary mb-1">{member.name}</h3>
+            {member.name_nepali && (
+              <p className="text-sm font-nepali text-muted-foreground mb-2">{member.name_nepali}</p>
+            )}
+            <p className="text-sm text-muted-foreground">{member.position}</p>
+            {member.position_nepali && (
+              <p className="text-xs font-nepali text-muted-foreground">{member.position_nepali}</p>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+
+    {/* ✅ View More Centered Dialog Button */}
+    {teamMembers.length > 8 && (
+      <div className="flex justify-center mt-10">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button size="lg" className="bg-primary hover:bg-primary/90">
+              View More
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent className="max-w-5xl max-h-[85vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="text-center text-primary">Our Full Team</DialogTitle>
+            </DialogHeader>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+              {teamMembers.map((member) => (
+                <Card key={member.id} className="text-center hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="bg-muted rounded-full w-32 h-32 mx-auto mb-4 flex items-center justify-center overflow-hidden">
+                      {member.image_url ? (
+                        <img src={member.image_url} alt={member.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <Users size={48} className="text-muted-foreground" />
+                      )}
+                    </div>
+                    <h3 className="font-semibold text-primary mb-1">{member.name}</h3>
+                    {member.name_nepali && (
+                      <p className="text-sm font-nepali text-muted-foreground mb-2">{member.name_nepali}</p>
+                    )}
+                    <p className="text-sm text-muted-foreground">{member.position}</p>
+                    {member.position_nepali && (
+                      <p className="text-xs font-nepali text-muted-foreground">{member.position_nepali}</p>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <DialogClose asChild>
+              <Button className="mt-6 bg-primary hover:bg-primary/90 w-full">Close</Button>
+            </DialogClose>
+          </DialogContent>
+        </Dialog>
+      </div>
+    )}
+  </div>
+</section>
+
 
       {/* Quick Info Section */}
       <section className="py-12 bg-secondary">
