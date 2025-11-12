@@ -19,22 +19,30 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center py-3">
           {/* Nepal Government Logo Area and School Name */}
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-18 h-14 bg-primary rounded flex items-center justify-center">
-                <span className="text-white font-bold text-xs">
-                  Adarsha
-                  <br />
-                  Secondary
-                </span>
-              </div>
-              <div>
-                <h1 className="text-lg font-bold text-primary leading-tight">Adarsha Secondary School</h1>
-                <p className="text-base font-nepali text-primary font-semibold">आदर्श माध्यमिक विद्यालय</p>
-                <p className="text-xs text-brandRed">Sanothimi, Bhaktapur</p>
-              </div>
-            </div>
-          </div>
+<div className="flex items-center space-x-4">
+  {/* Logo Section */}
+  <div className="flex items-center space-x-3">
+    {/* Logo from public folder */}
+    <img
+      src="/logo.png"
+      alt="Adarsha Secondary School Logo"
+      className="w-18 h-14 rounded object-contain"
+    />
+
+    {/* School Info */}
+    <div>
+      <h1 className="text-lg font-bold text-primary leading-tight">
+        Adarsha Secondary School
+      </h1>
+      <p className="text-base font-nepali text-primary font-semibold">
+        आदर्श माध्यमिक विद्यालय
+      </p>
+      <p className="text-xs text-brandRed">
+        Sanothimi, Bhaktapur
+      </p>
+    </div>
+  </div>
+</div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
