@@ -7,6 +7,7 @@ import { BookOpen, Users, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
+import NepaliDate from 'nepali-date-converter';
 import {
   Dialog,
   DialogContent,
@@ -117,14 +118,32 @@ const Index = () => {
                 <span className="text-sm font-nepali  text-brandRed ml-2">सूचना पाटी</span>
               </div>
 
-              <div className="space-y-3">
-                {notices.map((notice, index) => (
-                  <div key={index} className="flex gap-4 p-3 hover:bg-secondary transition-colors rounded border-l-4 border-primary">
-                    <div className="text-sm font-semibold text-primary whitespace-nowrap">{notice.date}</div>
-                    <div className="text-sm text-foreground">{notice.title}</div>
-                  </div>
-                ))}
-              </div>
+            <div className="space-y-3">
+  {notices.length === 0 ? (
+    <p className="text-center text-sm text-muted-foreground font-nepali">
+      Loading......
+    </p>
+  ) : (
+    notices.map((notice, index) => {
+      const nepaliDate = notice.date
+        ? new NepaliDate(new Date(notice.date)).format("DD MMMM YYYY", "np")
+        : "";
+
+      return (
+        <div
+          key={index}
+          className="flex gap-4 p-3 hover:bg-secondary transition-colors rounded border-l-4 border-primary"
+        >
+          <div className="text-sm font-semibold text-primary whitespace-nowrap">
+            {nepaliDate}
+          </div>
+          <div className="text-sm text-foreground">{notice.title}</div>
+        </div>
+      );
+    })
+  )}
+</div>
+
 
               <div className="mt-4 text-right">
                 <Link to="/notices">

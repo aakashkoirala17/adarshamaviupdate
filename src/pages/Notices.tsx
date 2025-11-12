@@ -4,6 +4,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Bell, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import NepaliDate from 'nepali-date-converter';
+
 
 const Notices = () => {
   const [notices, setNotices] = useState<any[]>([]);
@@ -47,7 +49,7 @@ const Notices = () => {
                       <div className="flex items-center gap-3 mb-2">
                         <div className="flex items-center text-sm text-muted-foreground">
                           <Calendar size={14} className="mr-1" />
-                          {new Date(notice.date).toLocaleDateString()}
+                          {new NepaliDate(new Date(notice.date)).format("DD MMMM YYYY", "np")}
                         </div>
                       </div>
                       <h3 className="text-xl font-bold text-primary mb-2">{notice.title}</h3>
