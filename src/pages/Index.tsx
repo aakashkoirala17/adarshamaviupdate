@@ -17,6 +17,28 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 
+const heroSlides = [
+  {
+    id: 1,
+    title: "Welcome to Adarsha Secondary School",
+    nepaliTitle: "आदर्श माध्यमिक विद्यालय मा स्वागत छ",
+    description: "Empowering Future through Technical Education in Sanothimi, Bhaktapur",
+  },
+  {
+    id: 2,
+    title: "Quality Education for Every Student",
+    nepaliTitle: "हरेक विद्यार्थीका लागि गुणस्तरीय शिक्षा",
+    description: "Shaping the minds of tomorrow with excellence and discipline.",
+  },
+  {
+    id: 3,
+    title: "A Place to Learn and Grow",
+    nepaliTitle: "सिक्ने र बढ्ने उत्कृष्ट ठाउँ",
+    description: "Providing academic excellence with modern learning facilities.",
+  },
+];
+
+
 const Index = () => {
   const [heroImages, setHeroImages] = useState<any[]>([]);
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
@@ -55,57 +77,103 @@ const Index = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="relative bg-secondary py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-primary mb-4">Welcome to Adarsha Secondary School</h1>
-              <p className="text-lg font-nepali text-primary mb-2">आदर्श माध्यमिक विद्यालय मा स्वागत छ</p>
-              <p className=" text-brandRed mb-6">
-                Empowering Future through Technical Education in Sanothimi, Bhaktapur
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Link to="/academics">
-                  <Button size="lg" className="bg-primary hover:bg-primary/90">
-                    Explore Programs
-                  </Button>
-                </Link>
-                <Link to="/contact">
-                  <Button size="lg" variant="outline">
-                    Contact Us
-                  </Button>
-                </Link>
-              </div>
-            </div>
+     {/* Hero Section */}
+<section className="relative bg-secondary">
+  <div className="w-full">
+    <div className="grid md:grid-cols-1 gap-8 items-center">
 
-            <Carousel plugins={[Autoplay({ delay: 3000 })]} className="w-full">
-              <CarouselContent>
-                {heroImages.length > 0 ? (
-                  heroImages.map((image) => (
-                    <CarouselItem key={image.id}>
-                      <div className="rounded-lg overflow-hidden h-64 md:h-80">
-                        <img src={image.image_url} alt={image.alt_text || "School"} className="w-full h-full object-cover" />
-                      </div>
-                    </CarouselItem>
-                  ))
-                ) : (
-                  <CarouselItem>
-                    <div className="bg-muted rounded-lg h-64 md:h-80 flex items-center justify-center">
-                      <div className="text-center text-muted-foreground">
-                        <BookOpen size={64} className="mx-auto mb-4" />
-                        <p>School Building Image</p>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                )}
-              </CarouselContent>
-              <CarouselPrevious className="left-2" />
-              <CarouselNext className="right-2" />
-            </Carousel>
-          </div>
-        </div>
-      </section>
+      <Carousel plugins={[Autoplay({ delay: 5000 })]} className="w-full">
+        <CarouselContent>
+
+          {heroImages.length > 0 ? (
+            heroImages.map((image, index) => {
+              const text = heroSlides[index] || heroSlides[0];
+
+              return (
+                <CarouselItem key={image.id}>
+                  <div className="overflow-hidden h-[calc(100vh-92px)] relative">
+
+                    {/* TEXT OVERLAY */}
+               
+<div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+
+<div className="absolute left-5 top-0 w-full h-full flex items-center p-8">
+  <div className="max-w-xl relative z-10 space-y-4">
+
+    {/* English Heading */}
+    <h1 className="text-3xl md:text-5xl font-heading font-extrabold tracking-tight text-white drop-shadow-lg">
+      {text.title}
+    </h1>
+
+    {/* Nepali Heading */}
+    <p className="text-xl font-nepali text-white drop-shadow-md">
+      {text.nepaliTitle}
+    </p>
+
+    {/* Description */}
+    <p className="text-white text-lg leading-relaxed drop-shadow">
+      {text.description}
+    </p>
+
+    {/* Buttons */}
+    <div className="flex flex-wrap gap-4 pt-2">
+      <Link to="/academics">
+        <Button
+          size="lg"
+          className="bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg rounded-xl"
+        >
+          Explore Programs
+        </Button>
+      </Link>
+
+      <Link to="/contact">
+        <Button
+          size="lg"
+          variant="outline"
+          className="text-primary border-white px-8 py-3 text-lg rounded-xl"
+        >
+          Contact Us
+        </Button>
+      </Link>
+    </div>
+
+  </div>
+</div>
+
+
+
+                    {/* BACKGROUND IMAGE */}
+                    <img
+                      src={image.image_url}
+                      alt={image.alt_text || "School"}
+                      className="w-full h-full object-cover"
+                    />
+
+                  </div>
+                </CarouselItem>
+              );
+            })
+          ) : (
+            <CarouselItem>
+              <div className="bg-muted rounded-lg h-64 md:h-80 flex items-center justify-center">
+                <div className="text-center text-muted-foreground">
+                  <BookOpen size={64} className="mx-auto mb-4" />
+                  <p>School Building Image</p>
+                </div>
+              </div>
+            </CarouselItem>
+          )}
+
+        </CarouselContent>
+
+        <CarouselPrevious className="left-2" />
+        <CarouselNext className="right-2" />
+
+      </Carousel>
+    </div>
+  </div>
+</section>
+
 
       {/* Notice Board Section */}
       <section className="py-12 bg-background">
@@ -158,10 +226,10 @@ const Index = () => {
       </section>
 
       {/* Principal Message Section */}
-      <section className="py-16 bg-secondary">
+      <section className="py-16 bg-primary">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-primary mb-2">Principal's Message</h2>
-          <p className="text-center font-nepali text-muted-foreground mb-8">प्रधानाध्यापकको सन्देश</p>
+          <h2 className="text-3xl font-bold text-center text-secondary mb-2">Principal's Message</h2>
+          <p className="text-center font-nepali text-brandRed mb-8">प्रधानाध्यापकको सन्देश</p>
           <Card className="max-w-4xl mx-auto">
             <CardContent className="p-8">
               <div className="flex flex-col md:flex-row gap-6 items-start">
@@ -188,7 +256,7 @@ const Index = () => {
 <section className="py-16 bg-background">
   <div className="max-w-7xl mx-auto px-4">
     <h2 className="text-3xl font-bold text-center text-primary mb-2">Our Team</h2>
-    <p className="text-center font-nepali text-muted-foreground mb-12">हाम्रो टोली</p>
+    <p className="text-center font-nepali text-brandRed mb-12">हाम्रो टोली</p>
 
     {/* Show only first 8 members */}
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">

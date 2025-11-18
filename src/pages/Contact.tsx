@@ -29,10 +29,10 @@ const Contact = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-green-600 text-white py-16">
+      <section className="bg-primary text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
+            <h1 className="text-4xl  md:text-5xl font-bold mb-6">Contact Us</h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
               Get in touch with us for admissions, inquiries, or any questions about our programs
             </p>
@@ -208,7 +208,7 @@ const Contact = () => {
 
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-shadow flex items-center justify-center space-x-2"
+                    className="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-shadow flex items-center justify-center space-x-2"
                   >
                     <Send className="w-5 h-5" />
                     <span>Send Message</span>

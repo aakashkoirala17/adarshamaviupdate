@@ -31,9 +31,9 @@ const Notices = () => {
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Bell className="text-primary" size={36} />
-              <h1 className="text-4xl font-bold text-primary">Notices & Announcements</h1>
+              <h1 className="text-4xl font-bold text-primary ">Notices & Announcements</h1>
             </div>
-            <p className="text-lg font-nepali text-primary">सूचनाहरू</p>
+            <p className="text-lg font-nepali  text-brandRed">सूचनाहरू</p>
           </div>
 
           <div className="space-y-6">
@@ -47,7 +47,7 @@ const Notices = () => {
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <div className="flex items-center text-sm text-muted-foreground">
+                        <div className="flex items-center text-sm  text-brandRed">
                           <Calendar size={14} className="mr-1" />
                           {new NepaliDate(new Date(notice.date)).format("DD MMMM YYYY", "np")}
                         </div>
@@ -69,9 +69,9 @@ const Notices = () => {
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-primary">{selectedNotice?.title}</DialogTitle>
-            <div className="flex items-center text-sm text-muted-foreground mt-2">
+            <div className="flex items-center text-sm text-brandRed mt-2">
               <Calendar size={14} className="mr-1" />
-              {selectedNotice && new Date(selectedNotice.date).toLocaleDateString()}
+              {selectedNotice && new NepaliDate(new Date(selectedNotice.date)).format("DD MMMM YYYY", "np")}
             </div>
           </DialogHeader>
           <div className="mt-4 space-y-4">
