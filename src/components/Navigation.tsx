@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
-const navItems = [
+/* --------------------------------
+   Navigation Items
+----------------------------------- */
+const NAV_ITEMS = [
   { name: "Home", path: "/" },
   { name: "About Us", path: "/about" },
   { name: "Notices", path: "/notices" },
@@ -12,13 +15,15 @@ const navItems = [
   { name: "Contact", path: "/contact" },
 ];
 
-// Desktop Nav Item with underline animation
+/* --------------------------------
+   Desktop Nav Item
+----------------------------------- */
 const DesktopNavItem = ({ name, path }) => (
   <NavLink
     to={path}
     className={({ isActive }) =>
       `relative px-4 py-2 text-sm font-medium transition-colors
-      ${isActive ? "text-primary font-bold" : "text-foreground hover:text-primary"}`
+      ${isActive ? "text-primary font-semibold" : "text-foreground hover:text-primary"}`
     }
   >
     {({ isActive }) => (
@@ -27,7 +32,7 @@ const DesktopNavItem = ({ name, path }) => (
         {isActive && (
           <motion.div
             layoutId="underline"
-            className="absolute left-0 right-0 h-[2px] bg-primary bottom-0 rounded-full"
+            className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary rounded-full"
           />
         )}
       </>
@@ -35,13 +40,15 @@ const DesktopNavItem = ({ name, path }) => (
   </NavLink>
 );
 
-// Mobile Nav Item
-const MobileNavItem = ({ name, path, onClick }) => (
+/* --------------------------------
+   Mobile Nav Item
+----------------------------------- */
+const MobileNavItem = ({ name, path, close }) => (
   <NavLink
     to={path}
-    onClick={onClick}
+    onClick={close}
     className={({ isActive }) =>
-      `px-4 py-3 text-lg font-medium rounded 
+      `block px-4 py-3 text-lg font-medium rounded
        ${isActive ? "bg-primary text-white" : "hover:bg-accent"}`
     }
   >
@@ -49,83 +56,106 @@ const MobileNavItem = ({ name, path, onClick }) => (
   </NavLink>
 );
 
-// Logo area
+/* --------------------------------
+   Logo
+----------------------------------- */
 const LogoSection = () => (
-  <NavLink to="/" className="flex items-center space-x-4">
-    <img src="/logo.png" className="w-18 h-14 rounded object-contain" alt="Logo" />
+  <NavLink to="/" className="flex items-center gap-4">
+    <img src="/logo.png" className="w-20 h-14 object-contain" alt="School Logo" />
     <div>
-      <h1 className="text-lg font-bold text-primary leading-tight">Adarsha Secondary School</h1>
-      <p className="text-base font-nepali text-primary font-semibold">आदर्श माध्यमिक विद्यालय</p>
+      <h1 className="text-lg font-bold text-primary leading-tight">
+        Adarsha Secondary School
+      </h1>
+      <p className="text-base font-nepali text-primary font-semibold">
+        आदर्श माध्यमिक विद्यालय
+      </p>
       <p className="text-xs text-brandRed">Sanothimi, Bhaktapur</p>
     </div>
   </NavLink>
 );
 
+/* --------------------------------
+   Sidebar Animation — FIXED
+----------------------------------- */
+const sidebarVariants: any = {
+  hidden: { x: "-100%" },
+  visible: {
+    x: "0%",
+    transition: { type: "spring", stiffness: 170, damping: 22 },
+  },
+  exit: {
+    x: "-100%",
+    transition: { type: "spring", stiffness: 160, damping: 24 },
+  },
+};
+
+/* --------------------------------
+   Navigation Component
+----------------------------------- */
 const Navigation = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openMenu = useCallback(() => setIsOpen(true), []);
+  const closeMenu = useCallback(() => setIsOpen(false), []);
 
   return (
     <nav className="bg-white border-b-4 border-primary sticky top-0 z-[100] shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
-        {/* Top Bar */}
         <div className="flex justify-between items-center py-3">
           <LogoSection />
 
-          {/* Desktop Nav */}
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
-            {navItems.map((item) => (
+            {NAV_ITEMS.map((item) => (
               <DesktopNavItem key={item.name} {...item} />
             ))}
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-primary hover:text-primary/80 transition"
-            onClick={() => setIsMenuOpen(true)}
+            aria-label="Open Menu"
+            className="md:hidden text-primary hover:text-primary/80"
+            onClick={openMenu}
           >
             <Menu size={28} />
           </button>
         </div>
       </div>
 
-      {/* Mobile Slide Menu */}
+      {/* Mobile Sidebar */}
       <AnimatePresence>
-        {isMenuOpen && (
+        {isOpen && (
           <>
-            {/* BACKDROP */}
+            {/* Backdrop */}
             <motion.div
               className="fixed inset-0 bg-black/40 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsMenuOpen(false)}
+              onClick={closeMenu}
             />
 
-            {/* SLIDE-IN SIDEBAR */}
-            <motion.div
-              className="fixed top-0 left-0 h-full w-64 bg-white shadow-xl z-[120] p-5"
-              initial={{ x: -250 }}
-              animate={{ x: 0 }}
-              exit={{ x: -250 }}
-              transition={{ type: "spring", stiffness: 200, damping: 25 }}
+            {/* Sidebar */}
+            <motion.aside
+              className="fixed top-0 left-0 w-64 h-full bg-white shadow-xl z-[120] p-5"
+              variants={sidebarVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
             >
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-primary">Menu</h2>
-                <button onClick={() => setIsMenuOpen(false)}>
+                <button aria-label="Close Menu" onClick={closeMenu}>
                   <X size={26} className="text-primary" />
                 </button>
               </div>
 
-              <div className="flex flex-col space-y-2">
-                {navItems.map((item) => (
-                  <MobileNavItem
-                    key={item.name}
-                    {...item}
-                    onClick={() => setIsMenuOpen(false)}
-                  />
+              <nav className="flex flex-col space-y-2">
+                {NAV_ITEMS.map((item) => (
+                  <MobileNavItem key={item.name} {...item} close={closeMenu} />
                 ))}
-              </div>
-            </motion.div>
+              </nav>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>

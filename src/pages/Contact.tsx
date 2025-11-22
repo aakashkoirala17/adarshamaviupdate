@@ -80,8 +80,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Email Address</h3>
+                    <p className="text-gray-600">info@adarshasanothimi.edu.np</p>
                     <p className="text-gray-600">info@adarshasecondary.edu.np</p>
-                    <p className="text-gray-600">admissions@adarshasecondary.edu.np</p>
                   </div>
                 </div>
 
