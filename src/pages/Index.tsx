@@ -23,6 +23,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
+import Linkify from "@/components/Linkify";
 
 /* -----------------------------
    Constants
@@ -175,55 +176,90 @@ const Hero = ({ images }) => (
 /* -----------------------------
    Notices Section
    ----------------------------- */
-const Notices = ({ notices }) => (
-  <AnimatedSection>
-    <section className="py-12 bg-background">
-      <div className="max-w-7xl mx-auto px-4">
-        <Card className="border-primary/20">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Bell size={24} className="text-primary" />
-              <h2 className="text-2xl font-bold text-primary">Notice Board</h2>
-              <span className="text-sm font-nepali text-brandRed ml-2">सूचना पाटी</span>
-            </div>
+const Notices = ({ notices }) => {
+  const [selectedNotice, setSelectedNotice] = useState(null);
 
-            <div className="space-y-3">
-              {!notices.length ? (
-                <p className="text-center text-sm font-nepali text-muted-foreground">
-                  Loading...
-                </p>
-              ) : (
-                notices.map((n, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -8 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.45, delay: i * 0.05 }}
-                    className="flex gap-4 p-3 rounded border-l-4 border-primary hover:bg-secondary transition"
-                  >
-                    <div className="text-sm font-semibold text-primary whitespace-nowrap">
-                      {formatNepaliDate(n.date)}
-                    </div>
-                    <div className="text-sm text-foreground">{n.title}</div>
-                  </motion.div>
-                ))
-              )}
-            </div>
+  return (
+    <AnimatedSection>
+      <section className="py-12 bg-background">
+        <div className="max-w-7xl mx-auto px-4">
+          <Card className="border-primary/20">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Bell size={24} className="text-primary" />
+                <h2 className="text-2xl font-bold text-primary">Notice Board</h2>
+                <span className="text-sm font-nepali text-brandRed ml-2">सूचना पाटी</span>
+              </div>
 
-            <div className="mt-4 text-right">
-              <Link to="/notices">
-                <Button variant="outline" size="sm">
-                  View All Notices
-                </Button>
-              </Link>
+              <div className="space-y-3">
+                {!notices.length ? (
+                  <p className="text-center text-sm font-nepali text-muted-foreground">
+                    Loading...
+                  </p>
+                ) : (
+                  notices.map((n, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -8 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.45, delay: i * 0.05 }}
+                      className="flex gap-4 p-3 rounded border-l-4 border-primary hover:bg-secondary transition cursor-pointer"
+                      onClick={() => setSelectedNotice(n)}
+                    >
+                      <div className="text-sm font-semibold text-primary whitespace-nowrap">
+                        {formatNepaliDate(n.date)}
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-sm font-bold text-primary">
+                          <Linkify text={n.title} />
+                        </div>
+                        {n.content && (
+                          <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                            <Linkify text={n.content} />
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))
+                )}
+              </div>
+
+              <div className="mt-4 text-right">
+                <Link to="/notices">
+                  <Button variant="outline" size="sm">
+                    View All Notices
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <Dialog open={!!selectedNotice} onOpenChange={() => setSelectedNotice(null)}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-primary">
+              <Linkify text={selectedNotice?.title || ''} />
+            </DialogTitle>
+            <div className="flex items-center text-sm text-brandRed mt-2">
+              <Bell size={14} className="mr-1" />
+              {selectedNotice && formatNepaliDate(selectedNotice.date)}
             </div>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
-  </AnimatedSection>
-);
+          </DialogHeader>
+          <div className="mt-4 space-y-4">
+            {selectedNotice?.content && (
+              <p className="text-foreground whitespace-pre-wrap">
+                <Linkify text={selectedNotice.content} />
+              </p>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </AnimatedSection>
+  );
+};
 
 /* -----------------------------
    Principal Message

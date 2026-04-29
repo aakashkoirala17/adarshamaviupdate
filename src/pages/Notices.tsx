@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Bell, Calendar } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import NepaliDate from 'nepali-date-converter';
+import Linkify from '@/components/Linkify';
 
 
 const Notices = () => {
@@ -52,9 +53,13 @@ const Notices = () => {
                           {new NepaliDate(new Date(notice.date)).format("DD MMMM YYYY", "np")}
                         </div>
                       </div>
-                      <h3 className="text-xl font-bold text-primary mb-2">{notice.title}</h3>
+                      <h3 className="text-xl font-bold text-primary mb-2">
+                        <Linkify text={notice.title} />
+                      </h3>
                       {notice.content && (
-                        <p className="text-sm text-muted-foreground line-clamp-2">{notice.content}</p>
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          <Linkify text={notice.content} />
+                        </p>
                       )}
                     </div>
                   </div>
@@ -68,7 +73,9 @@ const Notices = () => {
       <Dialog open={!!selectedNotice} onOpenChange={() => setSelectedNotice(null)}>
         <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-primary">{selectedNotice?.title}</DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-primary">
+              <Linkify text={selectedNotice?.title || ''} />
+            </DialogTitle>
             <div className="flex items-center text-sm text-brandRed mt-2">
               <Calendar size={14} className="mr-1" />
               {selectedNotice && new NepaliDate(new Date(selectedNotice.date)).format("DD MMMM YYYY", "np")}
@@ -76,7 +83,9 @@ const Notices = () => {
           </DialogHeader>
           <div className="mt-4 space-y-4">
             {selectedNotice?.content && (
-              <p className="text-foreground whitespace-pre-wrap">{selectedNotice.content}</p>
+              <p className="text-foreground whitespace-pre-wrap">
+                <Linkify text={selectedNotice.content} />
+              </p>
             )}
           </div>
         </DialogContent>
