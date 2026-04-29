@@ -348,6 +348,39 @@ const TeamSection = ({ team }) => {
 };
 
 /* -----------------------------
+   Why Choose Us
+   ----------------------------- */
+const WhyChooseUs = () => {
+  const points = [
+    { title: "Quality Education", desc: "Qualified, experienced, and trained teachers." },
+    { title: "Safe Infrastructure", desc: "Strong earthquake-resistant buildings." },
+    { title: "Modern Facilities", desc: "ICT-based classrooms and well-equipped labs." },
+    { title: "Supportive Environment", desc: "Student-friendly atmosphere with counseling." },
+  ];
+
+  return (
+    <AnimatedSection delay={0.3}>
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-primary mb-2">Why Choose Us?</h2>
+          <p className="text-center font-nepali text-brandRed mb-10">हामीलाई किन रोज्ने?</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {points.map((p, i) => (
+              <Card key={i} className="hover:border-primary/50 transition-colors">
+                <CardContent className="p-6">
+                  <h3 className="font-bold text-primary mb-2">{p.title}</h3>
+                  <p className="text-sm text-muted-foreground">{p.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+    </AnimatedSection>
+  );
+};
+
+/* -----------------------------
    Quick Info
    ----------------------------- */
 const QuickInfo = () => (
@@ -356,14 +389,19 @@ const QuickInfo = () => (
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8">
         <Card>
           <CardContent className="p-6">
-            <h3 className="text-xl font-bold text-primary mb-4">Programs Offered</h3>
+            <div className="flex items-center gap-2 mb-4">
+              <h3 className="text-xl font-bold text-primary">Programs Offered</h3>
+              <span className="text-[10px] bg-brandRed text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+                Updating
+              </span>
+            </div>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• ECD</li>
-              <li>• Primary Education</li>
-              <li>• Secondary Education</li>
+              <li>• ECED (Early Childhood Education)</li>
+              <li>• Primary & Secondary Education</li>
               <li>• Computer Engineering (Grade 9-12)</li>
-              <li>• +2 Computer Science (NEB)</li>
-              <li>• +2 Management (NEB)</li>
+              <li>• +2 Computer Science</li>
+              <li>• +2 Management</li>
+              <li>• +2 Education & Humanities</li>
             </ul>
           </CardContent>
         </Card>
@@ -372,9 +410,9 @@ const QuickInfo = () => (
           <CardContent className="p-6">
             <h3 className="text-xl font-bold text-primary mb-4">School Timing</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• Sunday - Friday: 09:00 AM - 4:00 PM</li>
+              <li>• Monday - Friday: 09:00 AM - 5:00 PM</li>
               <li>• Saturday: Closed</li>
-              <li>• Office Hours: 9:00 AM - 5:00 PM</li>
+              <li>• Office Hours: 6:00 AM - 6:00 PM</li>
             </ul>
           </CardContent>
         </Card>
@@ -412,6 +450,7 @@ const Index = () => {
       <Hero images={heroImages} />
       <Notices notices={notices} />
       <PrincipalMessage />
+      <WhyChooseUs />
       <TeamSection team={team} />
       <QuickInfo />
     </Layout>

@@ -9,7 +9,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-3">Adarsha Secondary School</h3>
             <p className="text-sm opacity-90 mb-2 font-nepali">आदर्श माध्यमिक विद्यालय</p>
-            <p className="text-sm opacity-80">Sanothimi, Bhaktapur, Nepal</p>
+            <p className="text-sm opacity-80 text-wrap">Madhyapur Thimi Municipality-2, Sanothimi, Bhaktapur, Nepal</p>
             <p className="text-sm opacity-80 mt-4">Empowering Future through Technical Education</p>
           </div>
 
@@ -19,11 +19,11 @@ const Footer = () => {
             <div className="space-y-2 text-sm">
               <div className="flex items-start space-x-2">
                 <MapPin size={16} className="mt-0.5 flex-shrink-0" />
-                <span className="opacity-90">Sanothimi, Bhaktapur, Nepal</span>
+                <span className="opacity-90">Sanothimi, Bhaktapur</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone size={16} className="flex-shrink-0" />
-                <span className="opacity-90">+977-1-6630857</span>
+                <span className="opacity-90">01-6630857</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail size={16} className="flex-shrink-0" />

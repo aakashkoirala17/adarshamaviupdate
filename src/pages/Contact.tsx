@@ -47,7 +47,7 @@ const Contact = () => {
             {/* Contact Information */}
             <div>
               <h2 className="text-3xl font-bold text-gray-800 mb-8">Get in Touch</h2>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <div className="bg-blue-100 p-3 rounded-full">
@@ -57,7 +57,7 @@ const Contact = () => {
                     <h3 className="font-semibold text-gray-800 mb-1">Our Address</h3>
                     <p className="text-gray-600">
                       Adarsha Secondary School<br />
-                      Sanothimi, Bhaktapur<br />
+                      Madhyapur Thimi Municipality-2, Sanothimi, Bhaktapur<br />
                       Nepal
                     </p>
                   </div>
@@ -69,8 +69,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Phone Number</h3>
-                    <p className="text-gray-600">+977-1-6630857</p>
-                    
+                    <p className="text-gray-600">01-6630857</p>
                   </div>
                 </div>
 
@@ -80,8 +79,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Email Address</h3>
-                    <p className="text-gray-600">info@adarshasanothimi.edu.np</p>
-                    <p className="text-gray-600">info@adarshasecondary.edu.np</p>
+                    <p className="text-gray-600">admin@adarshasanothimi.edu.np</p>
                   </div>
                 </div>
 
@@ -92,8 +90,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Office Hours</h3>
                     <p className="text-gray-600">
-                      Sunday - Friday: 9:00 AM - 5:00 PM<br />
-                      Saturday: 9:00 AM - 1:00 PM
+                      Monday - Friday: 6:00 AM - 6:00 PM<br />
                     </p>
                   </div>
                 </div>
@@ -118,7 +115,7 @@ const Contact = () => {
             <div>
               <div className="bg-white rounded-2xl shadow-lg p-8">
                 <h2 className="text-2xl font-bold text-gray-800 mb-6">Send us a Message</h2>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -136,7 +133,7 @@ const Contact = () => {
                         placeholder="Your full name"
                       />
                     </div>
-                    
+
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
                         Phone Number
@@ -234,7 +231,7 @@ const Contact = () => {
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h3 className="font-semibold text-gray-800 mb-2">What are the admission requirements?</h3>
               <p className="text-gray-600">
-                Admission requirements vary by program. For Grade 9, students need Class 8 completion certificate. 
+                Admission requirements vary by program. For Grade 9, students need Class 8 completion certificate.
                 For +2 programs, SLC/SEE pass certificate is required. Please visit our Admissions page for detailed requirements.
               </p>
             </div>
@@ -242,7 +239,7 @@ const Contact = () => {
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h3 className="font-semibold text-gray-800 mb-2">Do you offer scholarships?</h3>
               <p className="text-gray-600">
-                Yes, we offer merit-based scholarships for academically excellent students and need-based assistance 
+                Yes, we offer merit-based scholarships for academically excellent students and need-based assistance
                 for deserving students from economically disadvantaged backgrounds.
               </p>
             </div>
@@ -250,18 +247,12 @@ const Contact = () => {
             <div className="bg-white rounded-lg p-6 shadow-md">
               <h3 className="font-semibold text-gray-800 mb-2">What facilities do you provide?</h3>
               <p className="text-gray-600">
-                We have modern computer labs, well-stocked library, smart classrooms, science laboratories, 
+                We have modern computer labs, well-stocked library, smart classrooms, science laboratories,
                 and other essential facilities to support quality education.
               </p>
             </div>
 
-            <div className="bg-white rounded-lg p-6 shadow-md">
-              <h3 className="font-semibold text-gray-800 mb-2">Are your programs NEB affiliated?</h3>
-              <p className="text-gray-600">
-                Yes, our +2 Computer Science and +2 Management programs are fully affiliated with the 
-                National Examination Board (NEB) of Nepal.
-              </p>
-            </div>
+
           </div>
         </div>
       </section>

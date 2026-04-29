@@ -2,6 +2,7 @@
 import { BookOpen, Code, Calculator, Award, Clock } from 'lucide-react';
 import Layout from '../components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 const Academics = () => {
   const computerEngineeringSubjects = [
@@ -27,6 +28,20 @@ const Academics = () => {
           <div className="text-center">
             <h1 className="text-4xl font-bold text-primary mb-4">Our Academic Programs</h1>
             <p className="text-lg font-nepali text-primary mb-4">हाम्रो शैक्षिक कार्यक्रमहरू</p>
+            
+            <div className="max-w-2xl mx-auto mb-8">
+              <Alert className="bg-blue-50 border-blue-200 text-blue-800">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  <AlertTitle className="mb-0 font-semibold">Under Update (Beta Phase)</AlertTitle>
+                </div>
+                <AlertDescription className="text-blue-700 mt-1">
+                  We are currently updating our academic section to provide more detailed information. 
+                  Some content may be incomplete or subject to change.
+                </AlertDescription>
+              </Alert>
+            </div>
+
             <p className="text-muted-foreground max-w-3xl mx-auto">
               Comprehensive education programs designed to prepare students for success in the modern world
             </p>
@@ -199,6 +214,51 @@ const Academics = () => {
                 </div>
 
                 <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                  <div className="flex items-center space-x-1">
+                    <Clock className="w-4 h-4" />
+                    <span>2 Years</span>
+                  </div>
+                  <div className="flex items-center space-x-1">
+                    <Award className="w-4 h-4" />
+                    <span>NEB Certified</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* +2 Education & Humanities */}
+            <Card className="hover:shadow-lg transition-shadow lg:col-span-2">
+              <CardContent className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="bg-secondary p-3 rounded-full mr-4">
+                    <BookOpen className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-primary">+2 Education & Humanities</h3>
+                </div>
+                
+                <p className="text-muted-foreground mb-4">
+                  Our Education and Humanities streams focus on developing future educators and social science 
+                  professionals. These programs emphasize critical thinking, communication, and pedagogical skills.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-3">Education Stream</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Prepares students for a career in teaching and educational administration with focus on 
+                      pedagogy, child development, and subject-specific teaching methods.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-3">Humanities Stream</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Focuses on social sciences, literature, and languages, preparing students for diverse 
+                      careers in journalism, law, social work, and public service.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-4 text-sm text-muted-foreground mt-6">
                   <div className="flex items-center space-x-1">
                     <Clock className="w-4 h-4" />
                     <span>2 Years</span>

@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { name: "Home", path: "/" },
   { name: "About Us", path: "/about" },
   { name: "Notices", path: "/notices" },
-  { name: "Academics", path: "/academics" },
+  { name: "Academics", path: "/academics", beta: true },
   { name: "Gallery", path: "/gallery" },
   { name: "Contact", path: "/contact" },
 ];
@@ -18,17 +18,22 @@ const NAV_ITEMS = [
 /* --------------------------------
    Desktop Nav Item
 ----------------------------------- */
-const DesktopNavItem = ({ name, path }) => (
+const DesktopNavItem = ({ name, path, beta }: { name: string; path: string; beta?: boolean }) => (
   <NavLink
     to={path}
     className={({ isActive }) =>
-      `relative px-4 py-2 text-sm font-medium transition-colors
+      `relative px-4 py-2 text-sm font-medium transition-colors flex items-center gap-1
       ${isActive ? "text-primary font-semibold" : "text-foreground hover:text-primary"}`
     }
   >
     {({ isActive }) => (
       <>
         {name}
+        {beta && (
+          <span className="text-[10px] bg-brandRed text-white px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
+            Beta
+          </span>
+        )}
         {isActive && (
           <motion.div
             layoutId="underline"
@@ -43,16 +48,21 @@ const DesktopNavItem = ({ name, path }) => (
 /* --------------------------------
    Mobile Nav Item
 ----------------------------------- */
-const MobileNavItem = ({ name, path, close }) => (
+const MobileNavItem = ({ name, path, close, beta }: { name: string; path: string; close: () => void; beta?: boolean }) => (
   <NavLink
     to={path}
     onClick={close}
     className={({ isActive }) =>
-      `block px-4 py-3 text-lg font-medium rounded
+      `flex items-center justify-between px-4 py-3 text-lg font-medium rounded
        ${isActive ? "bg-primary text-white" : "hover:bg-accent"}`
     }
   >
-    {name}
+    <span>{name}</span>
+    {beta && (
+      <span className="text-xs bg-brandRed text-white px-2 py-0.5 rounded-full font-bold uppercase">
+        Beta
+      </span>
+    )}
   </NavLink>
 );
 
