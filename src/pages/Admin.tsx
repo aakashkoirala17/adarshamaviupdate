@@ -204,6 +204,21 @@ const Admin = () => {
 
   // generic delete
   const deleteItem = async (table, id) => {
+    try {
+      // Optional: Cleanup storage file
+      if (["hero_images", "team_members", "gallery_images"].includes(table)) {
+        const { data } = await supabase.from(table as any).select("image_url").eq("id", id).single();
+        if (data && (data as any).image_url) {
+          const fileName = (data as any).image_url.split("/").pop();
+          if (fileName) {
+            await supabase.storage.from("school-images").remove([fileName]);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Storage cleanup failed", err);
+    }
+
     const { error } = await supabase.from(table).delete().eq("id", id);
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -232,6 +247,15 @@ const Admin = () => {
     if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
     else {
       toast({ title: "Team member added" });
+      fetchAllData();
+    }
+  };
+
+  const updateTeamMemberInDB = async (id, payload) => {
+    const { error } = await supabase.from("team_members").update(payload).eq("id", id);
+    if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
+    else {
+      toast({ title: "Team member updated" });
       fetchAllData();
     }
   };
@@ -288,6 +312,7 @@ const Admin = () => {
             <TeamMembersTab
               members={teamMembers}
               onAdd={addTeamMemberToDB}
+              onUpdate={updateTeamMemberInDB}
               onDelete={deleteItem}
             />
           </TabsContent>
@@ -536,8 +561,9 @@ const HeroImagesTab = ({ images = [], onAdd, onDelete }) => {
    - add preview, single upload, multi (but typical single)
    - drag reorder
    ===================================================== */
-const TeamMembersTab = ({ members = [], onAdd, onDelete }) => {
+const TeamMembersTab = ({ members = [], onAdd, onUpdate, onDelete }) => {
   const [form, setForm] = useState({ name: "", nameNepali: "", position: "", positionNepali: "", imageUrl: "" });
+  const [editingId, setEditingId] = useState(null);
   const [preview, setPreview] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [list, setList] = useState(members || []);
@@ -560,16 +586,43 @@ const TeamMembersTab = ({ members = [], onAdd, onDelete }) => {
   };
 
   const handleSubmit = async () => {
-    await onAdd({
+    const payload = {
       name: form.name,
       name_nepali: form.nameNepali,
       position: form.position,
       position_nepali: form.positionNepali,
       image_url: form.imageUrl,
-      display_order: list.length,
+    };
+
+    if (editingId) {
+      await onUpdate(editingId, payload);
+    } else {
+      await onAdd({
+        ...payload,
+        display_order: list.length,
+      });
+    }
+    handleCancel();
+  };
+
+  const handleEdit = (m) => {
+    setEditingId(m.id);
+    setForm({
+      name: m.name,
+      nameNepali: m.name_nepali,
+      position: m.position,
+      positionNepali: m.position_nepali,
+      imageUrl: m.image_url,
     });
+    setPreview(m.image_url);
+    setUploadProgress(0);
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
     setForm({ name: "", nameNepali: "", position: "", positionNepali: "", imageUrl: "" });
     setPreview("");
+    setUploadProgress(0);
   };
 
   // reorder
@@ -587,7 +640,7 @@ const TeamMembersTab = ({ members = [], onAdd, onDelete }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Manage Team Members</CardTitle>
+        <CardTitle>{editingId ? "Edit Team Member" : "Manage Team Members"}</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-4">
@@ -605,7 +658,12 @@ const TeamMembersTab = ({ members = [], onAdd, onDelete }) => {
           </div>
 
           <div className="flex items-end gap-2">
-            <Button onClick={handleSubmit} disabled={!form.name || !form.position}><Plus className="mr-2 h-4 w-4" />Add Member</Button>
+            <Button onClick={handleSubmit} disabled={!form.name || !form.position}>
+              {editingId ? <><Edit className="mr-2 h-4 w-4" />Update Member</> : <><Plus className="mr-2 h-4 w-4" />Add Member</>}
+            </Button>
+            {editingId && (
+              <Button variant="outline" onClick={handleCancel}>Cancel</Button>
+            )}
           </div>
         </div>
 
@@ -618,15 +676,18 @@ const TeamMembersTab = ({ members = [], onAdd, onDelete }) => {
                 onDragStart={(e) => onDragStart(e, idx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => onDropList(e, idx)}
-                className="flex items-center gap-4 p-3 border rounded"
+                className="flex items-center gap-4 p-3 border rounded bg-card hover:bg-accent/10 transition-colors"
               >
-                {m.image_url && <img src={m.image_url} className="w-16 h-16 object-cover rounded-full" alt={m.name} />}
+                {m.image_url && <img src={m.image_url} className="w-16 h-16 object-cover rounded-full border-2 border-primary/20" alt={m.name} />}
                 <div className="flex-1">
                   <div className="font-medium">{m.name}</div>
                   <div className="text-sm font-nepali text-muted-foreground">{m.name_nepali}</div>
                   <div className="text-sm text-muted-foreground">{m.position}</div>
                 </div>
-                <Button variant="destructive" size="sm" onClick={() => onDelete("team_members", m.id)}><Trash2 /></Button>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => handleEdit(m)}><Edit className="h-4 w-4" /></Button>
+                  <Button variant="destructive" size="sm" onClick={() => onDelete("team_members", m.id)}><Trash2 className="h-4 w-4" /></Button>
+                </div>
               </div>
             ))}
           </div>

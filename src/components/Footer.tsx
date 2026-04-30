@@ -10,7 +10,7 @@ const Footer = () => {
             <h3 className="text-lg font-bold mb-3">Adarsha Secondary School</h3>
             <p className="text-sm opacity-90 mb-2 font-nepali">आदर्श माध्यमिक विद्यालय</p>
             <p className="text-sm opacity-80 text-wrap">Madhyapur Thimi Municipality-2, Sanothimi, Bhaktapur, Nepal</p>
-            <p className="text-sm opacity-80 mt-4">Empowering Future through Technical Education</p>
+            <p className="text-sm opacity-80 mt-4">Adarsha's Intention, Quality Education</p>
           </div>
 
           {/* Contact Information */}
