@@ -9,7 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { BookOpen, Users, Bell } from "lucide-react";
+import { BookOpen, Users, Bell, ArrowRight, ChevronRight, Newspaper, CheckCircle2, Phone, Mail, MapPin, FileText, FileImage, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
@@ -21,19 +21,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 import Linkify from "@/components/Linkify";
 import { useSettings } from "@/hooks/use-settings";
 
 /* -----------------------------
-   Constants (Moved to DB)
-   ----------------------------- */
-
-/* -----------------------------
    Utility Functions
    ----------------------------- */
-const formatNepaliDate = (dateStr) => {
+const formatNepaliDate = (dateStr: string) => {
   try {
     return dateStr ? new NepaliDate(new Date(dateStr)).format("DD MMMM YYYY", "np") : "";
   } catch {
@@ -44,9 +39,9 @@ const formatNepaliDate = (dateStr) => {
 /* -----------------------------
    Animated Wrapper
    ----------------------------- */
-const AnimatedSection = ({ children, delay = 0 }) => (
+const AnimatedSection = ({ children, delay = 0 }: { children: React.ReactNode, delay?: number }) => (
   <motion.div
-    initial={{ opacity: 0, y: 12 }}
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, amount: 0.15 }}
     transition={{ duration: 0.6, delay }}
@@ -54,77 +49,72 @@ const AnimatedSection = ({ children, delay = 0 }) => (
     {children}
   </motion.div>
 );
-const autoplay = Autoplay({ delay: 5000 }) as any;
+
+const autoplay = Autoplay({ delay: 5000 });
+
 /* -----------------------------
    Hero Section
    ----------------------------- */
-const Hero = ({ images, slides = [] }) => (
-  <section className="relative bg-secondary">
-    <Carousel plugins={[autoplay]} className="w-full">
+const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
+  <section className="relative bg-secondary/20 overflow-hidden">
+    <Carousel plugins={[autoplay as any]} className="w-full">
       <CarouselContent>
         {images.length ? (
           images.map((img, i) => {
-            const slide = slides[i] || slides[0] || { title: "", nepaliTitle: "", description: "" };
+            const slide = slides[i] || slides[0] || { title: "Welcome to Adarsha Mavi", nepaliTitle: "आदर्श माध्यमिक विद्यालय", description: "Providing quality education for a brighter future." };
 
             return (
               <CarouselItem key={img.id}>
-                <div className="relative overflow-hidden h-[calc(100vh-92px)]">
-
-                  {/* Shadow Overlay removed to make image bright */}
-
-                  {/* Text Area - Only shown for the first slide */}
+                <div className="relative h-auto md:h-[calc(100vh-92px)] w-full overflow-hidden bg-primary">
+                  {/* Text Overlay - Only on first slide for clarity as requested */}
                   {i === 0 && (
-                    <div className="absolute inset-y-0 left-5 flex items-center p-8 z-20">
-                      <div className="max-w-xl space-y-4">
-                        <motion.h1
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.8 }}
-                          className="text-3xl md:text-5xl font-heading font-extrabold tracking-tight text-white drop-shadow-lg"
-                        >
-                          {slide.title}
-                        </motion.h1>
+                    <div className="absolute inset-0 z-20 flex items-center bg-black/20">
+                      <div className="section-container w-full">
+                        <div className="max-w-2xl space-y-4 md:space-y-6">
+                          <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.8 }}
+                          >
+                            <h1 className="text-3xl md:text-6xl font-bold text-white drop-shadow-2xl leading-tight">
+                              {slide.title}
+                            </h1>
+                            <p className="text-xl md:text-3xl font-nepali text-white/90 mt-1 md:mt-2 drop-shadow-xl">
+                              {slide.nepaliTitle}
+                            </p>
+                          </motion.div>
 
-                        <motion.p
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.8, delay: 0.15 }}
-                          className="text-xl font-nepali text-white drop-shadow-md"
-                        >
-                          {slide.nepaliTitle}
-                        </motion.p>
+                          <motion.p
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 1, delay: 0.3 }}
+                            className="text-white/95 text-sm md:text-xl leading-relaxed drop-shadow-lg max-w-xl line-clamp-3 md:line-clamp-none"
+                          >
+                            {slide.description}
+                          </motion.p>
 
-                        <motion.p
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.9, delay: 0.25 }}
-                          className="text-white text-lg leading-relaxed drop-shadow"
-                        >
-                          {slide.description}
-                        </motion.p>
-
-                        <motion.div
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.8, delay: 0.35 }}
-                          className="flex flex-wrap gap-4 pt-2"
-                        >
-                          <Link to="/academics">
-                            <Button size="lg" className="px-8 py-3 text-lg rounded-xl">
-                              Explore Programs
-                            </Button>
-                          </Link>
-
-                          <Link to="/contact">
-                            <Button
-                              size="lg"
-                              variant="outline"
-                              className="px-8 py-3 text-lg rounded-xl text-brandRed border-white"
-                            >
-                              Contact Us
-                            </Button>
-                          </Link>
-                        </motion.div>
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.5 }}
+                            className="flex flex-wrap gap-3 md:gap-4 pt-2 md:pt-4"
+                          >
+                            <Link to="/academics">
+                              <Button size="lg" className="px-6 md:px-8 py-4 md:py-6 text-sm md:text-lg rounded-full shadow-xl hover:shadow-primary/20 transition-all">
+                                Our Programs
+                              </Button>
+                            </Link>
+                            <Link to="/contact">
+                              <Button
+                                size="lg"
+                                variant="outline"
+                                className="px-6 md:px-8 py-4 md:py-6 text-sm md:text-lg rounded-full border-white text-white bg-white/10 hover:bg-white hover:text-primary transition-all backdrop-blur-sm shadow-xl"
+                              >
+                                Contact Us
+                              </Button>
+                            </Link>
+                          </motion.div>
+                        </div>
                       </div>
                     </div>
                   )}
@@ -132,11 +122,11 @@ const Hero = ({ images, slides = [] }) => (
                   {/* Background Image */}
                   <motion.img
                     src={img.image_url}
-                    alt={img.alt_text || "School"}
-                    className="w-full h-full object-cover brightness-[1.1]"
+                    alt={img.alt_text || "School Hero"}
+                    className="w-full h-auto md:h-full md:object-cover"
                     initial={{ scale: 1.05 }}
                     animate={{ scale: 1 }}
-                    transition={{ duration: 8 }}
+                    transition={{ duration: 10, ease: "linear" }}
                   />
                 </div>
               </CarouselItem>
@@ -144,16 +134,17 @@ const Hero = ({ images, slides = [] }) => (
           })
         ) : (
           <CarouselItem>
-            <div className="bg-muted h-64 md:h-80 flex items-center justify-center rounded-lg">
-              <BookOpen size={64} className="mb-4" />
-              <p>No Images</p>
+            <div className="bg-muted h-[60vh] flex flex-col items-center justify-center">
+              <BookOpen size={64} className="text-primary/20 mb-4" />
+              <p className="text-muted-foreground font-medium">Welcome to Adarsha Secondary School</p>
             </div>
           </CarouselItem>
         )}
       </CarouselContent>
-
-      <CarouselPrevious className="left-2" />
-      <CarouselNext className="right-2" />
+      <div className="absolute bottom-8 right-8 z-30 flex gap-2">
+        <CarouselPrevious className="static translate-y-0 h-12 w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
+        <CarouselNext className="static translate-y-0 h-12 w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
+      </div>
     </Carousel>
   </section>
 );
@@ -161,84 +152,139 @@ const Hero = ({ images, slides = [] }) => (
 /* -----------------------------
    Notices Section
    ----------------------------- */
-const Notices = ({ notices }) => {
-  const [selectedNotice, setSelectedNotice] = useState(null);
+const Notices = ({ notices }: { notices: any[] }) => {
+  const [selectedNotice, setSelectedNotice] = useState<any>(null);
 
   return (
     <AnimatedSection>
-      <section className="py-12 bg-background">
-        <div className="max-w-7xl mx-auto px-4">
-          <Card className="border-primary/20">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Bell size={24} className="text-primary" />
-                <h2 className="text-2xl font-bold text-primary">Notice Board</h2>
-                <span className="text-sm font-nepali text-brandRed ml-2">सूचना पाटी</span>
+      <section className="py-24 bg-white">
+        <div className="section-container">
+          <div className="premium-card overflow-hidden ring-1 ring-primary/5">
+            <div className="p-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+                <div className="flex items-center gap-4">
+                  <div className="bg-primary/10 p-3 rounded-2xl">
+                    <Bell size={28} className="text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-primary tracking-tight">Recent Notices</h2>
+                    <p className="text-sm font-nepali text-brandRed font-medium">ताजा सूचनाहरू</p>
+                  </div>
+                </div>
+                <Link to="/notices">
+                  <Button variant="outline" className="rounded-full px-6 group hover:bg-primary hover:text-white transition-all">
+                    View All Notices <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </div>
 
-              <div className="space-y-3">
+              <div className="grid gap-4">
                 {!notices.length ? (
-                  <p className="text-center text-sm font-nepali text-muted-foreground">
-                    Loading...
-                  </p>
+                  <div className="text-center py-12 bg-secondary/20 rounded-2xl border-2 border-dashed border-secondary">
+                    <p className="text-muted-foreground font-nepali">हाल कुनै सूचना उपलब्ध छैन।</p>
+                  </div>
                 ) : (
                   notices.map((n, i) => (
                     <motion.div
-                      key={i}
-                      initial={{ opacity: 0, x: -8 }}
+                      key={n.id}
+                      initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
-                      transition={{ duration: 0.45, delay: i * 0.05 }}
-                      className="flex gap-4 p-3 rounded border-l-4 border-primary hover:bg-secondary transition cursor-pointer"
+                      transition={{ delay: i * 0.1 }}
+                      className="group flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-primary/5 transition-all cursor-pointer"
                       onClick={() => setSelectedNotice(n)}
                     >
-                      <div className="text-sm font-semibold text-primary whitespace-nowrap">
-                        {formatNepaliDate(n.date)}
+                      <div className="flex-shrink-0 w-full sm:w-24 bg-white border border-secondary shadow-sm rounded-xl p-3 text-center">
+                        <span className="block text-primary font-bold text-lg">{formatNepaliDate(n.date).split(' ')[0]}</span>
+                        <span className="block text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{formatNepaliDate(n.date).split(' ')[1]}</span>
                       </div>
-                      <div className="flex-1">
-                        <div className="text-sm font-bold text-primary">
-                          <Linkify text={n.title} />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-lg font-bold text-primary group-hover:text-brandRed transition-colors line-clamp-1">
+                            <Linkify text={n.title} />
+                          </h3>
+                          {n.attachment_url && (
+                            <div className="shrink-0 bg-primary/5 text-primary p-1 rounded-md">
+                              {n.attachment_type === 'pdf' ? <FileText size={14} /> : <FileImage size={14} />}
+                            </div>
+                          )}
                         </div>
                         {n.content && (
-                          <div className="text-xs text-muted-foreground mt-1 line-clamp-2">
+                          <p className="text-sm text-muted-foreground line-clamp-1 mt-1">
                             <Linkify text={n.content} />
-                          </div>
+                          </p>
                         )}
+                      </div>
+                      <div className="hidden sm:block">
+                        <div className="h-10 w-10 rounded-full flex items-center justify-center bg-white border border-secondary text-muted-foreground group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                          <ChevronRight size={20} />
+                        </div>
                       </div>
                     </motion.div>
                   ))
                 )}
               </div>
-
-              <div className="mt-4 text-right">
-                <Link to="/notices">
-                  <Button variant="outline" size="sm">
-                    View All Notices
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </section>
 
-      <Dialog open={!!selectedNotice} onOpenChange={() => setSelectedNotice(null)}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-primary">
-              <Linkify text={selectedNotice?.title || ''} />
-            </DialogTitle>
-            <div className="flex items-center text-sm text-brandRed mt-2">
-              <Bell size={14} className="mr-1" />
-              {selectedNotice && formatNepaliDate(selectedNotice.date)}
-            </div>
-          </DialogHeader>
-          <div className="mt-4 space-y-4">
-            {selectedNotice?.content && (
-              <p className="text-foreground whitespace-pre-wrap">
-                <Linkify text={selectedNotice.content} />
-              </p>
+      <Dialog open={!!selectedNotice} onOpenChange={(open) => !open && setSelectedNotice(null)}>
+        <DialogContent className="max-w-3xl rounded-3xl overflow-hidden p-0 gap-0">
+          <div className="bg-primary p-8 text-white">
+            <DialogHeader>
+              <div className="flex items-center gap-2 text-primary-foreground/70 mb-2">
+                <Bell size={16} />
+                <span className="text-xs font-bold uppercase tracking-widest">{selectedNotice && formatNepaliDate(selectedNotice.date)}</span>
+              </div>
+              <DialogTitle className="text-2xl md:text-3xl font-bold text-white leading-tight">
+                <Linkify text={selectedNotice?.title || ""} />
+              </DialogTitle>
+            </DialogHeader>
+          </div>
+          <div className="p-8 max-h-[60vh] overflow-y-auto bg-white">
+            <p className="text-lg text-muted-foreground leading-relaxed whitespace-pre-wrap mb-8">
+              <Linkify text={selectedNotice?.content || ""} />
+            </p>
+
+            {selectedNotice?.attachment_url && (
+              <div className="mt-8 pt-8 border-t border-secondary">
+                <div className="flex items-center justify-between bg-secondary/20 p-6 rounded-2xl border border-secondary">
+                  <div className="flex items-center gap-4">
+                    <div className="bg-white p-3 rounded-xl shadow-sm">
+                      {selectedNotice.attachment_type === 'pdf' ? (
+                        <FileText className="text-red-500" size={32} />
+                      ) : (
+                        <FileImage className="text-blue-500" size={32} />
+                      )}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-primary">Attachment Available</h4>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider">Official {selectedNotice.attachment_type} Document</p>
+                    </div>
+                  </div>
+                  <a 
+                    href={selectedNotice.attachment_url} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="shrink-0"
+                  >
+                    <Button className="rounded-full flex items-center gap-2 font-bold px-6">
+                      <ExternalLink size={16} /> {selectedNotice.attachment_type === 'pdf' ? 'Open PDF' : 'View Image'}
+                    </Button>
+                  </a>
+                </div>
+                
+                {selectedNotice.attachment_type === 'image' && (
+                  <div className="mt-6 rounded-2xl overflow-hidden border border-secondary shadow-lg">
+                    <img src={selectedNotice.attachment_url} className="w-full h-auto" alt="Notice Attachment" />
+                  </div>
+                )}
+              </div>
             )}
+          </div>
+          <div className="p-6 bg-secondary/30 border-t border-secondary flex justify-end">
+            <Button onClick={() => setSelectedNotice(null)} className="rounded-full px-8">Close</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -249,118 +295,181 @@ const Notices = ({ notices }) => {
 /* -----------------------------
    Principal Message
    ----------------------------- */
-const PrincipalMessage = ({ principal }) => (
+const PrincipalMessage = ({ principal }: { principal: any }) => (
   <AnimatedSection delay={0.15}>
-    <section className="py-16 bg-primary">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center text-secondary mb-2">Principal's Message</h2>
-        <p className="text-center font-nepali text-brandRed mb-8">प्रधानाध्यापकको सन्देश</p>
+    <section className="py-24 bg-secondary/30">
+      <div className="section-container">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold text-primary mb-2">Principal's Message</h2>
+          <p className="font-nepali text-brandRed text-lg">प्रधानाध्यापकको सन्देश</p>
+        </div>
 
-        <Card className="max-w-4xl mx-auto">
-          <CardContent className="p-8">
-            <div className="flex flex-col md:flex-row gap-6 items-start">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="bg-muted rounded-lg w-full md:w-48 h-48 flex items-center justify-center flex-shrink-0 overflow-hidden"
-              >
-                {principal?.photoUrl ? (
-                  <img src={principal.photoUrl} className="w-full h-full object-cover" alt={principal.name} />
-                ) : (
-                  <Users size={64} className="text-muted-foreground" />
-                )}
-              </motion.div>
+        <div className="max-w-5xl mx-auto bg-white rounded-[2.5rem] shadow-xl shadow-primary/5 border border-primary/5 overflow-hidden flex flex-col md:flex-row min-h-[500px]">
+          <div className="w-full md:w-[40%] h-96 md:h-auto relative flex-shrink-0">
+            {principal?.photoUrl ? (
+              <img src={principal.photoUrl} className="w-full h-full object-cover" alt={principal.name} />
+            ) : (
+              <div className="w-full h-full bg-muted flex items-center justify-center">
+                <Users size={80} className="text-muted-foreground/20" />
+              </div>
+            )}
+            <div className="absolute inset-0 bg-primary/10 mix-blend-overlay" />
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-primary/40 to-transparent md:hidden" />
+          </div>
 
-              <div className="flex-1">
-                <p className="text-muted-foreground mb-4">
-                  {principal?.message || "Welcome to Adarsha Secondary School."}
-                </p>
-
-                <div className="mt-6">
-                  <p className="font-semibold text-primary">{principal?.name || "Principal Name"}</p>
-                  <p className="text-sm text-muted-foreground">{principal?.title || "Principal"}</p>
+          <div className="p-10 md:p-16 flex flex-col justify-center relative">
+            <div className="absolute top-10 right-10 opacity-[0.03] text-primary">
+              <BookOpen size={200} />
+            </div>
+            <div className="relative z-10">
+              <span className="text-6xl font-serif text-primary/20 absolute -top-8 -left-4">"</span>
+              <p className="text-xl md:text-2xl text-muted-foreground italic leading-relaxed font-light mb-10">
+                {principal?.message || "Education is the most powerful weapon which you can use to change the world. At Adarsha, we empower students to lead and innovate."}
+              </p>
+              <div className="flex items-center gap-5 pt-8 border-t border-secondary">
+                <div className="h-14 w-1 bg-primary rounded-full" />
+                <div>
+                  <h4 className="text-2xl font-bold text-primary">{principal?.name || "Mr. Ram Babu Regmi"}</h4>
+                  <p className="text-sm font-bold text-brandRed uppercase tracking-[0.2em] mt-1">{principal?.title || "Principal"}</p>
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </section>
   </AnimatedSection>
 );
 
 /* -----------------------------
+   Why Choose Us
+   ----------------------------- */
+const WhyChooseUs = ({ points = [] }: { points: any[] }) => {
+  const defaultPoints = [
+    { title: "Experienced Faculty", desc: "Dedicated educators with years of excellence.", icon: Users },
+    { title: "Quality Facilities", desc: "Modern classrooms, labs, and sports area.", icon: CheckCircle2 },
+    { title: "Character Building", desc: "Focusing on ethics, leadership, and values.", icon: BookOpen },
+    { title: "Rich History", desc: "Over 7 decades of educational heritage.", icon: Newspaper }
+  ];
+
+  const activePoints = points.length ? points : defaultPoints;
+
+  return (
+    <AnimatedSection delay={0.2}>
+      <section className="py-24 bg-white">
+        <div className="section-container">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-primary mb-2">Why Adarsha Mavi?</h2>
+            <p className="font-nepali text-brandRed text-lg">हामीलाई किन रोज्ने?</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {activePoints.map((p: any, i: number) => {
+              const Icon = p.icon || CheckCircle2;
+              return (
+                <div key={i} className="premium-card p-8 group hover:bg-primary transition-all duration-500 hover:-translate-y-2">
+                  <div className="bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
+                    <Icon className="text-primary group-hover:text-white transition-colors" size={32} />
+                  </div>
+                  <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-white transition-colors">{p.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed group-hover:text-white/80 transition-colors">{p.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    </AnimatedSection>
+  );
+};
+
+/* -----------------------------
    Team Section
    ----------------------------- */
-const TeamSection = ({ team }) => {
+const TeamSection = ({ team }: { team: any[] }) => {
   const visible = team.slice(0, 8);
 
   return (
     <AnimatedSection delay={0.25}>
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-primary mb-2">Our Team</h2>
-          <p className="text-center font-nepali text-brandRed mb-12">हाम्रो टोली</p>
+      <section className="py-24 bg-secondary/10">
+        <div className="section-container">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-primary mb-2">Our Dedicated Team</h2>
+            <p className="font-nepali text-brandRed text-lg">हाम्रो टोली</p>
+          </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {visible.map((m) => (
-              <motion.div key={m.id} whileHover={{ y: -6 }}>
-                <Card className="text-center hover:shadow-lg">
-                  <CardContent className="p-6">
-                    <div className="bg-muted rounded-full w-32 h-32 mx-auto mb-4 overflow-hidden">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {visible.map((m, idx) => (
+              <motion.div 
+                key={m.id} 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ y: -10 }}
+              >
+                <div className="premium-card p-8 text-center group bg-white border-primary/5 h-full flex flex-col justify-between">
+                  <div className="relative inline-block mb-6">
+                    <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="w-32 h-32 rounded-full ring-[6px] ring-secondary border-4 border-white overflow-hidden bg-muted mx-auto shadow-md relative z-10">
                       {m.image_url ? (
-                        <img src={m.image_url} className="w-full h-full object-cover" alt="" />
+                        <img src={m.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={m.name} />
                       ) : (
-                        <Users size={48} className="text-muted-foreground mx-auto" />
+                        <div className="w-full h-full flex items-center justify-center">
+                          <Users size={48} className="text-muted-foreground/20" />
+                        </div>
                       )}
                     </div>
-                    <h3 className="font-semibold text-primary">{m.name}</h3>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-primary text-lg mb-1 line-clamp-1" title={m.name}>{m.name}</h3>
                     {m.name_nepali && (
-                      <p className="text-sm font-nepali text-muted-foreground">{m.name_nepali}</p>
+                      <p className="text-sm font-nepali text-brandRed font-medium mb-3 line-clamp-1">{m.name_nepali}</p>
                     )}
-                    <p className="text-sm text-muted-foreground">{m.position}</p>
-                  </CardContent>
-                </Card>
+                    <div className="inline-block px-4 py-1.5 bg-secondary/50 rounded-full text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                      {m.position}
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
 
           {team.length > 8 && (
-            <div className="flex justify-center mt-10">
+            <div className="flex justify-center mt-16">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button size="lg">View More</Button>
+                  <Button size="lg" variant="outline" className="rounded-full px-10 h-14 border-primary text-primary hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20">
+                    Meet the Full Team <ArrowRight className="ml-3" size={18} />
+                  </Button>
                 </DialogTrigger>
 
-                <DialogContent className="max-w-5xl max-h-[75vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle className="text-center text-primary">Our Full Team</DialogTitle>
-                  </DialogHeader>
-
-                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-                    {team.map((m) => (
-                      <Card key={m.id} className="text-center hover:shadow-lg">
-                        <CardContent className="p-6">
-                          <div className="bg-muted rounded-full w-32 h-32 mx-auto mb-4 overflow-hidden">
+                <DialogContent className="max-w-6xl max-h-[90vh] p-0 flex flex-col bg-white rounded-3xl border-none shadow-2xl">
+                  <div className="p-8 bg-primary text-white shrink-0">
+                    <DialogHeader>
+                      <DialogTitle className="text-3xl font-bold text-white text-center">Our Entire Staff & Faculty</DialogTitle>
+                      <p className="text-center text-primary-foreground/70 font-nepali mt-1">शिक्षक तथा कर्मचारी टोली</p>
+                    </DialogHeader>
+                  </div>
+                  <div className="overflow-y-auto p-6 md:p-10 bg-secondary/10 flex-1">
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-8">
+                      {team.map((m) => (
+                        <div key={m.id} className="bg-white p-6 rounded-3xl border border-secondary shadow-sm text-center hover:border-primary/20 transition-all group">
+                          <div className="w-20 h-20 rounded-full border-4 border-white shadow-sm overflow-hidden bg-muted mx-auto mb-4 ring-2 ring-secondary group-hover:ring-primary/20 transition-all">
                             {m.image_url ? (
-                              <img src={m.image_url} className="w-full h-full object-cover" />
+                              <img src={m.image_url} className="w-full h-full object-cover" alt={m.name} />
                             ) : (
-                              <Users size={48} className="text-muted-foreground mx-auto" />
+                              <div className="w-full h-full flex items-center justify-center">
+                                <Users size={32} className="text-muted-foreground/20" />
+                              </div>
                             )}
                           </div>
-
-                          <h3 className="font-semibold text-primary">{m.name}</h3>
-                          {m.name_nepali && (
-                            <p className="text-sm font-nepali text-muted-foreground">{m.name_nepali}</p>
-                          )}
-                          <p className="text-sm text-muted-foreground">{m.position}</p>
-                        </CardContent>
-                      </Card>
-                    ))}
+                          <h3 className="font-bold text-primary text-sm line-clamp-1">{m.name}</h3>
+                          <p className="text-[10px] text-brandRed font-bold uppercase tracking-wider mt-1">{m.position}</p>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-
-                  <DialogClose asChild>
-                    <Button className="mt-6 w-full">Close</Button>
-                  </DialogClose>
                 </DialogContent>
               </Dialog>
             </div>
@@ -372,115 +481,129 @@ const TeamSection = ({ team }) => {
 };
 
 /* -----------------------------
-   Why Choose Us
+   Recent Blogs
    ----------------------------- */
-const WhyChooseUs = ({ points = [] }) => {
-  return (
-    <AnimatedSection delay={0.3}>
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-primary mb-2">Why Choose Us?</h2>
-          <p className="text-center font-nepali text-brandRed mb-10">हामीलाई किन रोज्ने?</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {points.map((p, i) => (
-              <Card key={i} className="hover:border-primary/50 transition-colors">
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-primary mb-2">{p.title}</h3>
-                  <p className="text-sm text-muted-foreground">{p.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
+const RecentBlogs = ({ blogs = [] }: { blogs: any[] }) => (
+  <AnimatedSection delay={0.3}>
+    <section className="py-24 bg-white">
+      <div className="section-container">
+        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
+          <div>
+            <h2 className="text-4xl font-bold text-primary mb-2 tracking-tight">From Our Blog</h2>
+            <p className="font-nepali text-brandRed text-lg">विद्यालयका गतिविधिहरू</p>
           </div>
+          <Link to="/blogs">
+            <Button variant="outline" className="rounded-full px-8 h-12 border-primary text-primary hover:bg-primary hover:text-white transition-all">
+              Explore All Stories <ArrowRight size={18} className="ml-2" />
+            </Button>
+          </Link>
         </div>
-      </section>
-    </AnimatedSection>
-  );
-};
-
-/* -----------------------------
-   Quick Info
-   ----------------------------- */
-const QuickInfo = ({ programs = [], contact = {} as any }) => (
-  <AnimatedSection delay={0.35}>
-    <section className="py-12 bg-secondary">
-      <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <h3 className="text-xl font-bold text-primary">Programs Offered</h3>
-            </div>
-            <ul className="space-y-2 text-muted-foreground">
-              {programs.map((p, i) => (
-                <li key={i}>• {(p as any).title}</li>
-              ))}
-              {!programs.length && (
-                <>
-                  <li>• ECED (Early Childhood Education)</li>
-                  <li>• Primary & Secondary Education</li>
-                </>
-              )}
-            </ul>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-xl font-bold text-primary mb-4">School Timing</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li>• {contact.officeHours || "Monday - Friday: 09:00 AM - 5:00 PM"}</li>
-              <li>• Saturday: Closed</li>
-              <li>• Office Hours: 6:00 AM - 6:00 PM</li>
-            </ul>
-          </CardContent>
-        </Card>
+        
+        <div className="grid md:grid-cols-3 gap-10">
+          {blogs.slice(0, 3).map((blog, idx) => (
+            <motion.div
+              key={blog.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+            >
+              <Link to={`/blogs/${blog.id}`} className="block group">
+                <div className="premium-card h-full overflow-hidden flex flex-col bg-white">
+                  <div className="aspect-[16/10] relative overflow-hidden">
+                    {blog.image_url ? (
+                      <img src={blog.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={blog.title} />
+                    ) : (
+                      <div className="bg-muted w-full h-full flex items-center justify-center">
+                        <Newspaper size={48} className="text-muted-foreground/10" />
+                      </div>
+                    )}
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-lg shadow-primary/20">
+                        {blog.category || "Education"}
+                      </span>
+                    </div>
+                  </div>
+                  <CardContent className="p-8 flex-1 flex flex-col">
+                    <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">
+                      <span className="text-brandRed">{new Date(blog.published_at).toLocaleDateString()}</span>
+                      <span className="w-1 h-1 bg-secondary rounded-full" />
+                      <span>{blog.author_name}</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-primary mb-4 line-clamp-2 group-hover:text-brandRed transition-colors leading-snug">
+                      {blog.title}
+                    </h3>
+                    <p className="text-muted-foreground leading-relaxed line-clamp-3 mb-6 text-sm">
+                      {blog.excerpt || blog.content.substring(0, 120).replace(/<[^>]*>?/gm, '') + "..."}
+                    </p>
+                    <div className="mt-auto pt-4 flex items-center text-primary font-bold text-sm uppercase tracking-widest group-hover:gap-2 transition-all">
+                      Read Story <ArrowRight size={16} className="ml-1 opacity-0 group-hover:opacity-100 transition-all" />
+                    </div>
+                  </CardContent>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   </AnimatedSection>
 );
 
 /* -----------------------------
-   Recent Blogs
+   Quick Info / CTA
    ----------------------------- */
-const RecentBlogs = ({ blogs = [] }) => (
+const QuickInfo = ({ contact = {} as any }: { contact: any }) => (
   <AnimatedSection delay={0.4}>
-    <section className="py-16 bg-secondary/30">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-end mb-8">
+    <section className="py-24 bg-primary text-white overflow-hidden relative">
+      {/* Decorative element */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-brandRed/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+
+      <div className="section-container relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <h2 className="text-3xl font-bold text-primary mb-2">Latest Stories</h2>
-            <p className="font-nepali text-brandRed">ताजा कथाहरू</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">Ready to join the Adarsha family?</h2>
+            <p className="text-primary-foreground/80 text-lg mb-10 leading-relaxed max-w-lg">
+              Admissions are now open for the upcoming academic session. Contact us today to secure your child's future in one of Nepal's most prestigious institutions.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link to="/contact">
+                <Button size="lg" className="bg-white text-primary hover:bg-secondary transition-all rounded-full px-10 h-16 text-lg font-bold">
+                  Enquire Now
+                </Button>
+              </Link>
+              <a href={`tel:${contact.phone || '014234567'}`}>
+                <Button size="lg" variant="outline" className="bg-white/5 border-white/60 text-white hover:bg-white hover:text-primary transition-all rounded-full px-10 h-16 text-lg shadow-lg">
+                  Call Us
+                </Button>
+              </a>
+            </div>
           </div>
-          <Link to="/blogs">
-            <Button variant="outline">View All Blogs</Button>
-          </Link>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8">
-          {blogs.slice(0, 3).map((blog) => (
-            <Card key={blog.id} className="h-full flex flex-col hover:shadow-lg transition-shadow">
-              <div className="aspect-video relative overflow-hidden">
-                {blog.image_url ? (
-                  <img src={blog.image_url} className="w-full h-full object-cover" alt={blog.title} />
-                ) : (
-                  <div className="bg-muted w-full h-full flex items-center justify-center">
-                    <BookOpen className="text-muted-foreground/30" />
-                  </div>
-                )}
+
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] border border-white/10">
+              <div className="bg-white/10 w-12 h-12 rounded-xl flex items-center justify-center mb-6">
+                <Phone size={24} />
               </div>
-              <CardContent className="p-6">
-                <p className="text-xs text-muted-foreground mb-2">
-                  {new Date(blog.published_at).toLocaleDateString()} • {blog.author_name}
-                </p>
-                <h3 className="font-bold text-primary mb-2 line-clamp-2">{blog.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
-                  {blog.excerpt || blog.content.substring(0, 100) + "..."}
-                </p>
-                <Link to={`/blogs/${blog.id}`}>
-                  <Button variant="link" className="p-0 h-auto text-primary">Read More →</Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
+              <h4 className="text-xl font-bold mb-2">Call Us</h4>
+              <p className="text-primary-foreground/70 text-sm leading-relaxed">{contact.phone || "+977-1-4XXXXXX"}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] border border-white/10">
+              <div className="bg-white/10 w-12 h-12 rounded-xl flex items-center justify-center mb-6">
+                <Mail size={24} />
+              </div>
+              <h4 className="text-xl font-bold mb-2">Email Us</h4>
+              <p className="text-primary-foreground/70 text-sm leading-relaxed">{contact.email || "info@adarshamavi.edu.np"}</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] border border-white/10 col-span-full">
+              <div className="bg-white/10 w-12 h-12 rounded-xl flex items-center justify-center mb-6">
+                <MapPin size={24} />
+              </div>
+              <h4 className="text-xl font-bold mb-2">Visit Us</h4>
+              <p className="text-primary-foreground/70 text-sm leading-relaxed">{contact.address || "Patan, Lalitpur, Nepal"}</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -491,10 +614,10 @@ const RecentBlogs = ({ blogs = [] }) => (
    Main Page
    ----------------------------- */
 const Index = () => {
-  const [heroImages, setHeroImages] = useState([]);
-  const [team, setTeam] = useState([]);
-  const [notices, setNotices] = useState([]);
-  const [blogs, setBlogs] = useState([]);
+  const [heroImages, setHeroImages] = useState<any[]>([]);
+  const [team, setTeam] = useState<any[]>([]);
+  const [notices, setNotices] = useState<any[]>([]);
+  const [blogs, setBlogs] = useState<any[]>([]);
   const { settings } = useSettings();
 
   useEffect(() => {
@@ -502,7 +625,7 @@ const Index = () => {
       const [hero, teamRes, noticeRes, blogRes] = await Promise.all([
         supabase.from("hero_images").select("*").eq("is_active", true).order("display_order"),
         supabase.from("team_members").select("*").eq("is_active", true).order("display_order"),
-        supabase.from("notices").select("*").eq("is_active", true).order("display_order").limit(6),
+        supabase.from("notices").select("*").eq("is_active", true).order("date", { ascending: false }).limit(6),
         (supabase.from("blogs" as any) as any).select("*").eq("is_active", true).order("published_at", { ascending: false }).limit(3),
       ]);
 
@@ -523,7 +646,7 @@ const Index = () => {
       <WhyChooseUs points={settings?.homepage_content?.whyChooseUs} />
       <RecentBlogs blogs={blogs} />
       <TeamSection team={team} />
-      <QuickInfo programs={settings?.academics_programs} contact={settings?.contact_info} />
+      <QuickInfo contact={settings?.contact_info} />
     </Layout>
   );
 };

@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, Search, Filter, Camera, Maximize2, Award, Users, BookOpen } from 'lucide-react';
 import Layout from '../components/Layout';
 import { supabase } from '@/integrations/supabase/client';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -21,7 +23,7 @@ const Gallery = () => {
     fetchGalleryImages();
   }, []);
 
-  const categories = ["All", ...Array.from(new Set(galleryImages.map(img => img.category)))];
+  const categories = ["All", ...Array.from(new Set(galleryImages.map(img => img.category).filter(Boolean)))];
 
   const filteredImages = selectedCategory === "All" 
     ? galleryImages 
@@ -29,125 +31,159 @@ const Gallery = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="bg-secondary py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">School Gallery</h1>
-            <p className="text-lg font-nepali text-primary mb-2">विद्यालय ग्यालरी</p>
-            <p className="text-muted-foreground max-w-3xl mx-auto">
-              Take a visual journey through our school facilities, activities, and academic programs
+      {/* Page Header */}
+      <section className="bg-primary pt-24 pb-32 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="section-container relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight uppercase">Visual <span className="text-brandRed">Gallery</span></h1>
+            <p className="text-xl text-primary-foreground/80 leading-relaxed max-w-2xl mx-auto font-medium mb-4">
+              Explore the vibrant life at Adarsha through our collection of photos capturing moments of achievement, creativity, and community.
             </p>
-          </div>
+            <p className="text-lg font-nepali text-white/60 font-bold uppercase tracking-widest">हाम्रो दृश्य यात्रा</p>
+          </motion.div>
         </div>
       </section>
 
       {/* Category Filter */}
-      <section className="py-8 bg-background shadow-sm">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-center space-x-4 flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full font-medium transition-colors ${
-                  selectedCategory === category
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-secondary text-foreground hover:bg-secondary/80'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+      <section className="relative z-20 -mt-12">
+        <div className="section-container">
+          <div className="bg-white p-6 rounded-[2rem] shadow-xl shadow-primary/5 border border-primary/5">
+            <div className="flex items-center justify-center gap-3 overflow-x-auto pb-2 sm:pb-0 scrollbar-hide">
+              <div className="flex items-center gap-2 mr-4 text-primary/40 hidden md:flex">
+                <Filter size={18} />
+                <span className="text-xs font-bold uppercase tracking-widest">Filter By:</span>
+              </div>
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  className={`rounded-full px-8 h-12 font-bold uppercase tracking-widest text-xs transition-all ${
+                    selectedCategory === category 
+                      ? "shadow-lg shadow-primary/20" 
+                      : "border-secondary text-muted-foreground hover:bg-secondary"
+                  }`}
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Gallery Grid */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredImages.map((image) => (
-              <div 
-                key={image.id}
-                className="group cursor-pointer overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
-                onClick={() => setSelectedImage(image.image_url)}
-              >
-                <div className="relative">
-                  <img 
-                    src={image.image_url}
-                    alt={image.caption || 'Gallery image'}
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-4">
-                      {image.caption && <p className="text-lg font-semibold">{image.caption}</p>}
-                      {image.caption_nepali && <p className="text-sm font-nepali mt-1">{image.caption_nepali}</p>}
-                      <p className="text-sm bg-primary px-3 py-1 rounded-full mt-2 inline-block">
+      <section className="py-24 bg-white">
+        <div className="section-container">
+          <motion.div 
+            layout
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            <AnimatePresence>
+              {filteredImages.map((image) => (
+                <motion.div 
+                  layout
+                  key={image.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.4 }}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedImage(image.image_url)}
+                >
+                  <div className="premium-card overflow-hidden bg-white aspect-[4/3] relative">
+                    <img 
+                      src={image.image_url}
+                      alt={image.caption || 'Gallery image'}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center p-8 text-center">
+                      <div className="bg-white/20 p-4 rounded-full mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <Maximize2 className="text-white" size={24} />
+                      </div>
+                      <h3 className="text-xl font-bold text-white mb-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                        {image.caption || "Campus Moment"}
+                      </h3>
+                      {image.caption_nepali && (
+                        <p className="text-sm font-nepali text-white/70 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">
+                          {image.caption_nepali}
+                        </p>
+                      )}
+                      <div className="mt-6 px-4 py-1 bg-brandRed rounded-full text-[10px] font-black uppercase tracking-widest text-white translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-150">
                         {image.category}
-                      </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+
+          {filteredImages.length === 0 && (
+            <div className="text-center py-32 bg-secondary/20 rounded-[3rem] border-2 border-dashed border-secondary">
+              <div className="bg-white/50 h-24 w-24 rounded-full flex items-center justify-center mx-auto mb-8">
+                <Camera className="text-muted-foreground/20" size={40} />
               </div>
-            ))}
-          </div>
+              <h2 className="text-3xl font-bold text-primary mb-4">No images found</h2>
+              <p className="text-muted-foreground max-w-sm mx-auto leading-relaxed">We haven't added photos to this category yet. Please check back later!</p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Modal for enlarged image */}
-      {selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4">
-          <div className="relative max-w-4xl w-full">
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-[#0f172a]/95 z-[200] flex items-center justify-center p-8 md:p-16 backdrop-blur-xl"
+          >
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+              className="absolute top-8 right-8 text-white/40 hover:text-white transition-all h-14 w-14 rounded-full bg-white/5 flex items-center justify-center"
             >
               <X size={32} />
             </button>
-            <img 
-              src={selectedImage}
-              alt="Enlarged view"
-              className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
-            />
-          </div>
-        </div>
-      )}
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="relative max-w-6xl w-full h-full flex items-center justify-center"
+            >
+              <img 
+                src={selectedImage}
+                alt="Full preview"
+                className="max-w-full max-h-full object-contain rounded-3xl shadow-2xl ring-1 ring-white/10"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Photo Statistics */}
-      <section className="py-16 bg-secondary">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-primary mb-4">Our Visual Story</h2>
-            <p className="text-lg text-muted-foreground">
-              Capturing moments of learning, growth, and achievement
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-primary">15+</span>
+      {/* Statistics Section */}
+      <section className="py-24 bg-secondary/30">
+        <div className="section-container">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {[
+              { label: "Years of Heritage", val: "75+", icon: Award },
+              { label: "Total Students", val: "1500+", icon: Users },
+              { label: "Graduated Alumni", val: "10,000+", icon: BookOpen },
+            ].map((stat, i) => (
+              <div key={i} className="text-center group">
+                <div className="bg-white w-20 h-20 rounded-3xl shadow-xl shadow-primary/5 flex items-center justify-center mx-auto mb-6 group-hover:bg-primary transition-all duration-500 border border-primary/5 group-hover:-translate-y-2">
+                  <stat.icon className="text-primary group-hover:text-white transition-colors" size={32} />
+                </div>
+                <h3 className="text-4xl font-black text-primary mb-2 tracking-tight group-hover:text-brandRed transition-colors">{stat.val}</h3>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground">{stat.label}</p>
               </div>
-              <h3 className="text-xl font-semibold text-primary mb-2">Years of Excellence</h3>
-              <p className="text-muted-foreground">Serving the community with quality education</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-primary">500+</span>
-              </div>
-              <h3 className="text-xl font-semibold text-primary mb-2">Happy Students</h3>
-              <p className="text-muted-foreground">Students enrolled across all programs</p>
-            </div>
-            
-            <div className="text-center">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold text-primary">3</span>
-              </div>
-              <h3 className="text-xl font-semibold text-primary mb-2">Academic Programs</h3>
-              <p className="text-muted-foreground">Comprehensive education offerings</p>
-            </div>
+            ))}
           </div>
         </div>
       </section>

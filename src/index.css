@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -36,60 +32,15 @@ All colors MUST be HSL.
     --input: 220 13% 91%;
     --ring: 216 100% 30%;
 
-    --radius: 0.25rem;
+    --radius: 1.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 216 100% 10%;
-    --foreground: 0 0% 98%;
-
-    --card: 216 100% 10%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 216 100% 10%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 0 0% 98%;
-    --primary-foreground: 216 100% 20%;
-
-    --secondary: 216 50% 15%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 216 50% 15%;
-    --muted-foreground: 220 20% 65%;
-
-    --accent: 216 50% 15%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 216 50% 15%;
-    --input: 216 50% 15%;
-    --ring: 216 100% 50%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
@@ -100,6 +51,61 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+}
+
+/* Premium Typography */
+h1, h2, h3, h4, .font-heading {
+  @apply tracking-tight;
+}
+
+.font-nepali {
+  font-family: 'Poppins', sans-serif; /* Fallback for Nepali display */
+}
+
+/* Premium Components */
+.premium-card {
+  @apply bg-card border border-primary/5 shadow-xl shadow-primary/5 hover:shadow-primary/10 hover:border-primary/20 transition-all duration-500 rounded-[2rem];
+}
+
+.section-container {
+  @apply max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20;
+}
+
+.glass-panel {
+  @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-2xl shadow-black/5;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-secondary;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-primary/10 rounded-full hover:bg-primary/20 transition-colors border-2 border-secondary;
+}
+
+/* Animations */
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1;
+}
+
+.text-brandRed {
+  color: #ef4444; /* Standard Red for accents */
+}
+
+.bg-brandRed {
+  background-color: #ef4444;
 }

@@ -1,129 +1,177 @@
-import { BookOpen, Code, Calculator, Award, Clock } from 'lucide-react';
+import { BookOpen, Code, Calculator, Award, Clock, ChevronRight, CheckCircle2 } from 'lucide-react';
 import Layout from '../components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { useSettings } from "@/hooks/use-settings";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 const Academics = () => {
   const { settings } = useSettings();
   const programs = settings?.academics_programs || [];
 
-  // Helper to get icon for program
   const getIcon = (id: string) => {
-    if (id.includes('comp')) return <Code className="w-12 h-12 text-primary" />;
-    if (id.includes('manag')) return <Calculator className="w-12 h-12 text-primary" />;
-    return <BookOpen className="w-12 h-12 text-primary" />;
+    if (id.includes('comp')) return <Code className="w-10 h-10" />;
+    if (id.includes('manag')) return <Calculator className="w-10 h-10" />;
+    return <BookOpen className="w-10 h-10" />;
   };
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="bg-secondary py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-primary mb-4">Our Academic Programs</h1>
-            <p className="text-lg font-nepali text-primary mb-4">हाम्रो शैक्षिक कार्यक्रमहरू</p>
-            
-            <p className="text-muted-foreground max-w-3xl mx-auto">
-              Comprehensive education programs designed to prepare students for success in the modern world
-            </p>
+      {/* Page Header */}
+      <section className="bg-primary pt-24 pb-32 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="section-container relative z-10">
+          <div className="max-w-3xl">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight uppercase leading-tight">
+                Academic <span className="text-brandRed">Programs</span>
+              </h1>
+              <p className="text-lg font-nepali text-white/70 mb-8 font-bold">हाम्रो शैक्षिक कार्यक्रमहरू</p>
+              <p className="text-xl text-primary-foreground/80 leading-relaxed font-medium">
+                Comprehensive education programs designed to prepare students for success in the modern world through technical expertise and character development.
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Main Programs */}
-      <div className="space-y-16 py-12">
+      {/* Program Navigation (Anchor Links) */}
+      <section className="relative z-20 -mt-10">
+        <div className="section-container">
+          <div className="bg-white p-4 rounded-3xl shadow-xl shadow-primary/5 border border-primary/5 flex flex-wrap gap-2 justify-center">
+            {programs.map((p) => (
+              <a 
+                key={p.id} 
+                href={`#${p.id}`}
+                className="px-6 py-3 rounded-2xl text-sm font-bold uppercase tracking-widest text-primary hover:bg-primary hover:text-white transition-all whitespace-nowrap"
+              >
+                {p.title}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Main Programs List */}
+      <div className="py-24 space-y-32">
         {programs.map((program, idx) => (
-          <section key={program.id} className={idx % 2 === 0 ? "bg-background" : "bg-secondary/30 py-16"}>
-            <div className="max-w-7xl mx-auto px-4">
-              <Card className="mb-8 border-primary/20 overflow-hidden">
-                <CardContent className="p-8">
-                  <div className="flex flex-col md:flex-row items-center gap-6">
-                    <div className="bg-secondary p-4 rounded-full flex-shrink-0">
+          <section key={program.id} id={program.id} className="scroll-mt-32">
+            <div className="section-container">
+              <div className={`flex flex-col ${idx % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-16 items-start`}>
+                
+                {/* Content Side */}
+                <motion.div 
+                  initial={{ opacity: 0, x: idx % 2 === 0 ? -30 : 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="flex-1 space-y-8"
+                >
+                  <div className="inline-flex items-center gap-4">
+                    <div className="h-16 w-16 rounded-2xl bg-secondary flex items-center justify-center text-primary">
                       {getIcon(program.id)}
                     </div>
-                    <div className="text-center md:text-left">
-                      <h2 className="text-3xl font-bold text-primary mb-2">
+                    <div>
+                      <h2 className="text-4xl font-black text-primary tracking-tight uppercase leading-none">
                         {program.title}
                       </h2>
-                      <p className="text-muted-foreground max-w-3xl">
-                        {program.description}
-                      </p>
+                      <div className="h-1 w-12 bg-brandRed rounded-full mt-3" />
                     </div>
                   </div>
-                </CardContent>
-              </Card>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-4 text-primary">Program Overview</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    {program.description}
+                  </p>
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="bg-secondary/50 p-6 rounded-2xl border border-secondary flex items-center gap-4 group hover:bg-primary hover:text-white transition-all">
+                      <Clock className="text-primary group-hover:text-white" size={24} />
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Duration</p>
+                        <p className="font-bold">{program.duration || "2 Years"}</p>
+                      </div>
+                    </div>
+                    <div className="bg-secondary/50 p-6 rounded-2xl border border-secondary flex items-center gap-4 group hover:bg-primary hover:text-white transition-all">
+                      <Award className="text-primary group-hover:text-white" size={24} />
+                      <div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Certification</p>
+                        <p className="font-bold">{program.certification || "NEB Certified"}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {program.subjects && (
                     <div className="space-y-4">
-                      <div className="flex items-start space-x-3">
-                        <Clock className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-semibold text-foreground">Duration</h4>
-                          <p className="text-muted-foreground">{program.duration}</p>
-                        </div>
+                      <h4 className="text-sm font-black uppercase tracking-[0.2em] text-primary">Core Curriculum</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {program.subjects.map((sub: string, i: number) => (
+                          <span key={i} className="px-4 py-2 bg-white border border-secondary rounded-xl text-sm font-bold text-muted-foreground shadow-sm group-hover:border-primary transition-all">
+                            {sub}
+                          </span>
+                        ))}
                       </div>
-                      {program.curriculum && (
-                        <div className="flex items-start space-x-3">
-                          <BookOpen className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                          <div>
-                            <h4 className="font-semibold text-foreground">Curriculum</h4>
-                            <p className="text-muted-foreground">{program.curriculum}</p>
-                          </div>
-                        </div>
-                      )}
-                      <div className="flex items-start space-x-3">
-                        <Award className="w-6 h-6 text-primary mt-1 flex-shrink-0" />
-                        <div>
-                          <h4 className="font-semibold text-foreground">Certification</h4>
-                          <p className="text-muted-foreground">{program.certification}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <div className="bg-muted rounded-lg overflow-hidden flex items-center justify-center">
-                  {program.imageUrl ? (
-                    <img src={program.imageUrl} className="w-full h-full object-cover" alt={program.title} />
-                  ) : program.substreams ? (
-                    <div className="grid gap-4 w-full p-8">
-                       {program.substreams.map((ss: any, i: number) => (
-                         <div key={i} className="p-4 bg-background rounded border">
-                           <h4 className="font-bold text-primary">{ss.name}</h4>
-                           <p className="text-sm text-muted-foreground">{ss.description}</p>
-                         </div>
-                       ))}
-                    </div>
-                  ) : (
-                    <div className="text-center text-muted-foreground p-8">
-                      {getIcon(program.id)}
-                      <p className="mt-2">Core Technical Program</p>
                     </div>
                   )}
-                </div>
-              </div>
+                </motion.div>
 
-              {program.subjects && program.subjects.length > 0 && (
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-4 text-primary">Core Subjects</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {program.subjects.map((subject, index) => (
-                        <div key={index} className="bg-secondary p-3 rounded border-l-4 border-primary">
-                          <p className="text-sm font-medium text-foreground">{subject}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                {/* Media Side */}
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="flex-1 w-full"
+                >
+                  <div className="premium-card overflow-hidden h-[500px] relative">
+                    {program.imageUrl ? (
+                      <img src={program.imageUrl} className="w-full h-full object-cover" alt={program.title} />
+                    ) : program.substreams ? (
+                      <div className="p-8 space-y-4">
+                        <p className="text-sm font-black uppercase tracking-widest text-primary/40 mb-6">Sub-streams Available</p>
+                        {program.substreams.map((ss: any, i: number) => (
+                          <div key={i} className="p-6 bg-secondary/30 rounded-2xl border border-secondary hover:border-primary/20 transition-all">
+                            <h4 className="font-bold text-primary mb-1">{ss.name}</h4>
+                            <p className="text-sm text-muted-foreground leading-relaxed">{ss.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="h-full flex flex-col items-center justify-center text-primary/10">
+                        <BookOpen size={160} />
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+
+              </div>
             </div>
           </section>
         ))}
       </div>
+
+      {/* CTA Section */}
+      <section className="py-24 bg-white border-t border-secondary">
+        <div className="section-container text-center">
+          <div className="max-w-2xl mx-auto space-y-8">
+            <h2 className="text-4xl font-bold text-primary tracking-tight">Interested in our programs?</h2>
+            <p className="text-lg text-muted-foreground">Download the full prospectus or contact our admissions office for detailed counseling.</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a href="/downloads">
+                <Button size="lg" className="rounded-full px-10 h-16 text-lg font-bold">
+                  Download Prospectus
+                </Button>
+              </a>
+              <a href="/contact">
+                <Button size="lg" variant="outline" className="rounded-full px-10 h-16 text-lg font-bold border-primary text-primary">
+                  Inquiry Desk
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 };

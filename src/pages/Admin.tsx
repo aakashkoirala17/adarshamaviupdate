@@ -278,8 +278,15 @@ const Admin = () => {
     }
   };
 
-  const addNoticeToDB = async (title, date, content) => {
-    const { error } = await supabase.from("notices").insert({ title, date, content, display_order: notices.length });
+  const addNoticeToDB = async (title, date, content, attachmentUrl = null, attachmentType = null) => {
+    const { error } = await supabase.from("notices").insert({ 
+      title, 
+      date, 
+      content, 
+      attachment_url: attachmentUrl,
+      attachment_type: attachmentType,
+      display_order: notices.length 
+    });
     if (error) toast({ title: "Error", description: error.message, variant: "destructive" });
     else {
       toast({ title: "Notice added" });
@@ -338,7 +345,12 @@ const Admin = () => {
           </TabsContent>
 
           <TabsContent value="notices">
-            <NoticesTab notices={notices} onAdd={addNoticeToDB} onDelete={deleteItem} />
+            <NoticesTab 
+              notices={notices} 
+              onAdd={addNoticeToDB} 
+              onDelete={deleteItem} 
+              uploadFile={uploadFileToSupabase}
+            />
           </TabsContent>
 
           <TabsContent value="settings">
@@ -908,13 +920,32 @@ const GalleryTab = ({ images = [], onAdd, onDelete }) => {
 /* =====================================================
    NOTICES TAB (simple)
    ===================================================== */
-const NoticesTab = ({ notices = [], onAdd, onDelete }) => {
-  const [form, setForm] = useState({ title: "", date: "", content: "" });
-  const [isEditing, setIsEditing] = useState(false);
+const NoticesTab = ({ notices = [], onAdd, onDelete, uploadFile }) => {
+  const [form, setForm] = useState({ title: "", date: "", content: "", attachmentUrl: null, attachmentType: null });
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  const onDrop = async (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    setUploadProgress(0);
+    try {
+      const type = file.type.includes("pdf") ? "pdf" : "image";
+      const url = await uploadFile(file, (p) => setUploadProgress(p));
+      setForm(s => ({ ...s, attachmentUrl: url, attachmentType: type }));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleSubmit = async () => {
-    await onAdd(form.title, form.date, form.content);
-    setForm({ title: "", date: "", content: "" });
+    await onAdd(form.title, form.date, form.content, form.attachmentUrl, form.attachmentType);
+    setForm({ title: "", date: "", content: "", attachmentUrl: null, attachmentType: null });
+    setUploadProgress(0);
   };
 
   return (
@@ -924,21 +955,61 @@ const NoticesTab = ({ notices = [], onAdd, onDelete }) => {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <Input placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
-        <Input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
-        <Textarea placeholder="Content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={6} />
-        <div className="flex gap-2">
-          <Button onClick={handleSubmit} disabled={!form.title || !form.date}>Add Notice</Button>
+        <div className="grid md:grid-cols-2 gap-4">
+          <Input placeholder="Title" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} />
+          <Input type="date" value={form.date} onChange={(e) => setForm({ ...form, date: e.target.value })} />
+        </div>
+        <Textarea placeholder="Content" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={4} />
+        
+        <div className="border-2 border-dashed rounded-xl p-6 text-center bg-secondary/10 hover:bg-secondary/20 transition-all cursor-pointer">
+          <Dropzone onDrop={onDrop} multiple={false} accept={{ "image/*": [], "application/pdf": [] }}>
+            {({ getRootProps, getInputProps }) => (
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                <div className="flex flex-col items-center gap-2">
+                  <Upload className="h-8 w-8 text-muted-foreground" />
+                  {form.attachmentUrl ? (
+                    <div className="text-sm font-bold text-green-600">
+                      File Attached: {form.attachmentType?.toUpperCase()}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Attach Image or PDF Notice</p>
+                  )}
+                </div>
+              </div>
+            )}
+          </Dropzone>
+          {isUploading && (
+            <div className="mt-4 h-2 bg-muted rounded-full overflow-hidden">
+              <div className="h-full bg-primary transition-all" style={{ width: `${uploadProgress}%` }} />
+            </div>
+          )}
         </div>
 
-        <div className="mt-4 space-y-2">
+        <div className="flex gap-2">
+          <Button onClick={handleSubmit} disabled={!form.title || !form.date || isUploading}>
+            Add Notice
+          </Button>
+        </div>
+
+        <div className="mt-8 space-y-3">
+          <h3 className="font-bold text-lg">Existing Notices</h3>
           {notices.map((n) => (
-            <div key={n.id} className="flex items-center gap-4 p-3 border rounded">
+            <div key={n.id} className="flex items-center gap-4 p-4 border rounded-2xl bg-card hover:shadow-md transition-all group">
               <div className="flex-1">
-                <div className="font-medium">{n.title}</div>
-                <div className="text-sm text-muted-foreground">{n.date}</div>
+                <div className="font-bold text-primary">{n.title}</div>
+                <div className="text-xs text-muted-foreground flex items-center gap-2 mt-1">
+                  <span>{n.date}</span>
+                  {n.attachment_url && (
+                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-[10px] font-bold uppercase">
+                      {n.attachment_type}
+                    </span>
+                  )}
+                </div>
               </div>
-              <Button variant="destructive" size="sm" onClick={() => onDelete("notices", n.id)}><Trash2 /></Button>
+              <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-50 rounded-full" onClick={() => onDelete("notices", n.id)}>
+                <Trash2 className="h-4 w-4" />
+              </Button>
             </div>
           ))}
         </div>

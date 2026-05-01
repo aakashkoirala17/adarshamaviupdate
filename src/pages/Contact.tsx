@@ -1,7 +1,11 @@
-import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, MessageSquare, HelpCircle, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import Layout from '../components/Layout';
 import { useSettings } from "@/hooks/use-settings";
+import { motion } from "framer-motion";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 const Contact = () => {
   const { settings } = useSettings();
@@ -25,7 +29,6 @@ const Contact = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    // Handle form submission logic here
     alert('Thank you for your message! We will get back to you soon.');
     setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
   };
@@ -39,213 +42,213 @@ const Contact = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="bg-primary text-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center">
-            <h1 className="text-4xl  md:text-5xl font-bold mb-6">Contact Us</h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              Get in touch with us for admissions, inquiries, or any questions about our programs
+      {/* Page Header */}
+      <section className="bg-primary pt-24 pb-32 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="section-container relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-5xl md:text-6xl font-black mb-6 tracking-tight uppercase">Get In <span className="text-brandRed">Touch</span></h1>
+            <p className="text-xl text-primary-foreground/80 leading-relaxed max-w-2xl mx-auto font-medium mb-4">
+              Have questions? We're here to help. Reach out to us for admissions, campus tours, or general inquiries.
             </p>
-          </div>
+            <p className="text-lg font-nepali text-white/60 font-bold uppercase tracking-widest">हामीसँग सम्पर्क गर्नुहोस्</p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Contact Information & Form */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Information */}
-            <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-8">Get in Touch</h2>
-
-              <div className="space-y-6">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <MapPin className="w-6 h-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Our Address</h3>
-                    <p className="text-gray-600">
-                      {contact.address}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-green-100 p-3 rounded-full">
-                    <Phone className="w-6 h-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Phone Number</h3>
-                    <p className="text-gray-600">{contact.phone}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-purple-100 p-3 rounded-full">
-                    <Mail className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Email Address</h3>
-                    <p className="text-gray-600">{contact.email}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-orange-100 p-3 rounded-full">
-                    <Clock className="w-6 h-6 text-orange-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Office Hours</h3>
-                    <p className="text-gray-600">
-                      {contact.officeHours}
-                    </p>
-                  </div>
-                </div>
+      {/* Contact Content */}
+      <section className="py-24 bg-white relative z-20 -mt-12">
+        <div className="section-container">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            {/* Contact Info Side */}
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-12"
+            >
+              <div>
+                <h2 className="text-4xl font-bold text-primary mb-6 tracking-tight">Contact Information</h2>
+                <div className="w-20 h-1.5 bg-brandRed rounded-full mb-10" />
+                <p className="text-lg text-muted-foreground leading-relaxed">Our administrative office is open to assist you with any information you might need regarding the school.</p>
               </div>
 
-              {/* Map Placeholder */}
-              <div className="mt-8">
-                <div className="w-full aspect-video rounded-lg overflow-hidden shadow-md">
-                  <iframe
-                    src={contact.mapLink}
-                    className="w-full h-full border-0"
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title="Adarsha Secondary School Location"
-                  />
-                </div>
+              <div className="grid sm:grid-cols-2 gap-6">
+                {[
+                  { icon: MapPin, title: "Our Address", val: contact.address, color: "text-blue-500", bg: "bg-blue-50" },
+                  { icon: Phone, title: "Phone Number", val: contact.phone, color: "text-emerald-500", bg: "bg-emerald-50" },
+                  { icon: Mail, title: "Email Address", val: contact.email, color: "text-purple-500", bg: "bg-purple-50" },
+                  { icon: Clock, title: "Office Hours", val: contact.officeHours, color: "text-orange-500", bg: "bg-orange-50" },
+                ].map((item, i) => (
+                  <div key={i} className="premium-card p-6 bg-white hover:border-primary/20 transition-all group">
+                    <div className={`w-12 h-12 rounded-2xl ${item.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                      <item.icon className={item.color} size={24} />
+                    </div>
+                    <h3 className="font-bold text-primary text-lg mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.val}</p>
+                  </div>
+                ))}
               </div>
-            </div>
 
-            {/* Contact Form */}
-            <div>
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Send us a Message</h2>
+              {/* Map Section */}
+              <div className="premium-card overflow-hidden p-0 h-[350px] relative">
+                <iframe
+                  src={contact.mapLink}
+                  className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-700"
+                  allowFullScreen
+                  loading="lazy"
+                  title="School Location Map"
+                />
+              </div>
+            </motion.div>
+
+            {/* Contact Form Side */}
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="bg-secondary/30 p-10 md:p-14 rounded-[3rem] border border-secondary shadow-xl shadow-primary/5">
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="h-14 w-14 rounded-2xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                    <MessageSquare size={28} />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-primary tracking-tight">Send a Message</h3>
+                    <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mt-1">We'll respond within 24 hours</p>
+                  </div>
+                </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-black uppercase tracking-[0.2em] text-primary/40 ml-1">Full Name</label>
+                      <Input
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Your full name"
+                        className="h-14 rounded-2xl border-secondary bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        placeholder="John Doe"
                       />
                     </div>
-
-                    <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                        Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
+                    <div className="space-y-2">
+                      <label className="text-xs font-black uppercase tracking-[0.2em] text-primary/40 ml-1">Phone Number</label>
+                      <Input
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Your phone number"
+                        className="h-14 rounded-2xl border-secondary bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                        placeholder="+977 98XXXXXXXX"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address *
-                    </label>
-                    <input
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-[0.2em] text-primary/40 ml-1">Email Address</label>
+                    <Input
                       type="email"
-                      id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="your.email@example.com"
+                      className="h-14 rounded-2xl border-secondary bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                      placeholder="name@example.com"
                     />
                   </div>
 
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                      Subject *
-                    </label>
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-[0.2em] text-primary/40 ml-1">Subject</label>
                     <select
-                      id="subject"
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full h-14 px-4 rounded-2xl border border-secondary bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none appearance-none font-medium"
                     >
-                      <option value="">Select a subject</option>
+                      <option value="">Select a category</option>
                       <option value="admission">Admission Inquiry</option>
-                      <option value="programs">Program Information</option>
-                      <option value="facilities">Facilities & Infrastructure</option>
-                      <option value="general">General Inquiry</option>
-                      <option value="other">Other</option>
+                      <option value="programs">Academic Programs</option>
+                      <option value="general">General Question</option>
+                      <option value="feedback">Feedback</option>
                     </select>
                   </div>
 
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                      Message *
-                    </label>
-                    <textarea
-                      id="message"
+                  <div className="space-y-2">
+                    <label className="text-xs font-black uppercase tracking-[0.2em] text-primary/40 ml-1">Message</label>
+                    <Textarea
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
                       required
-                      rows={5}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      placeholder="Please write your message here..."
+                      rows={6}
+                      className="rounded-2xl border-secondary bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none"
+                      placeholder="How can we help you?"
                     />
                   </div>
 
-                  <button
+                  <Button
                     type="submit"
-                    className="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:shadow-lg transition-shadow flex items-center justify-center space-x-2"
+                    className="w-full h-16 rounded-2xl text-lg font-bold shadow-xl shadow-primary/20 group"
                   >
-                    <Send className="w-5 h-5" />
-                    <span>Send Message</span>
-                  </button>
+                    Send Message <Send className="ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" size={20} />
+                  </Button>
                 </form>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4">Frequently Asked Questions</h2>
-            <p className="text-lg text-gray-600">
-              Quick answers to common questions
-            </p>
+      <section className="py-24 bg-secondary/10 border-t border-secondary">
+        <div className="section-container">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/5 rounded-full text-primary text-xs font-black uppercase tracking-widest mb-4">
+              <HelpCircle size={14} /> Knowledge Base
+            </div>
+            <h2 className="text-4xl font-bold text-primary tracking-tight">Frequently Asked Questions</h2>
+            <p className="text-lg text-muted-foreground mt-2">Find quick answers to your common queries.</p>
           </div>
 
-          <div className="space-y-6">
+          <div className="max-w-4xl mx-auto space-y-6">
             {contact.faqs?.map((faq, i) => (
-              <div key={i} className="bg-white rounded-lg p-6 shadow-md">
-                <h3 className="font-semibold text-gray-800 mb-2">{faq.q}</h3>
-                <p className="text-gray-600">{faq.a}</p>
-              </div>
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="premium-card p-8 bg-white border-primary/5 hover:border-primary/20 transition-all cursor-default group"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors">
+                    <span className="text-primary group-hover:text-white font-black text-xs">Q</span>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-primary mb-3 leading-tight">{faq.q}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{faq.a}</p>
+                  </div>
+                </div>
+              </motion.div>
             ))}
+            
             {!contact.faqs?.length && (
-               <p className="text-center text-muted-foreground">No FAQs available yet.</p>
+               <div className="text-center p-12 bg-white/50 rounded-3xl border border-dashed border-secondary">
+                 <p className="text-muted-foreground font-medium italic">Our FAQ list is currently being updated. Please check back later.</p>
+               </div>
             )}
+          </div>
+
+          <div className="mt-16 text-center">
+            <p className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">Still have questions?</p>
+            <Button variant="link" className="text-primary font-black uppercase tracking-widest text-xs mt-2 group">
+              Chat with admissions <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
         </div>
       </section>
