@@ -1,8 +1,19 @@
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import { useState } from 'react';
 import Layout from '../components/Layout';
+import { useSettings } from "@/hooks/use-settings";
 
 const Contact = () => {
+  const { settings } = useSettings();
+  const contact = settings?.contact_info || {
+    address: "Madhyapur Thimi Municipality-2, Sanothimi, Bhaktapur, Nepal",
+    phone: "01-6630857",
+    email: "admin@adarshasanothimi.edu.np",
+    officeHours: "Monday - Friday: 6:00 AM - 6:00 PM",
+    mapLink: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3197.3305562609103!2d85.37782293761629!3d27.681286198945735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1a6ad03dcbe1%3A0xce118a959aa8cf1d!2sAdarsha%20Secondary%20School%2C%20Sanothimi%20Bhaktapur!5e1!3m2!1sen!2snp!4v1762573661785!5m2!1sen!2snp",
+    faqs: []
+  };
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -56,9 +67,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Our Address</h3>
                     <p className="text-gray-600">
-                      Adarsha Secondary School<br />
-                      Madhyapur Thimi Municipality-2, Sanothimi, Bhaktapur<br />
-                      Nepal
+                      {contact.address}
                     </p>
                   </div>
                 </div>
@@ -69,7 +78,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Phone Number</h3>
-                    <p className="text-gray-600">01-6630857</p>
+                    <p className="text-gray-600">{contact.phone}</p>
                   </div>
                 </div>
 
@@ -79,7 +88,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Email Address</h3>
-                    <p className="text-gray-600">admin@adarshasanothimi.edu.np</p>
+                    <p className="text-gray-600">{contact.email}</p>
                   </div>
                 </div>
 
@@ -90,7 +99,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Office Hours</h3>
                     <p className="text-gray-600">
-                      Monday - Friday: 6:00 AM - 6:00 PM<br />
+                      {contact.officeHours}
                     </p>
                   </div>
                 </div>
@@ -100,7 +109,7 @@ const Contact = () => {
               <div className="mt-8">
                 <div className="w-full aspect-video rounded-lg overflow-hidden shadow-md">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3197.3305562609103!2d85.37782293761629!3d27.681286198945735!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1a6ad03dcbe1%3A0xce118a959aa8cf1d!2sAdarsha%20Secondary%20School%2C%20Sanothimi%20Bhaktapur!5e1!3m2!1sen!2snp!4v1762573661785!5m2!1sen!2snp"
+                    src={contact.mapLink}
                     className="w-full h-full border-0"
                     allowFullScreen
                     loading="lazy"
@@ -228,31 +237,15 @@ const Contact = () => {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-white rounded-lg p-6 shadow-md">
-              <h3 className="font-semibold text-gray-800 mb-2">What are the admission requirements?</h3>
-              <p className="text-gray-600">
-                Admission requirements vary by program. For Grade 9, students need Class 8 completion certificate.
-                For +2 programs, SLC/SEE pass certificate is required. Please visit our Admissions page for detailed requirements.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-md">
-              <h3 className="font-semibold text-gray-800 mb-2">Do you offer scholarships?</h3>
-              <p className="text-gray-600">
-                Yes, we offer merit-based scholarships for academically excellent students and need-based assistance
-                for deserving students from economically disadvantaged backgrounds.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-md">
-              <h3 className="font-semibold text-gray-800 mb-2">What facilities do you provide?</h3>
-              <p className="text-gray-600">
-                We have modern computer labs, well-stocked library, smart classrooms, science laboratories,
-                and other essential facilities to support quality education.
-              </p>
-            </div>
-
-
+            {contact.faqs?.map((faq, i) => (
+              <div key={i} className="bg-white rounded-lg p-6 shadow-md">
+                <h3 className="font-semibold text-gray-800 mb-2">{faq.q}</h3>
+                <p className="text-gray-600">{faq.a}</p>
+              </div>
+            ))}
+            {!contact.faqs?.length && (
+               <p className="text-center text-muted-foreground">No FAQs available yet.</p>
+            )}
           </div>
         </div>
       </section>

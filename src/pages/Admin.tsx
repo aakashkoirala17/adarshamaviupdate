@@ -12,6 +12,7 @@ import { LogOut, Trash2, Plus, Edit, Upload } from "lucide-react";
 import Dropzone from "react-dropzone";
 import Cropper from "react-easy-crop";
 import { Dialog } from "@headlessui/react";
+import { SiteSettingsTab } from "@/components/admin/SiteSettingsTab";
 
 /**
  * Admin.jsx
@@ -293,11 +294,12 @@ const Admin = () => {
 
       <div className="max-w-7xl mx-auto p-4 md:p-8">
         <Tabs defaultValue="hero" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="hero">Hero Images</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="gallery">Gallery</TabsTrigger>
             <TabsTrigger value="notices">Notices</TabsTrigger>
+            <TabsTrigger value="settings">Site Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="hero">
@@ -327,6 +329,10 @@ const Admin = () => {
 
           <TabsContent value="notices">
             <NoticesTab notices={notices} onAdd={addNoticeToDB} onDelete={deleteItem} />
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <SiteSettingsTab />
           </TabsContent>
         </Tabs>
       </div>

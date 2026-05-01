@@ -24,27 +24,11 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import Linkify from "@/components/Linkify";
+import { useSettings } from "@/hooks/use-settings";
 
 /* -----------------------------
-   Constants
+   Constants (Moved to DB)
    ----------------------------- */
-const HERO_SLIDES = [
-  {
-    title: "Welcome to Adarsha Secondary School",
-    nepaliTitle: "आदर्श माध्यमिक विद्यालय मा स्वागत छ",
-    description: "Empowering Future through Technical Education in Sanothimi, Bhaktapur",
-  },
-  {
-    title: "Quality Education for Every Student",
-    nepaliTitle: "हरेक विद्यार्थीका लागि गुणस्तरीय शिक्षा",
-    description: "Shaping the minds of tomorrow with excellence and discipline.",
-  },
-  {
-    title: "A Place to Learn and Grow",
-    nepaliTitle: "सिक्ने र बढ्ने उत्कृष्ट ठाउँ",
-    description: "Providing academic excellence with modern learning facilities.",
-  },
-];
 
 /* -----------------------------
    Utility Functions
@@ -74,13 +58,13 @@ const autoplay = Autoplay({ delay: 5000 }) as any;
 /* -----------------------------
    Hero Section
    ----------------------------- */
-const Hero = ({ images }) => (
+const Hero = ({ images, slides = [] }) => (
   <section className="relative bg-secondary">
     <Carousel plugins={[autoplay]} className="w-full">
       <CarouselContent>
         {images.length ? (
           images.map((img, i) => {
-            const slide = HERO_SLIDES[i] || HERO_SLIDES[0];
+            const slide = slides[i] || slides[0] || { title: "", nepaliTitle: "", description: "" };
 
             return (
               <CarouselItem key={img.id}>
@@ -264,7 +248,7 @@ const Notices = ({ notices }) => {
 /* -----------------------------
    Principal Message
    ----------------------------- */
-const PrincipalMessage = () => (
+const PrincipalMessage = ({ principal }) => (
   <AnimatedSection delay={0.15}>
     <section className="py-16 bg-primary">
       <div className="max-w-7xl mx-auto px-4">
@@ -276,20 +260,23 @@ const PrincipalMessage = () => (
             <div className="flex flex-col md:flex-row gap-6 items-start">
               <motion.div
                 whileHover={{ scale: 1.02 }}
-                className="bg-muted rounded-lg w-full md:w-48 h-48 flex items-center justify-center flex-shrink-0"
+                className="bg-muted rounded-lg w-full md:w-48 h-48 flex items-center justify-center flex-shrink-0 overflow-hidden"
               >
-                <Users size={64} className="text-muted-foreground" />
+                {principal?.photoUrl ? (
+                  <img src={principal.photoUrl} className="w-full h-full object-cover" alt={principal.name} />
+                ) : (
+                  <Users size={64} className="text-muted-foreground" />
+                )}
               </motion.div>
 
               <div className="flex-1">
                 <p className="text-muted-foreground mb-4">
-                  Welcome to Adarsha Secondary School, where we are committed to providing quality
-                  education and fostering a nurturing environment for every student.
+                  {principal?.message || "Welcome to Adarsha Secondary School."}
                 </p>
 
                 <div className="mt-6">
-                  <p className="font-semibold text-primary">Mr. Ram Babu Regmi</p>
-                  <p className="text-sm text-muted-foreground">Principal</p>
+                  <p className="font-semibold text-primary">{principal?.name || "Principal Name"}</p>
+                  <p className="text-sm text-muted-foreground">{principal?.title || "Principal"}</p>
                 </div>
               </div>
             </div>
@@ -386,14 +373,7 @@ const TeamSection = ({ team }) => {
 /* -----------------------------
    Why Choose Us
    ----------------------------- */
-const WhyChooseUs = () => {
-  const points = [
-    { title: "Quality Education", desc: "Qualified, experienced, and trained teachers." },
-    { title: "Safe Infrastructure", desc: "Strong earthquake-resistant buildings." },
-    { title: "Modern Facilities", desc: "ICT-based classrooms and well-equipped labs." },
-    { title: "Supportive Environment", desc: "Student-friendly atmosphere with counseling." },
-  ];
-
+const WhyChooseUs = ({ points = [] }) => {
   return (
     <AnimatedSection delay={0.3}>
       <section className="py-16">
@@ -419,7 +399,7 @@ const WhyChooseUs = () => {
 /* -----------------------------
    Quick Info
    ----------------------------- */
-const QuickInfo = () => (
+const QuickInfo = ({ programs = [], contact = {} as any }) => (
   <AnimatedSection delay={0.35}>
     <section className="py-12 bg-secondary">
       <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8">
@@ -427,17 +407,17 @@ const QuickInfo = () => (
           <CardContent className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <h3 className="text-xl font-bold text-primary">Programs Offered</h3>
-              <span className="text-[10px] bg-brandRed text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
-                Updating
-              </span>
             </div>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• ECED (Early Childhood Education)</li>
-              <li>• Primary & Secondary Education</li>
-              <li>• Computer Engineering (Grade 9-12)</li>
-              <li>• +2 Computer Science</li>
-              <li>• +2 Management</li>
-              <li>• +2 Education & Humanities</li>
+              {programs.map((p, i) => (
+                <li key={i}>• {(p as any).title}</li>
+              ))}
+              {!programs.length && (
+                <>
+                  <li>• ECED (Early Childhood Education)</li>
+                  <li>• Primary & Secondary Education</li>
+                </>
+              )}
             </ul>
           </CardContent>
         </Card>
@@ -446,7 +426,7 @@ const QuickInfo = () => (
           <CardContent className="p-6">
             <h3 className="text-xl font-bold text-primary mb-4">School Timing</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• Monday - Friday: 09:00 AM - 5:00 PM</li>
+              <li>• {contact.officeHours || "Monday - Friday: 09:00 AM - 5:00 PM"}</li>
               <li>• Saturday: Closed</li>
               <li>• Office Hours: 6:00 AM - 6:00 PM</li>
             </ul>
@@ -464,6 +444,7 @@ const Index = () => {
   const [heroImages, setHeroImages] = useState([]);
   const [team, setTeam] = useState([]);
   const [notices, setNotices] = useState([]);
+  const { settings } = useSettings();
 
   useEffect(() => {
     const load = async () => {
@@ -483,12 +464,12 @@ const Index = () => {
 
   return (
     <Layout>
-      <Hero images={heroImages} />
+      <Hero images={heroImages} slides={settings?.homepage_content?.heroSlides} />
       <Notices notices={notices} />
-      <PrincipalMessage />
-      <WhyChooseUs />
+      <PrincipalMessage principal={settings?.principal_message} />
+      <WhyChooseUs points={settings?.homepage_content?.whyChooseUs} />
       <TeamSection team={team} />
-      <QuickInfo />
+      <QuickInfo programs={settings?.academics_programs} contact={settings?.contact_info} />
     </Layout>
   );
 };

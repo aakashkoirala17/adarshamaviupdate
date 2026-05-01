@@ -61,17 +61,17 @@ CREATE POLICY "School images are publicly accessible"
   ON storage.objects FOR SELECT
   USING (bucket_id = 'school-images');
 
-CREATE POLICY "Authenticated users can upload school images"
+CREATE POLICY "Admins can upload school images"
   ON storage.objects FOR INSERT
-  WITH CHECK (bucket_id = 'school-images' AND auth.role() = 'authenticated');
+  WITH CHECK (bucket_id = 'school-images' AND public.is_admin());
 
-CREATE POLICY "Authenticated users can update school images"
+CREATE POLICY "Admins can update school images"
   ON storage.objects FOR UPDATE
-  USING (bucket_id = 'school-images' AND auth.role() = 'authenticated');
+  USING (bucket_id = 'school-images' AND public.is_admin());
 
-CREATE POLICY "Authenticated users can delete school images"
+CREATE POLICY "Admins can delete school images"
   ON storage.objects FOR DELETE
-  USING (bucket_id = 'school-images' AND auth.role() = 'authenticated');
+  USING (bucket_id = 'school-images' AND public.is_admin());
 
 -- Insert some sample data
 INSERT INTO public.hero_images (image_url, alt_text, display_order) VALUES

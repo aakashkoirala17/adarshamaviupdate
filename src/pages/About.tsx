@@ -1,24 +1,16 @@
 
 import { Users, Award, BookOpen, Target } from 'lucide-react';
 import Layout from '../components/Layout';
+import { useSettings } from "@/hooks/use-settings";
 
 const About = () => {
-  const objectives = [
-    "To conduct effective teaching-learning activities",
-    "To provide quality education at affordable fees",
-    "To produce competent manpower as per market needs",
-    "To impart practical and creative education",
-    "To include life-changing oriented subjects",
-    "To run bachelor's level education in different faculties in the future"
-  ];
-
-  const whyChooseUs = [
-    { title: "Quality Education", description: "Affordable, accessible, quality education with qualified, experienced, and trained teachers." },
-    { title: "Infrastructure", description: "Strong earthquake-resistant infrastructure with spacious playground and ICT-based classrooms." },
-    { title: "Environment", description: "Student-friendly teaching environment with a homely atmosphere and counseling for needy students." },
-    { title: "Facilities", description: "Library / E-library facilities, modern Computer and Science labs." },
-    { title: "Assessment", description: "Continuous student assessment and regular ECA/CCA, excursions, and scholarship schemes." }
-  ];
+  const { settings } = useSettings();
+  const about = settings?.about_content || {
+    history: [],
+    objectives: [],
+    whyChooseUs: [],
+    facilities: []
+  };
 
   return (
     <Layout>
@@ -41,15 +33,12 @@ const About = () => {
             <div>
               <h2 className="text-3xl font-bold text-primary mb-6">Our History & Introduction</h2>
               <div className="space-y-4 text-muted-foreground">
-                <p>
-                  Adarsha Secondary School was founded on <strong>29 Jestha, 2024 B.S.</strong> in Sanothimi, Bhaktapur to provide quality education. Initially established as the <strong>Demonstration Multipurpose School (DMPS)</strong>, it started from Grade 6 with a focus on vocational education in fields such as Agriculture, Home Science, Secretarial Science, and Industrial Education.
-                </p>
-                <p>
-                  The school began primary classes from 2040 B.S. and has since grown significantly. Our first SLC examination was in 2029 B.S., where 25 students appeared and 3 students secured 5th, 6th, and 7th positions at the national level.
-                </p>
-                <p>
-                  We expanded into higher education by starting +2 Management from 2068/69 B.S., and later introduced Education and Humanities streams from 2074 B.S. Today, we continue to emphasize academic excellence to prepare competent manpower for the competitive future.
-                </p>
+                {about.history.map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+                {!about.history.length && (
+                   <p>Loading history...</p>
+                )}
               </div>
             </div>
             <div className="space-y-6">
@@ -58,7 +47,7 @@ const About = () => {
                   <Target className="w-6 h-6" /> Our Objectives
                 </h3>
                 <ul className="space-y-3">
-                  {objectives.map((obj, i) => (
+                  {about.objectives.map((obj, i) => (
                     <li key={i} className="flex items-start gap-3 text-muted-foreground">
                       <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
                       <span>{obj}</span>
@@ -82,7 +71,7 @@ const About = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {whyChooseUs.map((item, index) => (
+            {about.whyChooseUs.map((item, index) => (
               <div key={index} className="bg-background p-8 rounded-xl shadow-sm border border-primary/10 hover:border-primary/30 transition-colors">
                 <h3 className="text-xl font-bold mb-3 text-primary">{item.title}</h3>
                 <p className="text-muted-foreground">{item.description}</p>
@@ -103,10 +92,7 @@ const About = () => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              "ICT Classrooms", "E-library", "Science Labs", "Computer Labs",
-              "Playground", "Library", "Counseling", "Scholarships"
-            ].map((facility, i) => (
+            {about.facilities.map((facility, i) => (
               <div key={i} className="bg-secondary p-4 rounded-lg text-center font-semibold text-primary">
                 {facility}
               </div>
