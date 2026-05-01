@@ -70,69 +70,70 @@ const Hero = ({ images, slides = [] }) => (
               <CarouselItem key={img.id}>
                 <div className="relative overflow-hidden h-[calc(100vh-92px)]">
 
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-10" />
+                  {/* Shadow Overlay removed to make image bright */}
 
-                  {/* Text Area */}
-                  <div className="absolute inset-y-0 left-5 flex items-center p-8 z-20">
-                    <div className="max-w-xl space-y-4">
-                      <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="text-3xl md:text-5xl font-heading font-extrabold tracking-tight text-white drop-shadow-lg"
-                      >
-                        {slide.title}
-                      </motion.h1>
+                  {/* Text Area - Only shown for the first slide */}
+                  {i === 0 && (
+                    <div className="absolute inset-y-0 left-5 flex items-center p-8 z-20">
+                      <div className="max-w-xl space-y-4">
+                        <motion.h1
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.8 }}
+                          className="text-3xl md:text-5xl font-heading font-extrabold tracking-tight text-white drop-shadow-lg"
+                        >
+                          {slide.title}
+                        </motion.h1>
 
-                      <motion.p
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.15 }}
-                        className="text-xl font-nepali text-white drop-shadow-md"
-                      >
-                        {slide.nepaliTitle}
-                      </motion.p>
+                        <motion.p
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.8, delay: 0.15 }}
+                          className="text-xl font-nepali text-white drop-shadow-md"
+                        >
+                          {slide.nepaliTitle}
+                        </motion.p>
 
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.9, delay: 0.25 }}
-                        className="text-white text-lg leading-relaxed drop-shadow"
-                      >
-                        {slide.description}
-                      </motion.p>
+                        <motion.p
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ duration: 0.9, delay: 0.25 }}
+                          className="text-white text-lg leading-relaxed drop-shadow"
+                        >
+                          {slide.description}
+                        </motion.p>
 
-                      <motion.div
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.35 }}
-                        className="flex flex-wrap gap-4 pt-2"
-                      >
-                        <Link to="/academics">
-                          <Button size="lg" className="px-8 py-3 text-lg rounded-xl">
-                            Explore Programs
-                          </Button>
-                        </Link>
+                        <motion.div
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.8, delay: 0.35 }}
+                          className="flex flex-wrap gap-4 pt-2"
+                        >
+                          <Link to="/academics">
+                            <Button size="lg" className="px-8 py-3 text-lg rounded-xl">
+                              Explore Programs
+                            </Button>
+                          </Link>
 
-                        <Link to="/contact">
-                          <Button
-                            size="lg"
-                            variant="outline"
-                            className="px-8 py-3 text-lg rounded-xl text-brandRed border-white"
-                          >
-                            Contact Us
-                          </Button>
-                        </Link>
-                      </motion.div>
+                          <Link to="/contact">
+                            <Button
+                              size="lg"
+                              variant="outline"
+                              className="px-8 py-3 text-lg rounded-xl text-brandRed border-white"
+                            >
+                              Contact Us
+                            </Button>
+                          </Link>
+                        </motion.div>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Background Image */}
                   <motion.img
                     src={img.image_url}
                     alt={img.alt_text || "School"}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover brightness-[1.1]"
                     initial={{ scale: 1.05 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 8 }}
@@ -438,25 +439,77 @@ const QuickInfo = ({ programs = [], contact = {} as any }) => (
 );
 
 /* -----------------------------
+   Recent Blogs
+   ----------------------------- */
+const RecentBlogs = ({ blogs = [] }) => (
+  <AnimatedSection delay={0.4}>
+    <section className="py-16 bg-secondary/30">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-end mb-8">
+          <div>
+            <h2 className="text-3xl font-bold text-primary mb-2">Latest Stories</h2>
+            <p className="font-nepali text-brandRed">ताजा कथाहरू</p>
+          </div>
+          <Link to="/blogs">
+            <Button variant="outline">View All Blogs</Button>
+          </Link>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8">
+          {blogs.slice(0, 3).map((blog) => (
+            <Card key={blog.id} className="h-full flex flex-col hover:shadow-lg transition-shadow">
+              <div className="aspect-video relative overflow-hidden">
+                {blog.image_url ? (
+                  <img src={blog.image_url} className="w-full h-full object-cover" alt={blog.title} />
+                ) : (
+                  <div className="bg-muted w-full h-full flex items-center justify-center">
+                    <BookOpen className="text-muted-foreground/30" />
+                  </div>
+                )}
+              </div>
+              <CardContent className="p-6">
+                <p className="text-xs text-muted-foreground mb-2">
+                  {new Date(blog.published_at).toLocaleDateString()} • {blog.author_name}
+                </p>
+                <h3 className="font-bold text-primary mb-2 line-clamp-2">{blog.title}</h3>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-3">
+                  {blog.excerpt || blog.content.substring(0, 100) + "..."}
+                </p>
+                <Link to={`/blogs/${blog.id}`}>
+                  <Button variant="link" className="p-0 h-auto text-primary">Read More →</Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  </AnimatedSection>
+);
+
+/* -----------------------------
    Main Page
    ----------------------------- */
 const Index = () => {
   const [heroImages, setHeroImages] = useState([]);
   const [team, setTeam] = useState([]);
   const [notices, setNotices] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const { settings } = useSettings();
 
   useEffect(() => {
     const load = async () => {
-      const [hero, teamRes, noticeRes] = await Promise.all([
+      const [hero, teamRes, noticeRes, blogRes] = await Promise.all([
         supabase.from("hero_images").select("*").eq("is_active", true).order("display_order"),
         supabase.from("team_members").select("*").eq("is_active", true).order("display_order"),
         supabase.from("notices").select("*").eq("is_active", true).order("display_order").limit(6),
+        (supabase.from("blogs" as any) as any).select("*").eq("is_active", true).order("published_at", { ascending: false }).limit(3),
       ]);
 
       setHeroImages(hero.data || []);
       setTeam(teamRes.data || []);
       setNotices(noticeRes.data || []);
+      setBlogs(blogRes.data || []);
     };
 
     load();
@@ -468,6 +521,7 @@ const Index = () => {
       <Notices notices={notices} />
       <PrincipalMessage principal={settings?.principal_message} />
       <WhyChooseUs points={settings?.homepage_content?.whyChooseUs} />
+      <RecentBlogs blogs={blogs} />
       <TeamSection team={team} />
       <QuickInfo programs={settings?.academics_programs} contact={settings?.contact_info} />
     </Layout>

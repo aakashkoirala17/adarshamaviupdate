@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSettings } from "@/hooks/use-settings";
 
 /* --------------------------------
    Navigation Items
@@ -11,6 +12,8 @@ const NAV_ITEMS = [
   { name: "About Us", path: "/about" },
   { name: "Notices", path: "/notices" },
   { name: "Academics", path: "/academics", beta: true },
+  { name: "Blogs", path: "/blogs" },
+  { name: "Downloads", path: "/downloads" },
   { name: "Gallery", path: "/gallery" },
   { name: "Contact", path: "/contact" },
 ];
@@ -33,12 +36,6 @@ const DesktopNavItem = ({ name, path, beta }: { name: string; path: string; beta
           <span className="text-[10px] bg-brandRed text-white px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider">
             Beta
           </span>
-        )}
-        {isActive && (
-          <motion.div
-            layoutId="underline"
-            className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary rounded-full"
-          />
         )}
       </>
     )}
@@ -69,20 +66,26 @@ const MobileNavItem = ({ name, path, close, beta }: { name: string; path: string
 /* --------------------------------
    Logo
 ----------------------------------- */
-const LogoSection = () => (
-  <NavLink to="/" className="flex items-center gap-4">
-    <img src="/logo.png" className="w-20 h-14 object-contain" alt="School Logo" />
-    <div>
-      <h1 className="text-lg font-bold text-primary leading-tight">
-        Adarsha Secondary School
-      </h1>
-      <p className="text-base font-nepali text-primary font-semibold">
-        आदर्श माध्यमिक विद्यालय
-      </p>
-      <p className="text-xs text-brandRed">Sanothimi, Bhaktapur</p>
-    </div>
-  </NavLink>
-);
+const LogoSection = () => {
+  const { settings } = useSettings();
+  const general = settings?.general_info || {};
+  const contact = settings?.contact_info || {};
+
+  return (
+    <NavLink to="/" className="flex items-center gap-4">
+      <img src={general.logoUrl || "/logo.png"} className="w-20 h-14 object-contain" alt="School Logo" />
+      <div>
+        <h1 className="text-lg font-bold text-primary leading-tight">
+          {general.schoolName || "Adarsha Secondary School"}
+        </h1>
+        <p className="text-base font-nepali text-primary font-semibold">
+          {general.schoolNameNepali || "आदर्श माध्यमिक विद्यालय"}
+        </p>
+        <p className="text-xs text-brandRed">{contact.address?.split(',')[1] || "Sanothimi, Bhaktapur"}</p>
+      </div>
+    </NavLink>
+  );
+};
 
 /* --------------------------------
    Sidebar Animation — FIXED
@@ -109,7 +112,7 @@ const Navigation = () => {
   const closeMenu = useCallback(() => setIsOpen(false), []);
 
   return (
-    <nav className="bg-white border-b-4 border-primary sticky top-0 z-[100] shadow-sm">
+    <nav className="bg-white border-b sticky top-0 z-[100] shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center py-3">
           <LogoSection />

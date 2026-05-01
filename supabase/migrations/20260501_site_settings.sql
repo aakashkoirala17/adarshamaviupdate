@@ -110,7 +110,7 @@ INSERT INTO public.site_settings (key, value, description) VALUES
   "name": "Mr. Ram Babu Regmi",
   "title": "Principal",
   "message": "Welcome to Adarsha Secondary School, where we are committed to providing quality education and fostering a nurturing environment for every student.",
-  "photoUrl": ""
+  "photoUrl": "/IMG_6850.heic"
 }', 'Principal message and details'),
 
 ('homepage_content', '{

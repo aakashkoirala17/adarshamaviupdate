@@ -11,8 +11,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LogOut, Trash2, Plus, Edit, Upload } from "lucide-react";
 import Dropzone from "react-dropzone";
 import Cropper from "react-easy-crop";
-import { Dialog } from "@headlessui/react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { SiteSettingsTab } from "@/components/admin/SiteSettingsTab";
+import { BlogsTab } from "@/components/admin/BlogsTab";
+import { DownloadsTab } from "@/components/admin/DownloadsTab";
 
 /**
  * Admin.jsx
@@ -294,12 +302,14 @@ const Admin = () => {
 
       <div className="max-w-7xl mx-auto p-4 md:p-8">
         <Tabs defaultValue="hero" className="w-full">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="hero">Hero Images</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-7">
+            <TabsTrigger value="hero">Hero</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="gallery">Gallery</TabsTrigger>
             <TabsTrigger value="notices">Notices</TabsTrigger>
-            <TabsTrigger value="settings">Site Settings</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="blogs">Blogs</TabsTrigger>
+            <TabsTrigger value="downloads">Downloads</TabsTrigger>
           </TabsList>
 
           <TabsContent value="hero">
@@ -333,6 +343,14 @@ const Admin = () => {
 
           <TabsContent value="settings">
             <SiteSettingsTab />
+          </TabsContent>
+
+          <TabsContent value="blogs">
+            <BlogsTab />
+          </TabsContent>
+
+          <TabsContent value="downloads">
+            <DownloadsTab />
           </TabsContent>
         </Tabs>
       </div>
@@ -568,7 +586,14 @@ const HeroImagesTab = ({ images = [], onAdd, onDelete }) => {
    - drag reorder
    ===================================================== */
 const TeamMembersTab = ({ members = [], onAdd, onUpdate, onDelete }) => {
-  const [form, setForm] = useState({ name: "", nameNepali: "", position: "", positionNepali: "", imageUrl: "" });
+  const [form, setForm] = useState({ 
+    name: "", 
+    nameNepali: "", 
+    position: "", 
+    positionNepali: "", 
+    imageUrl: "",
+    isDialogOpen: false 
+  });
   const [editingId, setEditingId] = useState(null);
   const [preview, setPreview] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -619,6 +644,7 @@ const TeamMembersTab = ({ members = [], onAdd, onUpdate, onDelete }) => {
       position: m.position,
       positionNepali: m.position_nepali,
       imageUrl: m.image_url,
+      isDialogOpen: true
     });
     setPreview(m.image_url);
     setUploadProgress(0);
@@ -626,7 +652,7 @@ const TeamMembersTab = ({ members = [], onAdd, onUpdate, onDelete }) => {
 
   const handleCancel = () => {
     setEditingId(null);
-    setForm({ name: "", nameNepali: "", position: "", positionNepali: "", imageUrl: "" });
+    setForm({ name: "", nameNepali: "", position: "", positionNepali: "", imageUrl: "", isDialogOpen: false });
     setPreview("");
     setUploadProgress(0);
   };
@@ -645,54 +671,98 @@ const TeamMembersTab = ({ members = [], onAdd, onUpdate, onDelete }) => {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{editingId ? "Edit Team Member" : "Manage Team Members"}</CardTitle>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>Manage Team Members</CardTitle>
+        <Dialog open={!!editingId || form.isDialogOpen} onOpenChange={(open) => {
+          if (!open) handleCancel();
+          else setForm(s => ({ ...s, isDialogOpen: true }));
+        }}>
+          <DialogTrigger asChild>
+            <Button onClick={() => setForm(s => ({ ...s, isDialogOpen: true }))}>
+              <Plus className="mr-2 h-4 w-4" /> Add Member
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>{editingId ? "Edit Team Member" : "Add New Member"}</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <label className="text-sm font-medium">Name (English)</label>
+                <Input placeholder="Full Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <label className="text-sm font-medium">Name (Nepali)</label>
+                <Input placeholder="पूरा नाम" className="font-nepali" value={form.nameNepali} onChange={(e) => setForm({ ...form, nameNepali: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <label className="text-sm font-medium">Position (English)</label>
+                <Input placeholder="e.g. Principal" value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <label className="text-sm font-medium">Position (Nepali)</label>
+                <Input placeholder="पद" className="font-nepali" value={form.positionNepali} onChange={(e) => setForm({ ...form, positionNepali: e.target.value })} />
+              </div>
+              <div className="grid gap-2">
+                <label className="text-sm font-medium">Photo</label>
+                <Input type="file" accept="image/*" onChange={onFileChange} />
+                {preview && (
+                  <div className="mt-2 flex items-center gap-4">
+                    <img src={preview} className="w-20 h-20 rounded-full object-cover border-2 border-primary/20" alt="preview" />
+                    {uploadProgress > 0 && uploadProgress < 100 && (
+                      <div className="flex-1 h-2 bg-muted rounded overflow-hidden">
+                        <div style={{ width: `${uploadProgress}%` }} className="h-full bg-primary transition-all" />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex justify-end gap-3">
+              <Button variant="outline" onClick={handleCancel}>Cancel</Button>
+              <Button onClick={handleSubmit} disabled={!form.name || !form.position || (uploadProgress > 0 && uploadProgress < 100)}>
+                {editingId ? "Update Member" : "Save Member"}
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        <div className="grid gap-3 md:grid-cols-2">
-          <Input placeholder="Name (English)" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-          <Input placeholder="नाम (नेपाली)" className="font-nepali" value={form.nameNepali} onChange={(e) => setForm({ ...form, nameNepali: e.target.value })} />
-          <Input placeholder="Position (English)" value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} />
-          <Input placeholder="पद (नेपाली)" className="font-nepali" value={form.positionNepali} onChange={(e) => setForm({ ...form, positionNepali: e.target.value })} />
-
-          <div>
-            <label className="block text-sm mb-1">Upload Photo</label>
-            <Input type="file" accept="image/*" onChange={onFileChange} />
-            {preview && <img src={preview} className="w-24 h-24 rounded-full mt-2 object-cover border" alt="preview" />}
-            {uploadProgress > 0 && <div className="mt-2 h-2 bg-muted rounded"><div style={{ width: `${uploadProgress}%` }} className="h-2 bg-primary rounded" /></div>}
-          </div>
-
-          <div className="flex items-end gap-2">
-            <Button onClick={handleSubmit} disabled={!form.name || !form.position}>
-              {editingId ? <><Edit className="mr-2 h-4 w-4" />Update Member</> : <><Plus className="mr-2 h-4 w-4" />Add Member</>}
-            </Button>
-            {editingId && (
-              <Button variant="outline" onClick={handleCancel}>Cancel</Button>
-            )}
-          </div>
-        </div>
-
         <div>
           <h3 className="font-semibold mb-3">Existing Members (drag to reorder)</h3>
-          <div className="space-y-2">
+          <div className="grid gap-2">
             {list.map((m, idx) => (
               <div key={m.id}
                 draggable
                 onDragStart={(e) => onDragStart(e, idx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => onDropList(e, idx)}
-                className="flex items-center gap-4 p-3 border rounded bg-card hover:bg-accent/10 transition-colors"
+                className="flex items-center gap-4 p-3 border rounded bg-card hover:bg-accent/5 transition-colors group"
               >
-                {m.image_url && <img src={m.image_url} className="w-16 h-16 object-cover rounded-full border-2 border-primary/20" alt={m.name} />}
-                <div className="flex-1">
-                  <div className="font-medium">{m.name}</div>
-                  <div className="text-sm font-nepali text-muted-foreground">{m.name_nepali}</div>
-                  <div className="text-sm text-muted-foreground">{m.position}</div>
+                <div className="cursor-move opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="grid grid-cols-2 gap-0.5">
+                    {[1, 2, 3, 4, 5, 6].map(i => <div key={i} className="w-1 h-1 bg-muted-foreground/30 rounded-full" />)}
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={() => handleEdit(m)}><Edit className="h-4 w-4" /></Button>
-                  <Button variant="destructive" size="sm" onClick={() => onDelete("team_members", m.id)}><Trash2 className="h-4 w-4" /></Button>
+                {m.image_url ? (
+                  <img src={m.image_url} className="w-12 h-12 object-cover rounded-full border border-primary/10" alt={m.name} />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center border border-primary/10">
+                    <span className="text-xs font-bold text-primary/40">{m.name.charAt(0)}</span>
+                  </div>
+                )}
+                <div className="flex-1">
+                  <div className="font-semibold text-sm">{m.name}</div>
+                  <div className="text-xs text-muted-foreground">{m.position}</div>
+                </div>
+                <div className="flex gap-1">
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50" onClick={() => handleEdit(m)}>
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => onDelete("team_members", m.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
             ))}
@@ -906,13 +976,13 @@ function CropModal({ open, imageSrc, onClose, onApply, onSave, onCropChange, onZ
     }
   };
 
-  if (!open) return null;
-
   return (
-    <Dialog open={open} onClose={onClose} className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/50" />
-      <div className="relative bg-white rounded max-w-3xl w-full p-4 z-60">
-        <div className="h-96 relative bg-gray-100">
+    <Dialog open={open} onOpenChange={(val) => !val && onClose()}>
+      <DialogContent className="max-w-3xl w-full p-4">
+        <DialogHeader>
+          <DialogTitle>Crop Image</DialogTitle>
+        </DialogHeader>
+        <div className="h-96 relative bg-gray-100 mt-4 overflow-hidden rounded-lg">
           <Cropper
             image={imageSrc}
             crop={crop}
@@ -924,14 +994,28 @@ function CropModal({ open, imageSrc, onClose, onApply, onSave, onCropChange, onZ
           />
         </div>
 
-        <div className="flex items-center gap-2 mt-3">
-          <input type="range" min={1} max={3} step={0.01} value={zoom} onChange={(e) => { setZoom(Number(e.target.value)); if (onZoomChange) onZoomChange(Number(e.target.value)); }} />
-          <div className="ml-auto flex gap-2">
+        <div className="flex flex-col gap-4 mt-4">
+          <div className="flex items-center gap-4">
+            <span className="text-sm font-medium">Zoom</span>
+            <input 
+              type="range" 
+              min={1} 
+              max={3} 
+              step={0.01} 
+              value={zoom} 
+              className="flex-1 accent-primary"
+              onChange={(e) => { 
+                setZoom(Number(e.target.value)); 
+                if (onZoomChange) onZoomChange(Number(e.target.value)); 
+              }} 
+            />
+          </div>
+          <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={onClose}>Cancel</Button>
             <Button onClick={handleSave}>Apply Crop</Button>
           </div>
         </div>
-      </div>
+      </DialogContent>
     </Dialog>
   );
 }

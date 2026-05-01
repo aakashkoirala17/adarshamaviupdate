@@ -85,10 +85,12 @@ const Academics = () => {
                   </CardContent>
                 </Card>
                 
-                <div className="bg-muted rounded-lg p-8 flex items-center justify-center">
-                  {program.substreams ? (
-                    <div className="grid gap-4 w-full">
-                       {program.substreams.map((ss, i) => (
+                <div className="bg-muted rounded-lg overflow-hidden flex items-center justify-center">
+                  {program.imageUrl ? (
+                    <img src={program.imageUrl} className="w-full h-full object-cover" alt={program.title} />
+                  ) : program.substreams ? (
+                    <div className="grid gap-4 w-full p-8">
+                       {program.substreams.map((ss: any, i: number) => (
                          <div key={i} className="p-4 bg-background rounded border">
                            <h4 className="font-bold text-primary">{ss.name}</h4>
                            <p className="text-sm text-muted-foreground">{ss.description}</p>
@@ -96,9 +98,9 @@ const Academics = () => {
                        ))}
                     </div>
                   ) : (
-                    <div className="text-center text-muted-foreground">
+                    <div className="text-center text-muted-foreground p-8">
                       {getIcon(program.id)}
-                      <p className="mt-4 font-medium">{program.title} Department</p>
+                      <p className="mt-2">Core Technical Program</p>
                     </div>
                   )}
                 </div>

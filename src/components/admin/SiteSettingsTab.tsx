@@ -8,12 +8,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ListEditor } from "./SettingsComponents";
-import { Trash2, Plus, Save } from "lucide-react";
-
+import { Trash2, Plus, Save, Image as ImageIcon, Loader2 } from "lucide-react";
+import Dropzone from "react-dropzone";
 export const SiteSettingsTab = () => {
   const { settings, loading, refresh } = useSettings();
   const { toast } = useToast();
   const [localSettings, setLocalSettings] = useState<any>(null);
+  const [uploading, setUploading] = useState<string | null>(null);
 
   useEffect(() => {
     if (settings) {
@@ -22,6 +23,35 @@ export const SiteSettingsTab = () => {
   }, [settings]);
 
   if (loading || !localSettings) return <div className="p-8 text-center">Loading site settings...</div>;
+
+  const handleImageUpload = async (file: File, section: string, field: string) => {
+    try {
+      setUploading(`${section}-${field}`);
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${section}-${field}-${Math.random()}.${fileExt}`;
+      const filePath = `settings/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('school-images')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('school-images')
+        .getPublicUrl(filePath);
+
+      setLocalSettings({
+        ...localSettings,
+        [section]: { ...localSettings[section], [field]: publicUrl }
+      });
+      toast({ title: "Image uploaded successfully" });
+    } catch (error: any) {
+      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+    } finally {
+      setUploading(null);
+    }
+  };
 
   const handleUpdate = async (key: string, value: any) => {
     const { error } = await (supabase.from("site_settings" as any) as any).upsert({ key, value });
@@ -58,6 +88,27 @@ export const SiteSettingsTab = () => {
                   <Input className="font-nepali" value={localSettings.general_info?.schoolNameNepali || ""} 
                     onChange={e => setLocalSettings({...localSettings, general_info: {...localSettings.general_info, schoolNameNepali: e.target.value}})} />
                 </div>
+                
+                <div className="grid gap-2">
+                  <label>School Logo</label>
+                  <div className="flex gap-4 items-start">
+                    <Dropzone onDrop={files => handleImageUpload(files[0], "general_info", "logoUrl")} multiple={false}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()} className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:bg-secondary/50 flex-1">
+                          <input {...getInputProps()} />
+                          {uploading === "general_info-logoUrl" ? <Loader2 className="mx-auto h-6 w-6 animate-spin" /> : <ImageIcon className="mx-auto h-6 w-6 mb-1 text-muted-foreground" />}
+                          <p className="text-xs">Upload Logo</p>
+                        </div>
+                      )}
+                    </Dropzone>
+                    {localSettings.general_info?.logoUrl && (
+                      <div className="w-20 h-20 rounded border bg-muted flex items-center justify-center p-2">
+                        <img src={localSettings.general_info.logoUrl} className="max-w-full max-h-full object-contain" alt="Logo" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <Button onClick={() => handleUpdate("general_info", localSettings.general_info)}><Save className="mr-2 h-4 w-4" /> Save General Info</Button>
               </CardContent>
             </Card>
@@ -120,6 +171,27 @@ export const SiteSettingsTab = () => {
                   <Textarea rows={4} value={localSettings.principal_message?.message || ""} 
                     onChange={e => setLocalSettings({...localSettings, principal_message: {...localSettings.principal_message, message: e.target.value}})} />
                 </div>
+
+                <div className="grid gap-2">
+                  <label>Principal Photo</label>
+                  <div className="flex gap-4 items-start">
+                    <Dropzone onDrop={files => handleImageUpload(files[0], "principal_message", "photoUrl")} multiple={false}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()} className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:bg-secondary/50 flex-1">
+                          <input {...getInputProps()} />
+                          {uploading === "principal_message-photoUrl" ? <Loader2 className="mx-auto h-6 w-6 animate-spin" /> : <ImageIcon className="mx-auto h-6 w-6 mb-1 text-muted-foreground" />}
+                          <p className="text-xs">Upload Photo</p>
+                        </div>
+                      )}
+                    </Dropzone>
+                    {localSettings.principal_message?.photoUrl && (
+                      <div className="w-20 h-20 rounded border bg-muted overflow-hidden">
+                        <img src={localSettings.principal_message.photoUrl} className="w-full h-full object-cover" alt="Principal" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
                 <Button onClick={() => handleUpdate("principal_message", localSettings.principal_message)}><Save className="mr-2 h-4 w-4" /> Save Message</Button>
               </CardContent>
             </Card>
@@ -222,11 +294,54 @@ export const SiteSettingsTab = () => {
 
                     <div className="grid gap-2">
                       <label className="text-sm font-semibold">Description</label>
-                      <Textarea value={program.description} onChange={e => {
-                        const newList = [...localSettings.academics_programs];
-                        newList[pIdx].description = e.target.value;
-                        setLocalSettings({...localSettings, academics_programs: newList});
-                      }} />
+                      <div className="flex gap-4 items-start">
+                        <div className="flex-1">
+                          <Textarea value={program.description} onChange={e => {
+                            const newList = [...localSettings.academics_programs];
+                            newList[pIdx].description = e.target.value;
+                            setLocalSettings({...localSettings, academics_programs: newList});
+                          }} />
+                        </div>
+                        <div className="w-48">
+                          <Dropzone onDrop={files => {
+                            // Custom handle for array of objects
+                            const upload = async () => {
+                              try {
+                                setUploading(`academics-${pIdx}`);
+                                const fileExt = files[0].name.split('.').pop();
+                                const fileName = `academics-${pIdx}-${Math.random()}.${fileExt}`;
+                                const filePath = `settings/${fileName}`;
+                                const { error: uploadError } = await supabase.storage.from('school-images').upload(filePath, files[0]);
+                                if (uploadError) throw uploadError;
+                                const { data: { publicUrl } } = supabase.storage.from('school-images').getPublicUrl(filePath);
+                                
+                                const newList = [...localSettings.academics_programs];
+                                newList[pIdx].imageUrl = publicUrl;
+                                setLocalSettings({...localSettings, academics_programs: newList});
+                                toast({ title: "Program image uploaded" });
+                              } catch (error: any) {
+                                toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+                              } finally {
+                                setUploading(null);
+                              }
+                            };
+                            upload();
+                          }} multiple={false}>
+                            {({ getRootProps, getInputProps }) => (
+                              <div {...getRootProps()} className="border-2 border-dashed rounded-lg p-4 text-center cursor-pointer hover:bg-secondary/50 h-32 flex flex-col items-center justify-center">
+                                <input {...getInputProps()} />
+                                {uploading === `academics-${pIdx}` ? <Loader2 className="h-6 w-6 animate-spin" /> : <ImageIcon className="h-6 w-6 mb-1 text-muted-foreground" />}
+                                <p className="text-[10px]">Program Image</p>
+                              </div>
+                            )}
+                          </Dropzone>
+                          {program.imageUrl && (
+                            <div className="mt-2 h-20 rounded border overflow-hidden">
+                              <img src={program.imageUrl} className="w-full h-full object-cover" alt={program.title} />
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
 
                     {program.subjects && (
