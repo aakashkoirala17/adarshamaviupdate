@@ -76,10 +76,10 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
                           >
-                            <h1 className="text-3xl md:text-6xl font-bold text-white drop-shadow-2xl leading-tight">
+                            <h1 className="text-2xl md:text-6xl font-bold text-white drop-shadow-2xl leading-tight">
                               {slide.title}
                             </h1>
-                            <p className="text-xl md:text-3xl font-nepali text-white/90 mt-1 md:mt-2 drop-shadow-xl">
+                            <p className="text-lg md:text-3xl font-nepali text-white/90 mt-1 md:mt-2 drop-shadow-xl">
                               {slide.nepaliTitle}
                             </p>
                           </motion.div>
@@ -88,7 +88,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 1, delay: 0.3 }}
-                            className="text-white/95 text-sm md:text-xl leading-relaxed drop-shadow-lg max-w-xl line-clamp-3 md:line-clamp-none"
+                            className="text-white/95 text-xs md:text-xl leading-relaxed drop-shadow-lg max-w-xl line-clamp-3 md:line-clamp-none"
                           >
                             {slide.description}
                           </motion.p>
@@ -191,26 +191,26 @@ const Notices = ({ notices }: { notices: any[] }) => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1 }}
-                      className="group flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-primary/5 transition-all cursor-pointer"
+                      className="group flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 p-3 md:p-5 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-primary/5 transition-all cursor-pointer"
                       onClick={() => setSelectedNotice(n)}
                     >
-                      <div className="flex-shrink-0 w-full sm:w-24 bg-white border border-secondary shadow-sm rounded-xl p-3 text-center">
-                        <span className="block text-primary font-bold text-lg">{formatNepaliDate(n.date).split(' ')[0]}</span>
-                        <span className="block text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{formatNepaliDate(n.date).split(' ')[1]}</span>
+                      <div className="flex-shrink-0 w-20 sm:w-24 bg-white border border-secondary shadow-sm rounded-xl p-2 md:p-3 text-center">
+                        <span className="block text-primary font-bold text-base md:text-lg">{formatNepaliDate(n.date).split(' ')[0]}</span>
+                        <span className="block text-[8px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{formatNepaliDate(n.date).split(' ')[1]}</span>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-lg font-bold text-primary group-hover:text-brandRed transition-colors line-clamp-1">
+                          <h3 className="text-base md:text-lg font-bold text-primary group-hover:text-brandRed transition-colors line-clamp-1">
                             <Linkify text={n.title} />
                           </h3>
                           {n.attachment_url && (
                             <div className="shrink-0 bg-primary/5 text-primary p-1 rounded-md">
-                              {n.attachment_type === 'pdf' ? <FileText size={14} /> : <FileImage size={14} />}
+                              {n.attachment_type === 'pdf' ? <FileText size={12} /> : <FileImage size={12} />}
                             </div>
                           )}
                         </div>
                         {n.content && (
-                          <p className="text-sm text-muted-foreground line-clamp-1 mt-1">
+                          <p className="text-xs md:text-sm text-muted-foreground line-clamp-1 mt-0.5 md:mt-1">
                             <Linkify text={n.content} />
                           </p>
                         )}
@@ -363,16 +363,16 @@ const WhyChooseUs = ({ points = [] }: { points: any[] }) => {
             <p className="font-nepali text-brandRed text-lg">हामीलाई किन रोज्ने?</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {activePoints.map((p: any, i: number) => {
               const Icon = p.icon || CheckCircle2;
               return (
-                <div key={i} className="premium-card p-8 group hover:bg-primary transition-all duration-500 hover:-translate-y-2">
-                  <div className="bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 transition-colors">
-                    <Icon className="text-primary group-hover:text-white transition-colors" size={32} />
+                <div key={i} className="premium-card p-6 md:p-8 group hover:bg-primary transition-all duration-500 hover:-translate-y-2">
+                  <div className="bg-primary/10 w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-white/20 transition-colors">
+                    <Icon className="text-primary group-hover:text-white transition-colors" size={24} />
                   </div>
-                  <h3 className="text-xl font-bold text-primary mb-3 group-hover:text-white transition-colors">{p.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed group-hover:text-white/80 transition-colors">{p.desc}</p>
+                  <h3 className="text-lg md:text-xl font-bold text-primary mb-2 md:mb-3 group-hover:text-white transition-colors">{p.title}</h3>
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed group-hover:text-white/80 transition-colors">{p.desc}</p>
                 </div>
               );
             })}
@@ -408,25 +408,25 @@ const TeamSection = ({ team }: { team: any[] }) => {
                 transition={{ delay: idx * 0.1 }}
                 whileHover={{ y: -10 }}
               >
-                <div className="premium-card p-8 text-center group bg-white border-primary/5 h-full flex flex-col justify-between">
-                  <div className="relative inline-block mb-6">
+                <div className="premium-card p-6 md:p-8 text-center group bg-white border-primary/5 h-full flex flex-col justify-between">
+                  <div className="relative inline-block mb-4 md:mb-6">
                     <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="w-32 h-32 rounded-full ring-[6px] ring-secondary border-4 border-white overflow-hidden bg-muted mx-auto shadow-md relative z-10">
+                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-full ring-[4px] md:ring-[6px] ring-secondary border-4 border-white overflow-hidden bg-muted mx-auto shadow-md relative z-10">
                       {m.image_url ? (
                         <img src={m.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={m.name} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Users size={48} className="text-muted-foreground/20" />
+                          <Users size={32} className="text-muted-foreground/20" />
                         </div>
                       )}
                     </div>
                   </div>
                   <div>
-                    <h3 className="font-bold text-primary text-lg mb-1 line-clamp-1" title={m.name}>{m.name}</h3>
+                    <h3 className="font-bold text-primary text-base md:text-lg mb-1 line-clamp-1" title={m.name}>{m.name}</h3>
                     {m.name_nepali && (
-                      <p className="text-sm font-nepali text-brandRed font-medium mb-3 line-clamp-1">{m.name_nepali}</p>
+                      <p className="text-xs md:text-sm font-nepali text-brandRed font-medium mb-2 md:mb-3 line-clamp-1">{m.name_nepali}</p>
                     )}
-                    <div className="inline-block px-4 py-1.5 bg-secondary/50 rounded-full text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                    <div className="inline-block px-3 py-1 bg-secondary/50 rounded-full text-[9px] md:text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
                       {m.position}
                     </div>
                   </div>
@@ -581,27 +581,27 @@ const QuickInfo = ({ contact = {} as any }: { contact: any }) => (
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-6">
-            <div className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] border border-white/10">
-              <div className="bg-white/10 w-12 h-12 rounded-xl flex items-center justify-center mb-6">
-                <Phone size={24} />
+          <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
+            <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl md:rounded-[2rem] border border-white/10">
+              <div className="bg-white/10 w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                <Phone size={20} />
               </div>
-              <h4 className="text-xl font-bold mb-2">Call Us</h4>
-              <p className="text-primary-foreground/70 text-sm leading-relaxed">{contact.phone || "+977-1-4XXXXXX"}</p>
+              <h4 className="text-lg md:text-xl font-bold mb-1 md:mb-2">Call Us</h4>
+              <p className="text-primary-foreground/70 text-xs md:text-sm leading-relaxed">{contact.phone || "+977-1-4XXXXXX"}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] border border-white/10">
-              <div className="bg-white/10 w-12 h-12 rounded-xl flex items-center justify-center mb-6">
-                <Mail size={24} />
+            <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl md:rounded-[2rem] border border-white/10">
+              <div className="bg-white/10 w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                <Mail size={20} />
               </div>
-              <h4 className="text-xl font-bold mb-2">Email Us</h4>
-              <p className="text-primary-foreground/70 text-sm leading-relaxed">{contact.email || "info@adarshamavi.edu.np"}</p>
+              <h4 className="text-lg md:text-xl font-bold mb-1 md:mb-2">Email Us</h4>
+              <p className="text-primary-foreground/70 text-xs md:text-sm leading-relaxed">{contact.email || "info@adarshamavi.edu.np"}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md p-8 rounded-[2rem] border border-white/10 col-span-full">
-              <div className="bg-white/10 w-12 h-12 rounded-xl flex items-center justify-center mb-6">
-                <MapPin size={24} />
+            <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl md:rounded-[2rem] border border-white/10 col-span-full">
+              <div className="bg-white/10 w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                <MapPin size={20} />
               </div>
-              <h4 className="text-xl font-bold mb-2">Visit Us</h4>
-              <p className="text-primary-foreground/70 text-sm leading-relaxed">{contact.address || "Patan, Lalitpur, Nepal"}</p>
+              <h4 className="text-lg md:text-xl font-bold mb-1 md:mb-2">Visit Us</h4>
+              <p className="text-primary-foreground/70 text-xs md:text-sm leading-relaxed">{contact.address || "Patan, Lalitpur, Nepal"}</p>
             </div>
           </div>
         </div>
