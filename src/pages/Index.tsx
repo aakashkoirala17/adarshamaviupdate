@@ -65,10 +65,10 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
 
             return (
               <CarouselItem key={img.id}>
-                <div className="relative h-auto md:h-[calc(100vh-92px)] w-full overflow-hidden bg-primary">
+                <div className={`relative w-full overflow-hidden bg-primary ${i === 0 ? 'h-[75vh] md:h-[calc(100vh-92px)]' : 'h-auto md:h-[calc(100vh-92px)]'}`}>
                   {/* Text Overlay - Only on first slide for clarity as requested */}
                   {i === 0 && (
-                    <div className="absolute inset-0 z-20 flex items-center bg-black/20">
+                    <div className="absolute inset-0 z-20 flex items-center bg-black/10">
                       <div className="section-container w-full">
                         <div className="max-w-2xl space-y-4 md:space-y-6">
                           <motion.div
@@ -119,15 +119,19 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                     </div>
                   )}
 
-                  {/* Background Image */}
-                  <motion.img
-                    src={img.image_url}
-                    alt={img.alt_text || "School Hero"}
-                    className="w-full h-auto md:h-full md:object-cover"
-                    initial={{ scale: 1.05 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 10, ease: "linear" }}
-                  />
+                  {/* Background Image or Gradient */}
+                  {i === 0 ? (
+                    <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#0f172a] via-primary to-brandRed opacity-95" />
+                  ) : (
+                    <motion.img
+                      src={img.image_url}
+                      alt={img.alt_text || "School Hero"}
+                      className="w-full h-full object-cover min-h-[50vh]"
+                      initial={{ scale: 1.05 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 10, ease: "linear" }}
+                    />
+                  )}
                 </div>
               </CarouselItem>
             );
