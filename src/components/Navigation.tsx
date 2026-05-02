@@ -54,7 +54,7 @@ const MobileNavItem = ({ name, path, close, beta }: { name: string; path: string
     to={path}
     onClick={close}
     className={({ isActive }) =>
-      `flex items-center justify-between px-6 py-4 text-lg font-bold rounded-2xl transition-all whitespace-nowrap
+      `flex items-center justify-between px-5 py-3 md:px-6 md:py-4 text-base md:text-lg font-bold rounded-xl md:rounded-2xl transition-all whitespace-nowrap
        ${isActive ? "bg-primary text-white shadow-lg shadow-primary/20" : "text-foreground hover:bg-secondary"}`
     }
   >
@@ -63,11 +63,11 @@ const MobileNavItem = ({ name, path, close, beta }: { name: string; path: string
         <span>{name}</span>
         <div className="flex items-center gap-2">
           {beta && (
-            <span className="text-[10px] bg-brandRed text-white px-2 py-0.5 rounded-full font-bold uppercase tracking-widest">
+            <span className="text-[9px] md:text-[10px] bg-brandRed text-white px-1.5 md:px-2 py-0.5 rounded-full font-bold uppercase tracking-widest">
               BETA
             </span>
           )}
-          <ChevronRight size={18} className={isActive ? "text-white" : "text-muted-foreground"} />
+          <ChevronRight className={`w-4 h-4 md:w-[18px] md:h-[18px] ${isActive ? "text-white" : "text-muted-foreground"}`} />
         </div>
       </>
     )}
@@ -87,7 +87,7 @@ const LogoSection = () => {
       <div className="bg-white p-0.5 rounded-lg group-hover:rotate-3 transition-transform duration-500">
         <img 
           src={general.logoUrl || "/logo.png"} 
-          className="w-14 h-10 md:w-16 md:h-12 object-contain" 
+          className="w-10 h-8 md:w-16 md:h-12 object-contain" 
           alt="School Logo" 
         />
       </div>
@@ -195,10 +195,10 @@ const Navigation = () => {
               </Link>
               <button
                 aria-label="Toggle Menu"
-                className="lg:hidden h-12 w-12 flex items-center justify-center rounded-2xl bg-secondary text-primary hover:bg-primary hover:text-white transition-all"
+                className="lg:hidden h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-xl md:rounded-2xl bg-secondary text-primary hover:bg-primary hover:text-white transition-all"
                 onClick={openMenu}
               >
-                {isOpen ? <X size={24} /> : <Menu size={24} />}
+                {isOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Menu className="w-5 h-5 md:w-6 md:h-6" />}
               </button>
             </div>
           </div>
@@ -223,20 +223,20 @@ const Navigation = () => {
                 exit={{ x: "100%" }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
-                <div className="p-8 border-b border-secondary flex justify-between items-center bg-primary text-white">
+                <div className="p-6 md:p-8 border-b border-secondary flex justify-between items-center bg-primary text-white">
                   <div>
-                    <h2 className="text-2xl font-black uppercase tracking-tight">Navigation</h2>
-                    <p className="text-primary-foreground/60 text-xs font-bold uppercase tracking-widest">Main Menu</p>
+                    <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight">Navigation</h2>
+                    <p className="text-primary-foreground/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">Main Menu</p>
                   </div>
                   <button 
                     onClick={closeMenu}
-                    className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
+                    className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
                   >
-                    <X size={24} />
+                    <X className="w-5 h-5 md:w-6 md:h-6" />
                   </button>
                 </div>
 
-                <nav className="flex-1 overflow-y-auto p-6 space-y-3">
+                <nav className="flex-1 overflow-y-auto p-4 md:p-6 space-y-2 md:space-y-3">
                   {NAV_ITEMS.map((item, idx) => (
                     <motion.div
                       key={item.name}

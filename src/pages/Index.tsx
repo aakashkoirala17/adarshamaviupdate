@@ -76,10 +76,10 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
                           >
-                            <h1 className="text-2xl md:text-6xl font-bold text-white drop-shadow-2xl leading-tight">
+                            <h1 className="text-xl md:text-6xl font-bold text-white drop-shadow-2xl leading-tight">
                               {slide.title}
                             </h1>
-                            <p className="text-lg md:text-3xl font-nepali text-white/90 mt-1 md:mt-2 drop-shadow-xl">
+                            <p className="text-base md:text-3xl font-nepali text-white/90 mt-1 md:mt-2 drop-shadow-xl">
                               {slide.nepaliTitle}
                             </p>
                           </motion.div>
@@ -88,7 +88,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 1, delay: 0.3 }}
-                            className="text-white/95 text-xs md:text-xl leading-relaxed drop-shadow-lg max-w-xl line-clamp-3 md:line-clamp-none"
+                            className="text-white/95 text-[11px] md:text-xl leading-relaxed drop-shadow-lg max-w-xl line-clamp-3 md:line-clamp-none"
                           >
                             {slide.description}
                           </motion.p>
@@ -100,7 +100,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                             className="flex flex-wrap gap-3 md:gap-4 pt-2 md:pt-4"
                           >
                             <Link to="/academics">
-                              <Button size="lg" className="px-6 md:px-8 py-4 md:py-6 text-sm md:text-lg rounded-full shadow-xl hover:shadow-primary/20 transition-all">
+                              <Button size="lg" className="px-4 md:px-8 py-3 md:py-6 text-xs md:text-lg rounded-full shadow-xl hover:shadow-primary/20 transition-all">
                                 Our Programs
                               </Button>
                             </Link>
@@ -108,7 +108,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                               <Button
                                 size="lg"
                                 variant="outline"
-                                className="px-6 md:px-8 py-4 md:py-6 text-sm md:text-lg rounded-full border-white text-white bg-white/10 hover:bg-white hover:text-primary transition-all backdrop-blur-sm shadow-xl"
+                                className="px-4 md:px-8 py-3 md:py-6 text-xs md:text-lg rounded-full border-white text-white bg-white/10 hover:bg-white hover:text-primary transition-all backdrop-blur-sm shadow-xl"
                               >
                                 Contact Us
                               </Button>
@@ -141,9 +141,9 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
           </CarouselItem>
         )}
       </CarouselContent>
-      <div className="absolute bottom-8 right-8 z-30 flex gap-2">
-        <CarouselPrevious className="static translate-y-0 h-12 w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
-        <CarouselNext className="static translate-y-0 h-12 w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
+      <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-30 flex gap-2">
+        <CarouselPrevious className="static translate-y-0 h-8 w-8 md:h-12 md:w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
+        <CarouselNext className="static translate-y-0 h-8 w-8 md:h-12 md:w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
       </div>
     </Carousel>
   </section>
@@ -157,23 +157,23 @@ const Notices = ({ notices }: { notices: any[] }) => {
 
   return (
     <AnimatedSection>
-      <section className="py-24 bg-white">
+      <section className="py-12 md:py-24 bg-white">
         <div className="section-container">
           <div className="premium-card overflow-hidden ring-1 ring-primary/5">
-            <div className="p-8">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-                <div className="flex items-center gap-4">
-                  <div className="bg-primary/10 p-3 rounded-2xl">
-                    <Bell size={28} className="text-primary" />
+            <div className="p-4 md:p-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-6 mb-6 md:mb-10">
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="bg-primary/10 p-2 md:p-3 rounded-xl md:rounded-2xl">
+                    <Bell className="w-6 h-6 md:w-7 md:h-7 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold text-primary tracking-tight">Recent Notices</h2>
-                    <p className="text-sm font-nepali text-brandRed font-medium">ताजा सूचनाहरू</p>
+                    <h2 className="text-xl md:text-3xl font-bold text-primary tracking-tight">Recent Notices</h2>
+                    <p className="text-xs md:text-sm font-nepali text-brandRed font-medium">ताजा सूचनाहरू</p>
                   </div>
                 </div>
                 <Link to="/notices">
-                  <Button variant="outline" className="rounded-full px-6 group hover:bg-primary hover:text-white transition-all">
-                    View All Notices <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  <Button variant="outline" className="rounded-full px-4 md:px-6 text-xs md:text-sm group hover:bg-primary hover:text-white transition-all">
+                    View All Notices <ArrowRight className="w-4 h-4 md:w-[18px] md:h-[18px] ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
               </div>
@@ -194,13 +194,13 @@ const Notices = ({ notices }: { notices: any[] }) => {
                       className="group flex flex-col sm:flex-row items-start sm:items-center gap-3 md:gap-4 p-3 md:p-5 rounded-2xl border border-transparent hover:border-primary/10 hover:bg-primary/5 transition-all cursor-pointer"
                       onClick={() => setSelectedNotice(n)}
                     >
-                      <div className="flex-shrink-0 w-20 sm:w-24 bg-white border border-secondary shadow-sm rounded-xl p-2 md:p-3 text-center">
-                        <span className="block text-primary font-bold text-base md:text-lg">{formatNepaliDate(n.date).split(' ')[0]}</span>
-                        <span className="block text-[8px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{formatNepaliDate(n.date).split(' ')[1]}</span>
+                      <div className="flex-shrink-0 w-16 sm:w-24 bg-white border border-secondary shadow-sm rounded-xl p-1.5 md:p-3 text-center">
+                        <span className="block text-primary font-bold text-sm md:text-lg">{formatNepaliDate(n.date).split(' ')[0]}</span>
+                        <span className="block text-[7px] md:text-[10px] text-muted-foreground uppercase font-bold tracking-widest">{formatNepaliDate(n.date).split(' ')[1]}</span>
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <h3 className="text-base md:text-lg font-bold text-primary group-hover:text-brandRed transition-colors line-clamp-1">
+                          <h3 className="text-sm md:text-lg font-bold text-primary group-hover:text-brandRed transition-colors line-clamp-1">
                             <Linkify text={n.title} />
                           </h3>
                           {n.attachment_url && (
@@ -216,8 +216,8 @@ const Notices = ({ notices }: { notices: any[] }) => {
                         )}
                       </div>
                       <div className="hidden sm:block">
-                        <div className="h-10 w-10 rounded-full flex items-center justify-center bg-white border border-secondary text-muted-foreground group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                          <ChevronRight size={20} />
+                        <div className="h-8 w-8 md:h-10 md:w-10 rounded-full flex items-center justify-center bg-white border border-secondary text-muted-foreground group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                          <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
                         </div>
                       </div>
                     </motion.div>
@@ -297,11 +297,11 @@ const Notices = ({ notices }: { notices: any[] }) => {
    ----------------------------- */
 const PrincipalMessage = ({ principal }: { principal: any }) => (
   <AnimatedSection delay={0.15}>
-    <section className="py-24 bg-secondary/30">
+    <section className="py-12 md:py-24 bg-secondary/30">
       <div className="section-container">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-primary mb-2">Principal's Message</h2>
-          <p className="font-nepali text-brandRed text-lg">प्रधानाध्यापकको सन्देश</p>
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-2xl md:text-4xl font-bold text-primary mb-1 md:mb-2">Principal's Message</h2>
+          <p className="font-nepali text-brandRed text-sm md:text-lg">प्रधानाध्यापकको सन्देश</p>
         </div>
 
         <div className="max-w-5xl mx-auto bg-white rounded-[2.5rem] shadow-xl shadow-primary/5 border border-primary/5 overflow-hidden flex flex-col md:flex-row min-h-[500px]">
@@ -317,20 +317,20 @@ const PrincipalMessage = ({ principal }: { principal: any }) => (
             <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-primary/40 to-transparent md:hidden" />
           </div>
 
-          <div className="p-10 md:p-16 flex flex-col justify-center relative">
-            <div className="absolute top-10 right-10 opacity-[0.03] text-primary">
-              <BookOpen size={200} />
+          <div className="p-6 md:p-16 flex flex-col justify-center relative">
+            <div className="absolute top-4 right-4 md:top-10 md:right-10 opacity-[0.03] text-primary">
+              <BookOpen className="w-24 h-24 md:w-48 md:h-48" />
             </div>
             <div className="relative z-10">
-              <span className="text-6xl font-serif text-primary/20 absolute -top-8 -left-4">"</span>
-              <p className="text-xl md:text-2xl text-muted-foreground italic leading-relaxed font-light mb-10">
+              <span className="text-4xl md:text-6xl font-serif text-primary/20 absolute -top-4 -left-2 md:-top-8 md:-left-4">"</span>
+              <p className="text-sm md:text-2xl text-muted-foreground italic leading-relaxed font-light mb-6 md:mb-10 mt-2 md:mt-0">
                 {principal?.message || "Education is the most powerful weapon which you can use to change the world. At Adarsha, we empower students to lead and innovate."}
               </p>
-              <div className="flex items-center gap-5 pt-8 border-t border-secondary">
-                <div className="h-14 w-1 bg-primary rounded-full" />
+              <div className="flex items-center gap-3 md:gap-5 pt-4 md:pt-8 border-t border-secondary">
+                <div className="h-10 md:h-14 w-1 bg-primary rounded-full" />
                 <div>
-                  <h4 className="text-2xl font-bold text-primary">{principal?.name || "Mr. Ram Babu Regmi"}</h4>
-                  <p className="text-sm font-bold text-brandRed uppercase tracking-[0.2em] mt-1">{principal?.title || "Principal"}</p>
+                  <h4 className="text-lg md:text-2xl font-bold text-primary">{principal?.name || "Mr. Ram Babu Regmi"}</h4>
+                  <p className="text-xs md:text-sm font-bold text-brandRed uppercase tracking-[0.2em] mt-0.5 md:mt-1">{principal?.title || "Principal"}</p>
                 </div>
               </div>
             </div>
@@ -356,23 +356,23 @@ const WhyChooseUs = ({ points = [] }: { points: any[] }) => {
 
   return (
     <AnimatedSection delay={0.2}>
-      <section className="py-24 bg-white">
+      <section className="py-12 md:py-24 bg-white">
         <div className="section-container">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-2">Why Adarsha Mavi?</h2>
-            <p className="font-nepali text-brandRed text-lg">हामीलाई किन रोज्ने?</p>
+          <div className="text-center mb-10 md:mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold text-primary mb-1 md:mb-2">Why Adarsha Mavi?</h2>
+            <p className="font-nepali text-brandRed text-sm md:text-lg">हामीलाई किन रोज्ने?</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {activePoints.map((p: any, i: number) => {
               const Icon = p.icon || CheckCircle2;
               return (
-                <div key={i} className="premium-card p-6 md:p-8 group hover:bg-primary transition-all duration-500 hover:-translate-y-2">
-                  <div className="bg-primary/10 w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-white/20 transition-colors">
-                    <Icon className="text-primary group-hover:text-white transition-colors" size={24} />
+                <div key={i} className="premium-card p-5 md:p-8 group hover:bg-primary transition-all duration-500 hover:-translate-y-2">
+                  <div className="bg-primary/10 w-10 h-10 md:w-16 md:h-16 rounded-lg md:rounded-2xl flex items-center justify-center mb-3 md:mb-6 group-hover:bg-white/20 transition-colors">
+                    <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="text-lg md:text-xl font-bold text-primary mb-2 md:mb-3 group-hover:text-white transition-colors">{p.title}</h3>
-                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed group-hover:text-white/80 transition-colors">{p.desc}</p>
+                  <h3 className="text-base md:text-xl font-bold text-primary mb-1.5 md:mb-3 group-hover:text-white transition-colors">{p.title}</h3>
+                  <p className="text-xs md:text-base text-muted-foreground leading-relaxed group-hover:text-white/80 transition-colors">{p.desc}</p>
                 </div>
               );
             })}
@@ -391,11 +391,11 @@ const TeamSection = ({ team }: { team: any[] }) => {
 
   return (
     <AnimatedSection delay={0.25}>
-      <section className="py-24 bg-secondary/10">
+      <section className="py-12 md:py-24 bg-secondary/10">
         <div className="section-container">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-2">Our Dedicated Team</h2>
-            <p className="font-nepali text-brandRed text-lg">हाम्रो टोली</p>
+          <div className="text-center mb-10 md:mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold text-primary mb-1 md:mb-2">Our Dedicated Team</h2>
+            <p className="font-nepali text-brandRed text-sm md:text-lg">हाम्रो टोली</p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -408,10 +408,10 @@ const TeamSection = ({ team }: { team: any[] }) => {
                 transition={{ delay: idx * 0.1 }}
                 whileHover={{ y: -10 }}
               >
-                <div className="premium-card p-6 md:p-8 text-center group bg-white border-primary/5 h-full flex flex-col justify-between">
-                  <div className="relative inline-block mb-4 md:mb-6">
+                <div className="premium-card p-5 md:p-8 text-center group bg-white border-primary/5 h-full flex flex-col justify-between">
+                  <div className="relative inline-block mb-3 md:mb-6">
                     <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-full ring-[4px] md:ring-[6px] ring-secondary border-4 border-white overflow-hidden bg-muted mx-auto shadow-md relative z-10">
+                    <div className="w-20 h-20 md:w-32 md:h-32 rounded-full ring-[3px] md:ring-[6px] ring-secondary border-[3px] md:border-4 border-white overflow-hidden bg-muted mx-auto shadow-md relative z-10">
                       {m.image_url ? (
                         <img src={m.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={m.name} />
                       ) : (
@@ -436,11 +436,11 @@ const TeamSection = ({ team }: { team: any[] }) => {
           </div>
 
           {team.length > 8 && (
-            <div className="flex justify-center mt-16">
+            <div className="flex justify-center mt-10 md:mt-16">
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button size="lg" variant="outline" className="rounded-full px-10 h-14 border-primary text-primary hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20">
-                    Meet the Full Team <ArrowRight className="ml-3" size={18} />
+                  <Button size="lg" variant="outline" className="rounded-full px-6 md:px-10 h-12 md:h-14 text-xs md:text-sm border-primary text-primary hover:bg-primary hover:text-white transition-all shadow-lg hover:shadow-primary/20">
+                    Meet the Full Team <ArrowRight className="ml-2 w-4 h-4 md:w-[18px] md:h-[18px]" />
                   </Button>
                 </DialogTrigger>
 
@@ -485,16 +485,16 @@ const TeamSection = ({ team }: { team: any[] }) => {
    ----------------------------- */
 const RecentBlogs = ({ blogs = [] }: { blogs: any[] }) => (
   <AnimatedSection delay={0.3}>
-    <section className="py-24 bg-white">
+    <section className="py-12 md:py-24 bg-white">
       <div className="section-container">
-        <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-16">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 md:gap-6 mb-10 md:mb-16">
           <div>
-            <h2 className="text-4xl font-bold text-primary mb-2 tracking-tight">From Our Blog</h2>
-            <p className="font-nepali text-brandRed text-lg">विद्यालयका गतिविधिहरू</p>
+            <h2 className="text-2xl md:text-4xl font-bold text-primary mb-1 md:mb-2 tracking-tight">From Our Blog</h2>
+            <p className="font-nepali text-brandRed text-sm md:text-lg">विद्यालयका गतिविधिहरू</p>
           </div>
           <Link to="/blogs">
-            <Button variant="outline" className="rounded-full px-8 h-12 border-primary text-primary hover:bg-primary hover:text-white transition-all">
-              Explore All Stories <ArrowRight size={18} className="ml-2" />
+            <Button variant="outline" className="rounded-full px-6 h-10 md:h-12 text-xs md:text-sm border-primary text-primary hover:bg-primary hover:text-white transition-all">
+              Explore All Stories <ArrowRight className="ml-2 w-4 h-4 md:w-[18px] md:h-[18px]" />
             </Button>
           </Link>
         </div>
@@ -524,16 +524,16 @@ const RecentBlogs = ({ blogs = [] }: { blogs: any[] }) => (
                       </span>
                     </div>
                   </div>
-                  <CardContent className="p-8 flex-1 flex flex-col">
-                    <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-wider mb-4">
+                  <CardContent className="p-5 md:p-8 flex-1 flex flex-col">
+                    <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3 md:mb-4">
                       <span className="text-brandRed">{new Date(blog.published_at).toLocaleDateString()}</span>
                       <span className="w-1 h-1 bg-secondary rounded-full" />
                       <span>{blog.author_name}</span>
                     </div>
-                    <h3 className="text-xl font-bold text-primary mb-4 line-clamp-2 group-hover:text-brandRed transition-colors leading-snug">
+                    <h3 className="text-lg md:text-xl font-bold text-primary mb-3 md:mb-4 line-clamp-2 group-hover:text-brandRed transition-colors leading-snug">
                       {blog.title}
                     </h3>
-                    <p className="text-muted-foreground leading-relaxed line-clamp-3 mb-6 text-sm">
+                    <p className="text-muted-foreground leading-relaxed line-clamp-3 mb-5 md:mb-6 text-xs md:text-sm">
                       {blog.excerpt || blog.content.substring(0, 120).replace(/<[^>]*>?/gm, '') + "..."}
                     </p>
                     <div className="mt-auto pt-4 flex items-center text-primary font-bold text-sm uppercase tracking-widest group-hover:gap-2 transition-all">
@@ -555,52 +555,52 @@ const RecentBlogs = ({ blogs = [] }: { blogs: any[] }) => (
    ----------------------------- */
 const QuickInfo = ({ contact = {} as any }: { contact: any }) => (
   <AnimatedSection delay={0.4}>
-    <section className="py-24 bg-primary text-white overflow-hidden relative">
+    <section className="py-12 md:py-24 bg-primary text-white overflow-hidden relative">
       {/* Decorative element */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-brandRed/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+      <div className="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl md:blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-48 h-48 md:w-64 md:h-64 bg-brandRed/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl md:blur-3xl" />
 
       <div className="section-container relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">Ready to join the Adarsha family?</h2>
-            <p className="text-primary-foreground/80 text-lg mb-10 leading-relaxed max-w-lg">
+            <h2 className="text-2xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">Ready to join the Adarsha family?</h2>
+            <p className="text-primary-foreground/80 text-sm md:text-lg mb-6 md:mb-10 leading-relaxed max-w-lg">
               Admissions are now open for the upcoming academic session. Contact us today to secure your child's future in one of Nepal's most prestigious institutions.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 md:gap-4">
               <Link to="/contact">
-                <Button size="lg" className="bg-white text-primary hover:bg-secondary transition-all rounded-full px-10 h-16 text-lg font-bold">
+                <Button size="lg" className="bg-white text-primary hover:bg-secondary transition-all rounded-full px-6 h-12 md:px-10 md:h-16 text-sm md:text-lg font-bold">
                   Enquire Now
                 </Button>
               </Link>
               <a href={`tel:${contact.phone || '014234567'}`}>
-                <Button size="lg" variant="outline" className="bg-white/5 border-white/60 text-white hover:bg-white hover:text-primary transition-all rounded-full px-10 h-16 text-lg shadow-lg">
+                <Button size="lg" variant="outline" className="bg-white/5 border-white/60 text-white hover:bg-white hover:text-primary transition-all rounded-full px-6 h-12 md:px-10 md:h-16 text-sm md:text-lg shadow-lg">
                   Call Us
                 </Button>
               </a>
             </div>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-4 md:gap-6">
-            <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl md:rounded-[2rem] border border-white/10">
-              <div className="bg-white/10 w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-4 md:mb-6">
-                <Phone size={20} />
+          <div className="grid sm:grid-cols-2 gap-3 md:gap-6">
+            <div className="bg-white/10 backdrop-blur-md p-4 md:p-8 rounded-xl md:rounded-[2rem] border border-white/10">
+              <div className="bg-white/10 w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-6">
+                <Phone className="w-4 h-4 md:w-5 md:h-5" />
               </div>
-              <h4 className="text-lg md:text-xl font-bold mb-1 md:mb-2">Call Us</h4>
+              <h4 className="text-base md:text-xl font-bold mb-1 md:mb-2">Call Us</h4>
               <p className="text-primary-foreground/70 text-xs md:text-sm leading-relaxed">{contact.phone || "+977-1-4XXXXXX"}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl md:rounded-[2rem] border border-white/10">
-              <div className="bg-white/10 w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-4 md:mb-6">
-                <Mail size={20} />
+            <div className="bg-white/10 backdrop-blur-md p-4 md:p-8 rounded-xl md:rounded-[2rem] border border-white/10">
+              <div className="bg-white/10 w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-6">
+                <Mail className="w-4 h-4 md:w-5 md:h-5" />
               </div>
-              <h4 className="text-lg md:text-xl font-bold mb-1 md:mb-2">Email Us</h4>
+              <h4 className="text-base md:text-xl font-bold mb-1 md:mb-2">Email Us</h4>
               <p className="text-primary-foreground/70 text-xs md:text-sm leading-relaxed">{contact.email || "info@adarshamavi.edu.np"}</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl md:rounded-[2rem] border border-white/10 col-span-full">
-              <div className="bg-white/10 w-10 h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-4 md:mb-6">
-                <MapPin size={20} />
+            <div className="bg-white/10 backdrop-blur-md p-4 md:p-8 rounded-xl md:rounded-[2rem] border border-white/10 col-span-full">
+              <div className="bg-white/10 w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl flex items-center justify-center mb-3 md:mb-6">
+                <MapPin className="w-4 h-4 md:w-5 md:h-5" />
               </div>
-              <h4 className="text-lg md:text-xl font-bold mb-1 md:mb-2">Visit Us</h4>
+              <h4 className="text-base md:text-xl font-bold mb-1 md:mb-2">Visit Us</h4>
               <p className="text-primary-foreground/70 text-xs md:text-sm leading-relaxed">{contact.address || "Patan, Lalitpur, Nepal"}</p>
             </div>
           </div>
