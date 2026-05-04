@@ -65,7 +65,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
 
             return (
               <CarouselItem key={img.id}>
-                <div className={`relative w-full overflow-hidden bg-primary ${i === 0 ? 'h-[75vh] md:h-[calc(100vh-92px)]' : 'h-auto md:h-[calc(100vh-92px)]'}`}>
+                <div className="relative w-full overflow-hidden bg-primary h-[75vh] md:h-[calc(100vh-92px)]">
                   {/* Text Overlay - Only on first slide for clarity as requested */}
                   {i === 0 && (
                     <div className="absolute inset-0 z-20 flex items-center bg-black/10">
