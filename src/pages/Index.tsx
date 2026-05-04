@@ -121,7 +121,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
 
                   {/* Background Image or Gradient */}
                   {i === 0 ? (
-                    <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#0f172a] via-primary to-brandRed opacity-95" />
+                    <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary via-[#1e3a8a] to-[#0f172a] opacity-95" />
                   ) : (
                     <motion.img
                       src={img.image_url}
