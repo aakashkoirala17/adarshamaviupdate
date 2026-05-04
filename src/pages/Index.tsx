@@ -65,21 +65,21 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
 
             return (
               <CarouselItem key={img.id}>
-                <div className="relative w-full overflow-hidden bg-primary h-[75vh] md:h-[calc(100vh-92px)]">
+                <div className="relative w-full overflow-hidden bg-primary aspect-video md:aspect-auto md:h-[calc(100vh-92px)]">
                   {/* Text Overlay - Only on first slide for clarity as requested */}
                   {i === 0 && (
-                    <div className="absolute inset-0 z-20 flex items-center bg-black/10">
+                    <div className="absolute inset-0 z-20 flex items-center bg-black/10 py-2 md:py-0">
                       <div className="section-container w-full">
-                        <div className="max-w-2xl space-y-4 md:space-y-6">
+                        <div className="max-w-2xl space-y-2 md:space-y-6">
                           <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
                           >
-                            <h1 className="text-xl md:text-6xl font-bold text-white drop-shadow-2xl leading-tight">
+                            <h1 className="text-lg md:text-6xl font-bold text-white drop-shadow-2xl leading-tight">
                               {slide.title}
                             </h1>
-                            <p className="text-base md:text-3xl font-nepali text-white/90 mt-1 md:mt-2 drop-shadow-xl">
+                            <p className="text-sm md:text-3xl font-nepali text-white/90 mt-0.5 md:mt-2 drop-shadow-xl">
                               {slide.nepaliTitle}
                             </p>
                           </motion.div>
@@ -88,7 +88,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ duration: 1, delay: 0.3 }}
-                            className="text-white/95 text-[11px] md:text-xl leading-relaxed drop-shadow-lg max-w-xl line-clamp-3 md:line-clamp-none"
+                            className="text-white/95 text-[10px] md:text-xl leading-relaxed drop-shadow-lg max-w-xl line-clamp-2 md:line-clamp-none"
                           >
                             {slide.description}
                           </motion.p>
@@ -97,10 +97,10 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.5 }}
-                            className="flex flex-wrap gap-3 md:gap-4 pt-2 md:pt-4"
+                            className="flex flex-wrap gap-2 md:gap-4 pt-1 md:pt-4"
                           >
                             <Link to="/academics">
-                              <Button size="lg" className="px-4 md:px-8 py-3 md:py-6 text-xs md:text-lg rounded-full shadow-xl hover:shadow-primary/20 transition-all">
+                              <Button size="lg" className="px-3 md:px-8 py-2 md:py-6 text-[10px] md:text-lg rounded-full shadow-xl hover:shadow-primary/20 transition-all h-8 md:h-auto">
                                 Our Programs
                               </Button>
                             </Link>
@@ -108,7 +108,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                               <Button
                                 size="lg"
                                 variant="outline"
-                                className="px-4 md:px-8 py-3 md:py-6 text-xs md:text-lg rounded-full border-white text-white bg-white/10 hover:bg-white hover:text-primary transition-all backdrop-blur-sm shadow-xl"
+                                className="px-3 md:px-8 py-2 md:py-6 text-[10px] md:text-lg rounded-full border-white text-white bg-white/10 hover:bg-white hover:text-primary transition-all backdrop-blur-sm shadow-xl h-8 md:h-auto"
                               >
                                 Contact Us
                               </Button>
@@ -123,16 +123,10 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                   <div className="absolute inset-0 z-0">
                     {img.image_url ? (
                       <>
-                        {/* Blurred Background to fill spaces */}
-                        <div 
-                          className="absolute inset-0 scale-110 blur-2xl opacity-40 bg-center bg-cover"
-                          style={{ backgroundImage: `url(${img.image_url})` }}
-                        />
-                        {/* Actual Image without cropping */}
                         <motion.img
                           src={img.image_url}
                           alt={img.alt_text || "School Hero"}
-                          className="w-full h-full object-contain relative z-10"
+                          className="w-full h-full object-cover relative z-10"
                           initial={{ scale: 1.05 }}
                           animate={{ scale: 1 }}
                           transition={{ duration: 10, ease: "linear" }}
