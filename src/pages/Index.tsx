@@ -123,16 +123,22 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                   <div className="absolute inset-0 z-0">
                     {img.image_url ? (
                       <>
+                        {/* Blurred Background to fill spaces */}
+                        <div 
+                          className="absolute inset-0 scale-110 blur-2xl opacity-40 bg-center bg-cover"
+                          style={{ backgroundImage: `url(${img.image_url})` }}
+                        />
+                        {/* Actual Image without cropping */}
                         <motion.img
                           src={img.image_url}
                           alt={img.alt_text || "School Hero"}
-                          className="w-full h-full object-cover min-h-[50vh]"
+                          className="w-full h-full object-contain relative z-10"
                           initial={{ scale: 1.05 }}
                           animate={{ scale: 1 }}
                           transition={{ duration: 10, ease: "linear" }}
                         />
                         {/* Add overlay specifically for the first slide to ensure text readability */}
-                        {i === 0 && <div className="absolute inset-0 bg-black/40" />}
+                        {i === 0 && <div className="absolute inset-0 bg-black/40 z-20" />}
                       </>
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#1e3a8a] to-[#0f172a] opacity-95" />
