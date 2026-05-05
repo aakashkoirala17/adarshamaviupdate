@@ -12,6 +12,7 @@ import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import ComputerEngineering from "./pages/ComputerEngineering";
 import Blogs from "./pages/Blogs";
 import BlogPost from "./pages/BlogPost";
 import Downloads from "./pages/Downloads";
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/notices" element={<Notices />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/computer-engineering" element={<ComputerEngineering />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/blogs" element={<Blogs />} />

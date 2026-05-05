@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 const NAV_ITEMS = [
   { name: "Home", path: "/" },
   { name: "About Us", path: "/about" },
+  { name: "Computer Engineering", path: "/computer-engineering" },
   { name: "Notices", path: "/notices" },
   { name: "Academics", path: "/academics" },
   { name: "Blogs", path: "/blogs" },
@@ -188,11 +189,6 @@ const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <div className="flex items-center gap-4">
-              <Link to="/contact" className="hidden sm:block">
-                <Button className="rounded-full px-6 font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20">
-                  Enquire
-                </Button>
-              </Link>
               <button
                 aria-label="Toggle Menu"
                 className="lg:hidden h-10 w-10 md:h-12 md:w-12 flex items-center justify-center rounded-xl md:rounded-2xl bg-secondary text-primary hover:bg-primary hover:text-white transition-all"
