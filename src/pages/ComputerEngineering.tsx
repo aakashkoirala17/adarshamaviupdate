@@ -20,12 +20,13 @@ const ComputerEngineering = () => {
         // checking for relevant keywords in their position
         const ceStaff = data.filter(member => {
           const pos = (member.position || "").toLowerCase();
-          return pos.includes("computer") || 
-                 pos.includes("engineering") || 
-                 pos.includes("software") || 
-                 pos.includes("hardware") ||
-                 pos.includes("ce dept") ||
-                 pos.includes("it ");
+          return pos.includes("computer") ||
+            pos.includes("engineering") ||
+            pos.includes("software") ||
+            pos.includes("hardware") ||
+            pos.includes("ce dept") ||
+            pos.includes("it ") ||
+            pos.includes("lab ");
         });
         setInstructors(ceStaff);
       }
@@ -56,31 +57,76 @@ const ComputerEngineering = () => {
                 Computer <span className="text-brandRed">Engineering</span>
               </h1>
               <p className="text-xl text-primary-foreground/80 leading-relaxed max-w-2xl font-medium">
-                Empowering the next generation of technologists, developers, and innovators through comprehensive curriculum and hands-on practical experience.
+                Producing highly skilled manpower in the Technical and Vocational stream with specialized knowledge in software development, hardware maintenance, and modern computing technologies.
               </p>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Overview */}
+      {/* Curriculum Structure */}
       <section className="py-24 bg-white relative z-20 -mt-10 rounded-t-[3rem] shadow-[0_-20px_40px_-15px_rgba(0,0,0,0.1)]">
         <div className="section-container">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 bg-secondary/30 rounded-3xl border border-secondary hover:bg-primary/5 transition-colors group">
-              <Cpu className="w-10 h-10 text-primary mb-6 group-hover:scale-110 transition-transform" />
-              <h3 className="text-xl font-bold text-primary mb-3">Hardware & Systems</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">In-depth study of computer architecture, microprocessors, and digital logic design.</p>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-primary mb-4 tracking-tight">Curriculum Structure</h2>
+            <p className="text-lg text-muted-foreground">Technical and Vocational Stream (Grade 9 - 12)</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Grade 9 */}
+            <div className="p-8 bg-secondary/30 rounded-3xl border border-secondary hover:bg-primary/5 transition-colors group shadow-sm hover:shadow-md">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="bg-white p-3 rounded-xl shadow-sm group-hover:scale-110 transition-transform"><Monitor className="text-primary w-6 h-6" /></div>
+                <h3 className="text-2xl font-bold text-primary">Grade 9</h3>
+              </div>
+              <ul className="space-y-4 text-muted-foreground font-medium">
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Programming Principles & Concept in C</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Fundamentals of Computer & Application</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Fundamentals of Electro-System</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Website Design</li>
+              </ul>
             </div>
-            <div className="p-8 bg-secondary/30 rounded-3xl border border-secondary hover:bg-primary/5 transition-colors group">
-              <Code2 className="w-10 h-10 text-primary mb-6 group-hover:scale-110 transition-transform" />
-              <h3 className="text-xl font-bold text-primary mb-3">Software Development</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">Modern programming languages, data structures, algorithms, and software engineering principles.</p>
+
+            {/* Grade 10 */}
+            <div className="p-8 bg-secondary/30 rounded-3xl border border-secondary hover:bg-primary/5 transition-colors group shadow-sm hover:shadow-md">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="bg-white p-3 rounded-xl shadow-sm group-hover:scale-110 transition-transform"><Cpu className="text-primary w-6 h-6" /></div>
+                <h3 className="text-2xl font-bold text-primary">Grade 10</h3>
+              </div>
+              <ul className="space-y-4 text-muted-foreground font-medium">
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Data Structure & OOP concept using C++</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Computer Hardware, Electronics Repair & Maintenance</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Database Management System</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Digital Design & Microprocessor</li>
+              </ul>
             </div>
-            <div className="p-8 bg-secondary/30 rounded-3xl border border-secondary hover:bg-primary/5 transition-colors group">
-              <BookOpen className="w-10 h-10 text-primary mb-6 group-hover:scale-110 transition-transform" />
-              <h3 className="text-xl font-bold text-primary mb-3">Practical Labs</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">Extensive hands-on sessions in our state-of-the-art computer laboratories.</p>
+
+            {/* Grade 11 */}
+            <div className="p-8 bg-secondary/30 rounded-3xl border border-secondary hover:bg-primary/5 transition-colors group shadow-sm hover:shadow-md">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="bg-white p-3 rounded-xl shadow-sm group-hover:scale-110 transition-transform"><Code2 className="text-primary w-6 h-6" /></div>
+                <h3 className="text-2xl font-bold text-primary">Grade 11</h3>
+              </div>
+              <ul className="space-y-4 text-muted-foreground font-medium">
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Programming in Java</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Computer Organization & Architecture</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Operating System</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Web & Mobile Application Development</li>
+              </ul>
+            </div>
+
+            {/* Grade 12 */}
+            <div className="p-8 bg-secondary/30 rounded-3xl border border-secondary hover:bg-primary/5 transition-colors group shadow-sm hover:shadow-md">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="bg-white p-3 rounded-xl shadow-sm group-hover:scale-110 transition-transform"><BookOpen className="text-primary w-6 h-6" /></div>
+                <h3 className="text-2xl font-bold text-primary">Grade 12</h3>
+              </div>
+              <ul className="space-y-4 text-muted-foreground font-medium">
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Visual Programming</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Computer Network</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Contemporary Technology</li>
+                <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-brandRed mt-2 shrink-0" /> Software Engineering and Project</li>
+              </ul>
             </div>
           </div>
         </div>
@@ -95,14 +141,14 @@ const ComputerEngineering = () => {
           </div>
 
           {!instructors.length ? (
-             <div className="text-center p-12 bg-white rounded-3xl border border-secondary">
-               <Users className="w-16 h-16 text-muted-foreground/20 mx-auto mb-4" />
-               <p className="text-muted-foreground">No faculty members found. Add team members with 'Computer' or 'Engineering' in their position via the Admin panel.</p>
-             </div>
+            <div className="text-center p-12 bg-white rounded-3xl border border-secondary">
+              <Users className="w-16 h-16 text-muted-foreground/20 mx-auto mb-4" />
+              <p className="text-muted-foreground">No faculty members found. Add team members with 'Computer' or 'Engineering' in their position via the Admin panel.</p>
+            </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {instructors.map((instructor, idx) => (
-                <motion.div 
+                <motion.div
                   key={instructor.id || idx}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
