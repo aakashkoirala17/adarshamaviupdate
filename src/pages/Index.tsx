@@ -303,53 +303,103 @@ const Notices = ({ notices }: { notices: any[] }) => {
 };
 
 /* -----------------------------
-   Principal Message
+   Leadership Messages
    ----------------------------- */
-const PrincipalMessage = ({ principal }: { principal: any }) => (
-  <AnimatedSection delay={0.15}>
-    <section className="py-12 md:py-24 bg-secondary/30">
-      <div className="section-container">
-        <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-2xl md:text-4xl font-bold text-primary mb-1 md:mb-2">Principal's Message</h2>
-          <p className="font-nepali text-brandRed text-sm md:text-lg">प्रधानाध्यापकको सन्देश</p>
-        </div>
+const LeadershipMessageCard = ({ data, defaultTitle, defaultRole }: { data: any, defaultTitle: string, defaultRole: string }) => {
+  if (!data?.message && !data?.name) return null;
+  return (
+    <div className="bg-white rounded-[2rem] shadow-xl shadow-primary/5 border border-primary/5 overflow-hidden flex flex-col h-full group hover:shadow-primary/10 transition-all duration-500 p-6 md:p-10 relative">
+      <div className="absolute top-6 right-6 opacity-[0.03] text-primary pointer-events-none">
+        <BookOpen className="w-20 h-20 md:w-32 md:h-32" />
+      </div>
 
-        <div className="max-w-5xl mx-auto bg-white rounded-[2.5rem] shadow-xl shadow-primary/5 border border-primary/5 overflow-hidden flex flex-col md:flex-row min-h-[500px]">
-          <div className="w-full md:w-[40%] h-96 md:h-auto relative flex-shrink-0">
-            {principal?.photoUrl ? (
-              <img src={principal.photoUrl} className="w-full h-full object-cover" alt={principal.name} />
+      <div className="relative z-10 flex-grow flex flex-col">
+        <span className="text-4xl md:text-6xl font-serif text-primary/20 absolute -top-4 -left-2">"</span>
+        <p className="text-sm md:text-lg text-muted-foreground italic leading-relaxed font-light mb-8 mt-3 line-clamp-4 relative z-10 min-h-[5rem]">
+          {data?.message || "Education is the most powerful weapon which you can use to change the world. At Adarsha, we empower students to lead and innovate."}
+        </p>
+
+        <div className="mt-auto flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 pt-6 border-t border-secondary/50">
+          <div className="w-24 h-32 md:w-28 md:h-36 rounded-xl overflow-hidden shrink-0 border-4 border-secondary/30 bg-secondary/10 flex items-center justify-center p-1">
+            {data?.photoUrl ? (
+              <img src={data.photoUrl} className="w-full h-full object-contain rounded-lg" alt={data.name || defaultTitle} />
             ) : (
-              <div className="w-full h-full bg-muted flex items-center justify-center">
-                <Users size={80} className="text-muted-foreground/20" />
-              </div>
+              <Users size={32} className="text-muted-foreground/20" />
             )}
-            <div className="absolute inset-0 bg-primary/10 mix-blend-overlay" />
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-primary/40 to-transparent md:hidden" />
           </div>
-
-          <div className="p-6 md:p-16 flex flex-col justify-center relative">
-            <div className="absolute top-4 right-4 md:top-10 md:right-10 opacity-[0.03] text-primary">
-              <BookOpen className="w-24 h-24 md:w-48 md:h-48" />
-            </div>
-            <div className="relative z-10">
-              <span className="text-4xl md:text-6xl font-serif text-primary/20 absolute -top-4 -left-2 md:-top-8 md:-left-4">"</span>
-              <p className="text-sm md:text-2xl text-muted-foreground italic leading-relaxed font-light mb-6 md:mb-10 mt-2 md:mt-0">
-                {principal?.message || "Education is the most powerful weapon which you can use to change the world. At Adarsha, we empower students to lead and innovate."}
-              </p>
-              <div className="flex items-center gap-3 md:gap-5 pt-4 md:pt-8 border-t border-secondary">
-                <div className="h-10 md:h-14 w-1 bg-primary rounded-full" />
-                <div>
-                  <h4 className="text-lg md:text-2xl font-bold text-primary">{principal?.name || "Mr. Ram Babu Regmi"}</h4>
-                  <p className="text-xs md:text-sm font-bold text-brandRed uppercase tracking-[0.2em] mt-0.5 md:mt-1">{principal?.title || "Principal"}</p>
+          <div className="flex flex-col justify-center text-center sm:text-left h-full py-2 sm:py-4">
+            <h4 className="text-lg md:text-2xl font-bold text-primary">{data?.name || defaultTitle}</h4>
+            <p className="text-xs md:text-sm font-bold text-brandRed uppercase tracking-[0.2em] mt-1">{data?.title || defaultRole}</p>
+          </div>
+        </div>
+        
+        <div className="mt-6 pt-6 border-t border-secondary/50">
+           <Dialog>
+             <DialogTrigger asChild>
+               <Button className="rounded-full w-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-all group font-bold">
+                 Read Full Message <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+               </Button>
+             </DialogTrigger>
+             <DialogContent className="max-w-3xl rounded-[2rem] overflow-hidden p-0 gap-0 border-none shadow-2xl">
+                <div className="bg-primary p-6 md:p-10 text-white flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl pointer-events-none" />
+                  
+                  <div className="w-32 h-40 md:w-40 md:h-52 rounded-xl border-4 border-white/20 overflow-hidden shrink-0 shadow-xl relative z-10 bg-white/10 flex items-center justify-center p-2">
+                    {data?.photoUrl ? (
+                      <img src={data.photoUrl} className="w-full h-full object-contain rounded-lg bg-white" alt={data.name} />
+                    ) : (
+                      <Users size={40} className="text-white/50" />
+                    )}
+                  </div>
+                  <div className="relative z-10 flex flex-col justify-center h-full pt-4">
+                    <p className="text-brandRed font-bold uppercase tracking-widest text-xs md:text-sm mb-2">{data?.title || defaultRole}</p>
+                    <DialogTitle className="text-2xl md:text-4xl font-bold text-white leading-tight">
+                      {data?.name || defaultTitle}
+                    </DialogTitle>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
+                <div className="p-6 md:p-10 max-h-[60vh] overflow-y-auto bg-white relative">
+                  <span className="text-6xl font-serif text-primary/10 absolute top-4 left-4 pointer-events-none">"</span>
+                  <p className="text-base md:text-xl text-muted-foreground leading-relaxed whitespace-pre-wrap font-light relative z-10">
+                    {data?.message || "Education is the most powerful weapon which you can use to change the world. At Adarsha, we empower students to lead and innovate."}
+                  </p>
+                </div>
+             </DialogContent>
+           </Dialog>
         </div>
       </div>
-    </section>
-  </AnimatedSection>
-);
+    </div>
+  );
+};
+
+const LeadershipSection = ({ principal, asstHeadteacher }: { principal: any, asstHeadteacher: any }) => {
+  const showPrincipal = principal?.message || principal?.name;
+  const showAsst = asstHeadteacher?.message || asstHeadteacher?.name;
+  
+  if (!showPrincipal && !showAsst) return null;
+
+  return (
+    <AnimatedSection delay={0.15}>
+      <section className="py-12 md:py-24 bg-secondary/30">
+        <div className="section-container">
+          <div className="text-center mb-10 md:mb-16">
+            <h2 className="text-2xl md:text-4xl font-bold text-primary mb-1 md:mb-2">Leadership Messages</h2>
+            <p className="font-nepali text-brandRed text-sm md:text-lg">नेतृत्वको सन्देश</p>
+          </div>
+
+          <div className={`grid gap-8 md:gap-10 ${showPrincipal && showAsst ? 'lg:grid-cols-2' : 'max-w-4xl mx-auto'}`}>
+             {showPrincipal && (
+               <LeadershipMessageCard data={principal} defaultTitle="Mr. Ram Babu Regmi" defaultRole="Headteacher" />
+             )}
+             {showAsst && (
+               <LeadershipMessageCard data={asstHeadteacher} defaultTitle="Assistant Headteacher" defaultRole="Assistant Headteacher" />
+             )}
+          </div>
+        </div>
+      </section>
+    </AnimatedSection>
+  );
+};
 
 /* -----------------------------
    Why Choose Us
@@ -652,7 +702,7 @@ const Index = () => {
     <Layout>
       <Hero images={heroImages} slides={settings?.homepage_content?.heroSlides} />
       <Notices notices={notices} />
-      <PrincipalMessage principal={settings?.principal_message} />
+      <LeadershipSection principal={settings?.principal_message} asstHeadteacher={settings?.asst_headteacher_message} />
       <WhyChooseUs points={settings?.homepage_content?.whyChooseUs} />
       <RecentBlogs blogs={blogs} />
       <TeamSection team={team} />

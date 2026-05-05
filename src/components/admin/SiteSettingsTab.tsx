@@ -152,7 +152,7 @@ export const SiteSettingsTab = () => {
         <TabsContent value="homepage">
           <div className="grid gap-6">
             <Card>
-              <CardHeader><CardTitle>Principal Message</CardTitle></CardHeader>
+              <CardHeader><CardTitle>Headteacher Message</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="grid gap-2">
@@ -173,7 +173,7 @@ export const SiteSettingsTab = () => {
                 </div>
 
                 <div className="grid gap-2">
-                  <label>Principal Photo</label>
+                  <label>Headteacher Photo</label>
                   <div className="flex gap-4 items-start">
                     <Dropzone onDrop={files => handleImageUpload(files[0], "principal_message", "photoUrl")} multiple={false}>
                       {({ getRootProps, getInputProps }) => (
@@ -186,13 +186,58 @@ export const SiteSettingsTab = () => {
                     </Dropzone>
                     {localSettings.principal_message?.photoUrl && (
                       <div className="w-20 h-20 rounded border bg-muted overflow-hidden">
-                        <img src={localSettings.principal_message.photoUrl} className="w-full h-full object-cover" alt="Principal" />
+                        <img src={localSettings.principal_message.photoUrl} className="w-full h-full object-cover" alt="Headteacher" />
                       </div>
                     )}
                   </div>
                 </div>
 
                 <Button onClick={() => handleUpdate("principal_message", localSettings.principal_message)}><Save className="mr-2 h-4 w-4" /> Save Message</Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader><CardTitle>Asst Headteacher Message</CardTitle></CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <label>Name</label>
+                    <Input value={localSettings.asst_headteacher_message?.name || ""} 
+                      onChange={e => setLocalSettings({...localSettings, asst_headteacher_message: {...localSettings.asst_headteacher_message, name: e.target.value}})} />
+                  </div>
+                  <div className="grid gap-2">
+                    <label>Title</label>
+                    <Input value={localSettings.asst_headteacher_message?.title || ""} 
+                      onChange={e => setLocalSettings({...localSettings, asst_headteacher_message: {...localSettings.asst_headteacher_message, title: e.target.value}})} />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <label>Message</label>
+                  <Textarea rows={4} value={localSettings.asst_headteacher_message?.message || ""} 
+                    onChange={e => setLocalSettings({...localSettings, asst_headteacher_message: {...localSettings.asst_headteacher_message, message: e.target.value}})} />
+                </div>
+
+                <div className="grid gap-2">
+                  <label>Asst Headteacher Photo</label>
+                  <div className="flex gap-4 items-start">
+                    <Dropzone onDrop={files => handleImageUpload(files[0], "asst_headteacher_message", "photoUrl")} multiple={false}>
+                      {({ getRootProps, getInputProps }) => (
+                        <div {...getRootProps()} className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:bg-secondary/50 flex-1">
+                          <input {...getInputProps()} />
+                          {uploading === "asst_headteacher_message-photoUrl" ? <Loader2 className="mx-auto h-6 w-6 animate-spin" /> : <ImageIcon className="mx-auto h-6 w-6 mb-1 text-muted-foreground" />}
+                          <p className="text-xs">Upload Photo</p>
+                        </div>
+                      )}
+                    </Dropzone>
+                    {localSettings.asst_headteacher_message?.photoUrl && (
+                      <div className="w-20 h-20 rounded border bg-muted overflow-hidden">
+                        <img src={localSettings.asst_headteacher_message.photoUrl} className="w-full h-full object-cover" alt="Asst Headteacher" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <Button onClick={() => handleUpdate("asst_headteacher_message", localSettings.asst_headteacher_message)}><Save className="mr-2 h-4 w-4" /> Save Message</Button>
               </CardContent>
             </Card>
 
