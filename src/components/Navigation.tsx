@@ -23,29 +23,47 @@ const NAV_ITEMS = [
 /* --------------------------------
    Desktop Nav Item
 ----------------------------------- */
-const DesktopNavItem = ({ name, path, beta }: { name: string; path: string; beta?: boolean }) => (
-  <NavLink
-    to={path}
-    className={({ isActive }) =>
-      `relative px-5 py-2 text-sm font-bold tracking-tight uppercase transition-all duration-300 flex items-center gap-1.5 group whitespace-nowrap
-      ${isActive ? "text-primary" : "text-foreground/70 hover:text-primary"}`
-    }
-  >
-    {({ isActive }) => (
-      <>
+const DesktopNavItem = ({ name, path, beta }: { name: string; path: string; beta?: boolean }) => {
+  const isContact = name.toLowerCase() === "contact";
+
+  if (isContact) {
+    return (
+      <NavLink
+        to={path}
+        className={({ isActive }) =>
+          `ml-1 px-5 py-2 bg-primary text-white text-[12px] font-black tracking-widest uppercase rounded-full transition-all duration-300 flex items-center gap-1.5 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 whitespace-nowrap
+          ${isActive ? "ring-2 ring-primary ring-offset-2" : ""}`
+        }
+      >
         {name}
-        {beta && (
-          <span className="text-[9px] bg-brandRed text-white px-1.5 py-0.5 rounded-full font-black tracking-widest">
-            BETA
-          </span>
-        )}
-        <span 
-          className={`absolute bottom-0 left-5 right-5 h-0.5 bg-primary transition-all duration-300 origin-left scale-x-0 group-hover:scale-x-100 ${isActive ? 'scale-x-100' : ''}`} 
-        />
-      </>
-    )}
-  </NavLink>
-);
+      </NavLink>
+    );
+  }
+
+  return (
+    <NavLink
+      to={path}
+      className={({ isActive }) =>
+        `relative px-3 py-2 text-[13px] font-bold tracking-tight uppercase transition-all duration-300 flex items-center gap-1.5 group whitespace-nowrap
+        ${isActive ? "text-primary" : "text-foreground/70 hover:text-primary"}`
+      }
+    >
+      {({ isActive }) => (
+        <>
+          {name}
+          {beta && (
+            <span className="text-[9px] bg-brandRed text-white px-1.5 py-0.5 rounded-full font-black tracking-widest">
+              BETA
+            </span>
+          )}
+          <span
+            className={`absolute bottom-0 left-3 right-3 h-0.5 bg-primary transition-all duration-300 origin-left scale-x-0 group-hover:scale-x-100 ${isActive ? 'scale-x-100' : ''}`}
+          />
+        </>
+      )}
+    </NavLink>
+  );
+};
 
 /* --------------------------------
    Mobile Nav Item
@@ -86,17 +104,17 @@ const LogoSection = () => {
   return (
     <NavLink to="/" className="flex items-center gap-3 group">
       <div className="bg-white p-0.5 rounded-lg group-hover:rotate-3 transition-transform duration-500">
-        <img 
-          src={general.logoUrl || "/logo.png"} 
-          className="w-10 h-8 md:w-16 md:h-12 object-contain" 
-          alt="School Logo" 
+        <img
+          src={general.logoUrl || "/logo.png"}
+          className="w-10 h-8 md:w-16 md:h-12 object-contain"
+          alt="School Logo"
         />
       </div>
       <div className="hidden sm:block">
-        <h1 className="text-sm md:text-base font-black text-primary leading-tight uppercase tracking-tight">
+        <h1 className="text-sm md:text-base font-black text-primary leading-tight uppercase tracking-tight whitespace-nowrap">
           {general.schoolName || "Adarsha Secondary School"}
         </h1>
-        <p className="text-[10px] md:text-xs font-nepali text-brandRed font-bold">
+        <p className="text-[10px] md:text-xs font-nepali text-brandRed font-bold whitespace-nowrap">
           {general.schoolNameNepali || "आदर्श माध्यमिक विद्यालय"}
         </p>
         <div className="flex items-center gap-1 mt-0.5">
@@ -125,10 +143,10 @@ const Navigation = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // scrolled state for styling
       setScrolled(currentScrollY > 20);
-      
+
       if (currentScrollY <= 0) {
         setVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
@@ -138,7 +156,7 @@ const Navigation = () => {
         // SCROLLING UP -> SHOW
         setVisible(true);
       }
-      
+
       setLastScrollY(currentScrollY);
     };
 
@@ -164,19 +182,18 @@ const Navigation = () => {
               <Phone size={10} className="text-brandRed" /> {contact.phone || "01-6630857"}
             </span>
             <span className="flex items-center gap-2">
-              <Mail size={10} className="text-brandRed" /> {contact.email || "info@adarshasanothimi.edu.np"}
+              <Mail size={10} className="text-brandRed" /> {contact.email || "adarsha02sec.school@gmail.com"}
             </span>
           </div>
-          <div>Admissions Open for Session 2081</div>
+          <div>Admissions Open for Session 2083</div>
         </div>
       </div>
 
-      <nav 
-        className={`transition-all duration-300 ${
-          scrolled ? "bg-white/90 backdrop-blur-xl py-1.5 shadow-xl ring-1 ring-black/5" : "bg-white py-3"
-        }`}
+      <nav
+        className={`transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-xl py-1.5 shadow-xl ring-1 ring-black/5" : "bg-white py-3"
+          }`}
       >
-        <div className="section-container">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12 lg:pl-8 lg:pr-1">
           <div className="flex justify-between items-center">
             <LogoSection />
 
@@ -224,7 +241,7 @@ const Navigation = () => {
                     <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight">Navigation</h2>
                     <p className="text-primary-foreground/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">Main Menu</p>
                   </div>
-                  <button 
+                  <button
                     onClick={closeMenu}
                     className="h-10 w-10 md:h-12 md:w-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all"
                   >

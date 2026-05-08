@@ -71,7 +71,7 @@ h1, h2, h3, h4, .font-heading {
 }
 
 .section-container {
-  @apply max-w-[1400px] mx-auto px-6 md:px-12 lg:px-20;
+  @apply max-w-[1400px] mx-auto px-6 md:px-12 lg:px-4;
 }
 
 .glass-panel {

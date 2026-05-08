@@ -55,20 +55,32 @@ const autoplay = Autoplay({ delay: 5000 });
 /* -----------------------------
    Hero Section
    ----------------------------- */
-const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
-  <section className="relative bg-secondary/20 overflow-hidden">
-    <Carousel plugins={[autoplay as any]} className="w-full">
-      <CarouselContent>
-        {images.length ? (
-          images.map((img, i) => {
-            const slide = slides[i] || slides[0] || { title: "Welcome to Adarsha Mavi", nepaliTitle: "आदर्श माध्यमिक विद्यालय", description: "Providing quality education for a brighter future." };
+const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => {
+  const allSlides = [
+    {
+      id: 'hardcoded-1',
+      image_url: '/building.jpg',
+      title: "Adarsha Secondary School",
+      nepaliTitle: "आदर्श माध्यमिक विद्यालय",
+      description: "A premier educational institution dedicated to academic excellence and character building. Sanothimi, Bhaktapur.",
+      alt_text: "School Building"
+    },
+    ...images
+  ];
+
+  return (
+    <section className="relative bg-secondary/20 overflow-hidden">
+      <Carousel plugins={[autoplay as any]} className="w-full">
+        <CarouselContent>
+          {allSlides.map((img, i) => {
+            const slide = i === 0 ? img : (slides[i - 1] || slides[0] || { title: "Welcome to Adarsha Mavi", nepaliTitle: "आदर्श माध्यमिक विद्यालय", description: "Providing quality education for a brighter future." });
 
             return (
               <CarouselItem key={img.id}>
                 <div className="relative w-full overflow-hidden bg-primary aspect-video md:aspect-auto md:h-[calc(100vh-92px)]">
-                  {/* Text Overlay - Only on first slide for clarity as requested */}
+                  {/* Text Overlay - ONLY ON FIRST SLIDE */}
                   {i === 0 && (
-                    <div className="absolute inset-0 z-20 flex items-center bg-black/10 py-2 md:py-0">
+                    <div className="absolute inset-0 z-20 flex items-center bg-black/20 py-2 md:py-0">
                       <div className="section-container w-full">
                         <div className="max-w-2xl space-y-2 md:space-y-6">
                           <motion.div
@@ -131,8 +143,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                           animate={{ scale: 1 }}
                           transition={{ duration: 10, ease: "linear" }}
                         />
-                        {/* Add overlay specifically for the first slide to ensure text readability */}
-                        {i === 0 && <div className="absolute inset-0 bg-black/40 z-20" />}
+                        <div className="absolute inset-0 bg-black/30 z-20" />
                       </>
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-primary via-[#1e3a8a] to-[#0f172a] opacity-95" />
@@ -141,23 +152,16 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => (
                 </div>
               </CarouselItem>
             );
-          })
-        ) : (
-          <CarouselItem>
-            <div className="bg-muted h-[60vh] flex flex-col items-center justify-center">
-              <BookOpen size={64} className="text-primary/20 mb-4" />
-              <p className="text-muted-foreground font-medium">Welcome to Adarsha Secondary School</p>
-            </div>
-          </CarouselItem>
-        )}
-      </CarouselContent>
+          })}
+        </CarouselContent>
       <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-30 flex gap-2">
         <CarouselPrevious className="static translate-y-0 h-8 w-8 md:h-12 md:w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
         <CarouselNext className="static translate-y-0 h-8 w-8 md:h-12 md:w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
       </div>
-    </Carousel>
-  </section>
-);
+      </Carousel>
+    </section>
+  );
+};
 
 /* -----------------------------
    Notices Section
@@ -240,8 +244,8 @@ const Notices = ({ notices }: { notices: any[] }) => {
       </section>
 
       <Dialog open={!!selectedNotice} onOpenChange={(open) => !open && setSelectedNotice(null)}>
-        <DialogContent className="max-w-3xl rounded-3xl overflow-hidden p-0 gap-0">
-          <div className="bg-primary p-8 text-white">
+        <DialogContent className="max-w-3xl max-h-[90vh] rounded-3xl overflow-hidden p-0 gap-0 flex flex-col border-none shadow-2xl">
+          <div className="bg-primary p-8 text-white shrink-0">
             <DialogHeader>
               <div className="flex items-center gap-2 text-primary-foreground/70 mb-2">
                 <Bell size={16} />
@@ -252,43 +256,28 @@ const Notices = ({ notices }: { notices: any[] }) => {
               </DialogTitle>
             </DialogHeader>
           </div>
-          <div className="p-8 max-h-[60vh] overflow-y-auto bg-white">
+          <div className="p-8 overflow-y-auto bg-white flex-1">
             <p className="text-lg text-muted-foreground leading-relaxed whitespace-pre-wrap mb-8">
               <Linkify text={selectedNotice?.content || ""} />
             </p>
 
             {selectedNotice?.attachment_url && (
               <div className="mt-8 pt-8 border-t border-secondary">
-                <div className="flex items-center justify-between bg-secondary/20 p-6 rounded-2xl border border-secondary">
-                  <div className="flex items-center gap-4">
-                    <div className="bg-white p-3 rounded-xl shadow-sm">
-                      {selectedNotice.attachment_type === 'pdf' ? (
-                        <FileText className="text-red-500" size={32} />
-                      ) : (
-                        <FileImage className="text-blue-500" size={32} />
-                      )}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-primary">Attachment Available</h4>
-                      <p className="text-xs text-muted-foreground uppercase tracking-wider">Official {selectedNotice.attachment_type} Document</p>
-                    </div>
+                {selectedNotice.attachment_type === 'image' ? (
+                  <div className="rounded-2xl overflow-hidden border border-secondary shadow-lg">
+                    <img src={selectedNotice.attachment_url} className="w-full h-auto" alt="Notice Attachment" />
                   </div>
+                ) : (
                   <a 
                     href={selectedNotice.attachment_url} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="shrink-0"
+                    className="block"
                   >
-                    <Button className="rounded-full flex items-center gap-2 font-bold px-6">
-                      <ExternalLink size={16} /> {selectedNotice.attachment_type === 'pdf' ? 'Open PDF' : 'View Image'}
+                    <Button className="w-full rounded-2xl flex items-center justify-center gap-3 font-bold h-16 shadow-lg hover:shadow-primary/20 transition-all text-lg">
+                      <FileText size={24} /> Open PDF Document <ExternalLink size={20} />
                     </Button>
                   </a>
-                </div>
-                
-                {selectedNotice.attachment_type === 'image' && (
-                  <div className="mt-6 rounded-2xl overflow-hidden border border-secondary shadow-lg">
-                    <img src={selectedNotice.attachment_url} className="w-full h-auto" alt="Notice Attachment" />
-                  </div>
                 )}
               </div>
             )}
