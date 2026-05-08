@@ -59,7 +59,7 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => {
   const allSlides = [
     {
       id: 'hardcoded-1',
-      image_url: '/building.jpg',
+      image_url: '/building.png',
       title: "Adarsha Secondary School",
       nepaliTitle: "आदर्श माध्यमिक विद्यालय",
       description: "A premier educational institution dedicated to academic excellence and character building. Sanothimi, Bhaktapur.",
@@ -154,10 +154,10 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => {
             );
           })}
         </CarouselContent>
-      <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-30 flex gap-2">
-        <CarouselPrevious className="static translate-y-0 h-8 w-8 md:h-12 md:w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
-        <CarouselNext className="static translate-y-0 h-8 w-8 md:h-12 md:w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
-      </div>
+        <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 z-30 flex gap-2">
+          <CarouselPrevious className="static translate-y-0 h-8 w-8 md:h-12 md:w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
+          <CarouselNext className="static translate-y-0 h-8 w-8 md:h-12 md:w-12 border-white/20 bg-black/20 text-white hover:bg-primary hover:border-primary backdrop-blur-md" />
+        </div>
       </Carousel>
     </section>
   );
@@ -268,9 +268,9 @@ const Notices = ({ notices }: { notices: any[] }) => {
                     <img src={selectedNotice.attachment_url} className="w-full h-auto" alt="Notice Attachment" />
                   </div>
                 ) : (
-                  <a 
-                    href={selectedNotice.attachment_url} 
-                    target="_blank" 
+                  <a
+                    href={selectedNotice.attachment_url}
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="block"
                   >
@@ -321,40 +321,40 @@ const LeadershipMessageCard = ({ data, defaultTitle, defaultRole }: { data: any,
             <p className="text-xs md:text-sm font-bold text-brandRed uppercase tracking-[0.2em] mt-1">{data?.title || defaultRole}</p>
           </div>
         </div>
-        
+
         <div className="mt-6 pt-6 border-t border-secondary/50">
-           <Dialog>
-             <DialogTrigger asChild>
-               <Button className="rounded-full w-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-all group font-bold">
-                 Read Full Message <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-               </Button>
-             </DialogTrigger>
-             <DialogContent className="max-w-3xl rounded-[2rem] overflow-hidden p-0 gap-0 border-none shadow-2xl">
-                <div className="bg-primary p-6 md:p-10 text-white flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl pointer-events-none" />
-                  
-                  <div className="w-32 h-40 md:w-40 md:h-52 rounded-xl border-4 border-white/20 overflow-hidden shrink-0 shadow-xl relative z-10 bg-white/10 flex items-center justify-center p-2">
-                    {data?.photoUrl ? (
-                      <img src={data.photoUrl} className="w-full h-full object-contain rounded-lg bg-white" alt={data.name} />
-                    ) : (
-                      <Users size={40} className="text-white/50" />
-                    )}
-                  </div>
-                  <div className="relative z-10 flex flex-col justify-center h-full pt-4">
-                    <p className="text-brandRed font-bold uppercase tracking-widest text-xs md:text-sm mb-2">{data?.title || defaultRole}</p>
-                    <DialogTitle className="text-2xl md:text-4xl font-bold text-white leading-tight">
-                      {data?.name || defaultTitle}
-                    </DialogTitle>
-                  </div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="rounded-full w-full bg-primary/5 text-primary hover:bg-primary hover:text-white transition-all group font-bold">
+                Read Full Message <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl rounded-[2rem] overflow-hidden p-0 gap-0 border-none shadow-2xl">
+              <div className="bg-primary p-6 md:p-10 text-white flex flex-col sm:flex-row gap-6 items-center sm:items-start text-center sm:text-left relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl pointer-events-none" />
+
+                <div className="w-32 h-40 md:w-40 md:h-52 rounded-xl border-4 border-white/20 overflow-hidden shrink-0 shadow-xl relative z-10 bg-white/10 flex items-center justify-center p-2">
+                  {data?.photoUrl ? (
+                    <img src={data.photoUrl} className="w-full h-full object-contain rounded-lg bg-white" alt={data.name} />
+                  ) : (
+                    <Users size={40} className="text-white/50" />
+                  )}
                 </div>
-                <div className="p-6 md:p-10 max-h-[60vh] overflow-y-auto bg-white relative">
-                  <span className="text-6xl font-serif text-primary/10 absolute top-4 left-4 pointer-events-none">"</span>
-                  <p className="text-base md:text-xl text-muted-foreground leading-relaxed whitespace-pre-wrap font-light relative z-10">
-                    {data?.message || "Education is the most powerful weapon which you can use to change the world. At Adarsha, we empower students to lead and innovate."}
-                  </p>
+                <div className="relative z-10 flex flex-col justify-center h-full pt-4">
+                  <p className="text-brandRed font-bold uppercase tracking-widest text-xs md:text-sm mb-2">{data?.title || defaultRole}</p>
+                  <DialogTitle className="text-2xl md:text-4xl font-bold text-white leading-tight">
+                    {data?.name || defaultTitle}
+                  </DialogTitle>
                 </div>
-             </DialogContent>
-           </Dialog>
+              </div>
+              <div className="p-6 md:p-10 max-h-[60vh] overflow-y-auto bg-white relative">
+                <span className="text-6xl font-serif text-primary/10 absolute top-4 left-4 pointer-events-none">"</span>
+                <p className="text-base md:text-xl text-muted-foreground leading-relaxed whitespace-pre-wrap font-light relative z-10">
+                  {data?.message || "Education is the most powerful weapon which you can use to change the world. At Adarsha, we empower students to lead and innovate."}
+                </p>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </div>
@@ -364,7 +364,7 @@ const LeadershipMessageCard = ({ data, defaultTitle, defaultRole }: { data: any,
 const LeadershipSection = ({ principal, asstHeadteacher }: { principal: any, asstHeadteacher: any }) => {
   const showPrincipal = principal?.message || principal?.name;
   const showAsst = asstHeadteacher?.message || asstHeadteacher?.name;
-  
+
   if (!showPrincipal && !showAsst) return null;
 
   return (
@@ -377,12 +377,12 @@ const LeadershipSection = ({ principal, asstHeadteacher }: { principal: any, ass
           </div>
 
           <div className={`grid gap-8 md:gap-10 ${showPrincipal && showAsst ? 'lg:grid-cols-2' : 'max-w-4xl mx-auto'}`}>
-             {showPrincipal && (
-               <LeadershipMessageCard data={principal} defaultTitle="Mr. Ram Babu Regmi" defaultRole="Headteacher" />
-             )}
-             {showAsst && (
-               <LeadershipMessageCard data={asstHeadteacher} defaultTitle="Assistant Headteacher" defaultRole="Assistant Headteacher" />
-             )}
+            {showPrincipal && (
+              <LeadershipMessageCard data={principal} defaultTitle="Mr. Ram Babu Regmi" defaultRole="Headteacher" />
+            )}
+            {showAsst && (
+              <LeadershipMessageCard data={asstHeadteacher} defaultTitle="Assistant Headteacher" defaultRole="Assistant Headteacher" />
+            )}
           </div>
         </div>
       </section>
@@ -449,8 +449,8 @@ const TeamSection = ({ team }: { team: any[] }) => {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {visible.map((m, idx) => (
-              <motion.div 
-                key={m.id} 
+              <motion.div
+                key={m.id}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
@@ -547,7 +547,7 @@ const RecentBlogs = ({ blogs = [] }: { blogs: any[] }) => (
             </Button>
           </Link>
         </div>
-        
+
         <div className="grid md:grid-cols-3 gap-10">
           {blogs.slice(0, 3).map((blog, idx) => (
             <motion.div
