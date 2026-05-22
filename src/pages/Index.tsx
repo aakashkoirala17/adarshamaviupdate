@@ -133,6 +133,9 @@ const Hero = ({ images, slides = [] }: { images: any[], slides?: any[] }) => {
                           initial={{ scale: 1.05 }}
                           animate={{ scale: 1 }}
                           transition={{ duration: 10, ease: "linear" }}
+                          loading={i === 0 ? "eager" : "lazy"}
+                          fetchPriority={i === 0 ? "high" : "auto"}
+                          decoding="async"
                         />
                         <div className="absolute inset-0 bg-black/30 z-20" />
                       </>
@@ -302,7 +305,7 @@ const LeadershipMessageCard = ({ data, defaultTitle, defaultRole }: { data: any,
         <div className="mt-auto flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 pt-6 border-t border-secondary/50">
           <div className="w-24 h-32 md:w-28 md:h-36 rounded-xl overflow-hidden shrink-0 border-4 border-secondary/30 bg-secondary/10 flex items-center justify-center p-1">
             {data?.photoUrl ? (
-              <img src={data.photoUrl} className="w-full h-full object-contain rounded-lg" alt={data.name || defaultTitle} />
+              <img src={data.photoUrl} className="w-full h-full object-contain rounded-lg" alt={data.name || defaultTitle} loading="lazy" decoding="async" />
             ) : (
               <Users size={32} className="text-muted-foreground/20" />
             )}
@@ -326,7 +329,7 @@ const LeadershipMessageCard = ({ data, defaultTitle, defaultRole }: { data: any,
 
                 <div className="w-32 h-40 md:w-40 md:h-52 rounded-xl border-4 border-white/20 overflow-hidden shrink-0 shadow-xl relative z-10 bg-white/10 flex items-center justify-center p-2">
                   {data?.photoUrl ? (
-                    <img src={data.photoUrl} className="w-full h-full object-contain rounded-lg bg-white" alt={data.name} />
+                    <img src={data.photoUrl} className="w-full h-full object-contain rounded-lg bg-white" alt={data.name} loading="lazy" decoding="async" />
                   ) : (
                     <Users size={40} className="text-white/50" />
                   )}
@@ -453,7 +456,7 @@ const TeamSection = ({ team }: { team: any[] }) => {
                     <div className="absolute inset-0 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
                     <div className="w-20 h-20 md:w-32 md:h-32 rounded-full ring-[3px] md:ring-[6px] ring-secondary border-[3px] md:border-4 border-white overflow-hidden bg-muted mx-auto shadow-md relative z-10">
                       {m.image_url ? (
-                        <img src={m.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={m.name} />
+                        <img src={m.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={m.name} loading="lazy" decoding="async" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
                           <Users size={32} className="text-muted-foreground/20" />
@@ -497,7 +500,7 @@ const TeamSection = ({ team }: { team: any[] }) => {
                         <div key={m.id} className="bg-white p-6 rounded-3xl border border-secondary shadow-sm text-center hover:border-primary/20 transition-all group">
                           <div className="w-20 h-20 rounded-full border-4 border-white shadow-sm overflow-hidden bg-muted mx-auto mb-4 ring-2 ring-secondary group-hover:ring-primary/20 transition-all">
                             {m.image_url ? (
-                              <img src={m.image_url} className="w-full h-full object-cover" alt={m.name} />
+                              <img src={m.image_url} className="w-full h-full object-cover" alt={m.name} loading="lazy" decoding="async" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center">
                                 <Users size={32} className="text-muted-foreground/20" />
@@ -552,7 +555,7 @@ const RecentBlogs = ({ blogs = [] }: { blogs: any[] }) => (
                 <div className="premium-card h-full overflow-hidden flex flex-col bg-white">
                   <div className="aspect-[16/10] relative overflow-hidden">
                     {blog.image_url ? (
-                      <img src={blog.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={blog.title} />
+                      <img src={blog.image_url} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={blog.title} loading="lazy" decoding="async" />
                     ) : (
                       <div className="bg-muted w-full h-full flex items-center justify-center">
                         <Newspaper size={48} className="text-muted-foreground/10" />

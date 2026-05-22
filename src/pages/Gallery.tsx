@@ -101,6 +101,8 @@ const Gallery = () => {
                       src={image.image_url}
                       alt={image.caption || 'Gallery image'}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-primary/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center p-8 text-center">
                       <div className="bg-white/20 p-4 rounded-full mb-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -161,6 +163,7 @@ const Gallery = () => {
                 src={selectedImage}
                 alt="Full preview"
                 className="max-w-full max-h-full object-contain rounded-3xl shadow-2xl ring-1 ring-white/10"
+                decoding="async"
               />
             </motion.div>
           </motion.div>
