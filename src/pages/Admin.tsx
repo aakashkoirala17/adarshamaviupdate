@@ -309,7 +309,7 @@ const Admin = () => {
 
       <div className="max-w-7xl mx-auto p-4 md:p-8">
         <Tabs defaultValue="hero" className="w-full">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="flex flex-wrap justify-start w-full h-auto p-1 gap-1 mb-4">
             <TabsTrigger value="hero">Hero</TabsTrigger>
             <TabsTrigger value="team">Team</TabsTrigger>
             <TabsTrigger value="gallery">Gallery</TabsTrigger>
@@ -564,9 +564,9 @@ const HeroImagesTab = ({ images = [], onAdd, onDelete }) => {
                 onDragStart={(e) => onDragStart(e, idx)}
                 onDragOver={(e) => e.preventDefault()}
                 onDrop={(e) => onDropList(e, idx)}
-                className="flex items-center gap-4 p-3 border rounded"
+                className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-3 border rounded"
               >
-                <img src={img.image_url} alt={img.alt_text} className="w-48 h-28 object-cover rounded" />
+                <img src={img.image_url} alt={img.alt_text} className="w-full sm:w-48 h-32 sm:h-28 object-cover rounded" />
                 <div className="flex-1">
                   <div className="font-medium">{img.alt_text || "—"}</div>
                   <div className="text-sm text-muted-foreground">Order: {img.display_order}</div>
@@ -866,7 +866,7 @@ const GalleryTab = ({ images = [], onAdd, onDelete }) => {
           <div>
             <div className="flex gap-2 flex-wrap mt-3">
               {files.map((f, i) => (
-                <div key={i} className="w-48 border rounded p-2">
+                <div key={i} className="w-[calc(50%-0.5rem)] sm:w-48 border rounded p-2">
                   <img src={f.previewUrl} className="w-full h-28 object-cover rounded" />
                   <div className="mt-2 text-xs break-all">{f.file.name}</div>
                   <div className="mt-2 h-2 bg-muted rounded">
@@ -894,7 +894,7 @@ const GalleryTab = ({ images = [], onAdd, onDelete }) => {
 
         <div>
           <h3 className="font-semibold mb-3">Existing Gallery (drag to reorder)</h3>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4">
             {list.map((img, idx) => (
               <div key={img.id}
                 draggable
@@ -995,8 +995,8 @@ const NoticesTab = ({ notices = [], onAdd, onDelete, uploadFile }) => {
         <div className="mt-8 space-y-3">
           <h3 className="font-bold text-lg">Existing Notices</h3>
           {notices.map((n) => (
-            <div key={n.id} className="flex items-center gap-4 p-4 border rounded-2xl bg-card hover:shadow-md transition-all group">
-              <div className="flex-1">
+            <div key={n.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 border rounded-2xl bg-card hover:shadow-md transition-all group">
+              <div className="flex-1 w-full">
                 <div className="font-bold text-primary">{n.title}</div>
                 <div className="text-xs text-muted-foreground flex items-center gap-2 mt-1">
                   <span>{n.date}</span>
@@ -1007,9 +1007,11 @@ const NoticesTab = ({ notices = [], onAdd, onDelete, uploadFile }) => {
                   )}
                 </div>
               </div>
-              <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-50 rounded-full" onClick={() => onDelete("notices", n.id)}>
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <div className="w-full sm:w-auto flex justify-end">
+                <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-50 rounded-full" onClick={() => onDelete("notices", n.id)}>
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           ))}
         </div>
