@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Bell, Calendar, FileText, FileImage, ExternalLink } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import NepaliDate from 'nepali-date-converter';
+import { formatNepaliDate } from '@/lib/utils';
 import Linkify from '@/components/Linkify';
 
 
@@ -51,7 +51,7 @@ const Notices = () => {
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center text-sm font-bold text-brandRed">
                           <Calendar size={14} className="mr-1.5" />
-                          {new NepaliDate(new Date(notice.date)).format("DD MMMM YYYY", "np")}
+                          {formatNepaliDate(notice.date)}
                         </div>
                         {notice.attachment_url && (
                           <div className="bg-primary/5 text-primary p-1.5 rounded-lg flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider">
@@ -87,7 +87,7 @@ const Notices = () => {
               <div className="flex items-center gap-2 text-primary-foreground/70 mb-2">
                 <Bell size={16} />
                 <span className="text-xs font-bold uppercase tracking-widest">
-                  {selectedNotice && new NepaliDate(new Date(selectedNotice.date)).format("DD MMMM YYYY", "np")}
+                  {selectedNotice && formatNepaliDate(selectedNotice.date)}
                 </span>
               </div>
               <DialogTitle className="text-2xl md:text-4xl font-bold text-white leading-tight">

@@ -140,6 +140,19 @@ const Navigation = () => {
   const { settings } = useSettings();
   const contact = settings?.contact_info || {};
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -151,7 +164,8 @@ const Navigation = () => {
         setVisible(true);
       } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
         // SCROLLING DOWN -> VANISH (Standard)
-        setVisible(false);
+        // Keep navbar visible on mobile devices (< 1024px)
+        setVisible(window.innerWidth < 1024);
       } else if (currentScrollY < lastScrollY) {
         // SCROLLING UP -> SHOW
         setVisible(true);

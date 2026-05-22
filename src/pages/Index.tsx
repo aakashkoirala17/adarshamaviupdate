@@ -13,7 +13,7 @@ import { BookOpen, Users, Bell, ArrowRight, ChevronRight, Newspaper, CheckCircle
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Autoplay from "embla-carousel-autoplay";
-import NepaliDate from "nepali-date-converter";
+
 import { motion } from "framer-motion";
 import {
   Dialog,
@@ -25,16 +25,7 @@ import {
 import Linkify from "@/components/Linkify";
 import { useSettings } from "@/hooks/use-settings";
 
-/* -----------------------------
-   Utility Functions
-   ----------------------------- */
-const formatNepaliDate = (dateStr: string) => {
-  try {
-    return dateStr ? new NepaliDate(new Date(dateStr)).format("DD MMMM YYYY", "np") : "";
-  } catch {
-    return "";
-  }
-};
+import { formatNepaliDate } from "@/lib/utils";
 
 /* -----------------------------
    Animated Wrapper

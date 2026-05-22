@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Bell, Calendar, ExternalLink, FileText, FileImage } from 'lucide-react';
-import NepaliDate from 'nepali-date-converter';
+import { formatNepaliDate } from '@/lib/utils';
 import Linkify from '@/components/Linkify';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -78,7 +78,7 @@ const NoticePopup = () => {
             </DialogTitle>
             <div className="flex items-center text-xs text-white/80 font-bold mt-2">
               <Calendar size={12} className="mr-1.5" />
-              {new NepaliDate(new Date(latestNotice.date)).format("DD MMMM YYYY", "np")}
+              {formatNepaliDate(latestNotice.date)}
             </div>
           </DialogHeader>
         </div>
