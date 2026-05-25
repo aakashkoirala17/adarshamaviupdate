@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { X, Search, Filter, Camera, Maximize2, Award, Users, BookOpen } from 'lucide-react';
 import Layout from '../components/Layout';
 import { supabase } from '@/integrations/supabase/client';
@@ -7,23 +8,21 @@ import { Button } from '@/components/ui/button';
 
 const Gallery = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [galleryImages, setGalleryImages] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  useEffect(() => {
-    const fetchGalleryImages = async () => {
+  const { data: galleryImages = [] } = useQuery({
+    queryKey: ['galleryImages'],
+    queryFn: async () => {
       const { data } = await supabase
         .from('gallery_images')
         .select('*')
         .eq('is_active', true)
         .order('display_order');
-      if (data) setGalleryImages(data);
-    };
+      return data || [];
+    }
+  });
 
-    fetchGalleryImages();
-  }, []);
-
-  const categories = ["All", ...Array.from(new Set(galleryImages.map(img => img.category).filter(Boolean)))];
+  const categories = ["All", ...Array.from(new Set(galleryImages.map((img: any) => img.category).filter(Boolean)))] as string[];
 
   const filteredImages = selectedCategory === "All" 
     ? galleryImages 

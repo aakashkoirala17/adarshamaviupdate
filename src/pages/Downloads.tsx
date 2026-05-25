@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,24 +9,21 @@ import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 
 const Downloads = () => {
-  const [downloads, setDownloads] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
-  useEffect(() => {
-    const fetchDownloads = async () => {
+  const { data: downloads = [], isLoading: loading } = useQuery({
+    queryKey: ['downloadsList'],
+    queryFn: async () => {
       const { data } = await (supabase.from("downloads" as any) as any)
         .select("*")
         .eq("is_active", true)
         .order("display_order", { ascending: true });
-      setDownloads(data || []);
-      setLoading(false);
-    };
-    fetchDownloads();
-  }, []);
+      return data || [];
+    }
+  });
 
-  const categories = ["All", ...Array.from(new Set(downloads.map(d => d.category || "General")))];
+  const categories = ["All", ...Array.from(new Set(downloads.map(d => d.category || "General")))] as string[];
 
   const filteredDownloads = downloads.filter(d => {
     const matchesSearch = d.title.toLowerCase().includes(searchTerm.toLowerCase()) || 

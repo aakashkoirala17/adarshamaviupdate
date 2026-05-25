@@ -25,6 +25,11 @@ export const SiteSettingsTab = () => {
   if (loading || !localSettings) return <div className="p-8 text-center">Loading site settings...</div>;
 
   const handleImageUpload = async (file: File, section: string, field: string) => {
+    if (!file) return;
+    if (file.size > 1048576) {
+      toast({ title: "File too large", description: "Image exceeds 1MB limit.", variant: "destructive" });
+      return;
+    }
     try {
       setUploading(`${section}-${field}`);
       const fileExt = file.name.split('.').pop();
@@ -33,7 +38,7 @@ export const SiteSettingsTab = () => {
 
       const { error: uploadError } = await supabase.storage
         .from('school-images')
-        .upload(filePath, file);
+        .upload(filePath, file, { cacheControl: "31536000", upsert: false });
 
       if (uploadError) throw uploadError;
 
@@ -351,12 +356,17 @@ export const SiteSettingsTab = () => {
                           <Dropzone onDrop={files => {
                             // Custom handle for array of objects
                             const upload = async () => {
+                              if (!files[0]) return;
+                              if (files[0].size > 1048576) {
+                                toast({ title: "File too large", description: "Image exceeds 1MB limit.", variant: "destructive" });
+                                return;
+                              }
                               try {
                                 setUploading(`academics-${pIdx}`);
                                 const fileExt = files[0].name.split('.').pop();
                                 const fileName = `academics-${pIdx}-${Math.random()}.${fileExt}`;
                                 const filePath = `settings/${fileName}`;
-                                const { error: uploadError } = await supabase.storage.from('school-images').upload(filePath, files[0]);
+                                const { error: uploadError } = await supabase.storage.from('school-images').upload(filePath, files[0], { cacheControl: "31536000", upsert: false });
                                 if (uploadError) throw uploadError;
                                 const { data: { publicUrl } } = supabase.storage.from('school-images').getPublicUrl(filePath);
                                 

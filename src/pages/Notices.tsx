@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import Layout from '@/components/Layout';
 import { Card, CardContent } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -10,21 +11,19 @@ import Linkify from '@/components/Linkify';
 
 
 const Notices = () => {
-  const [notices, setNotices] = useState<any[]>([]);
   const [selectedNotice, setSelectedNotice] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchNotices = async () => {
+  const { data: notices = [] } = useQuery({
+    queryKey: ['noticesList'],
+    queryFn: async () => {
       const { data } = await supabase
         .from('notices')
         .select('*')
         .eq('is_active', true)
         .order('date', { ascending: false });
-      if (data) setNotices(data);
-    };
-
-    fetchNotices();
-  }, []);
+      return (data as any[]) || [];
+    }
+  });
 
   return (
     <Layout>

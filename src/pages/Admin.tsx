@@ -108,7 +108,7 @@ async function uploadFileToSupabase(file: File | Blob, onProgress: (progress: nu
     // use binary upload
     const { error: uploadError } = await supabase.storage
       .from("school-images")
-      .upload(filePath, file, { cacheControl: "3600", upsert: false });
+      .upload(filePath, file, { cacheControl: "31536000", upsert: false });
 
     clearInterval(progressTimer);
     onProgress(100);
@@ -389,7 +389,14 @@ const HeroImagesTab = ({ images = [], onAdd, onDelete }) => {
   // handle files dropped or selected
   const onDrop = useCallback(
     async (acceptedFiles) => {
-      const mapped = acceptedFiles.map((f) => ({
+      const validFiles = acceptedFiles.filter(f => {
+        if (f.size > 1048576) {
+          toast({ title: "File too large", description: `${f.name} exceeds 1MB limit.`, variant: "destructive" });
+          return false;
+        }
+        return true;
+      });
+      const mapped = validFiles.map((f) => ({
         file: f,
         previewUrl: URL.createObjectURL(f),
         name: f.name,
@@ -398,7 +405,7 @@ const HeroImagesTab = ({ images = [], onAdd, onDelete }) => {
       }));
       setFiles((s) => [...s, ...mapped]);
     },
-    [setFiles]
+    [setFiles, toast]
   );
 
   // remove local file preview
@@ -616,6 +623,10 @@ const TeamMembersTab = ({ members = [], onAdd, onUpdate, onDelete }) => {
   const onFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 1048576) {
+      alert("Image exceeds 1MB limit.");
+      return;
+    }
     setPreview(URL.createObjectURL(file));
 
     try {
@@ -801,7 +812,14 @@ const GalleryTab = ({ images = [], onAdd, onDelete }) => {
   useEffect(() => setList(images), [images]);
 
   const onDrop = (acceptedFiles) => {
-    const mapped = acceptedFiles.map((f) => ({ file: f, previewUrl: URL.createObjectURL(f), status: "ready", progress: 0 }));
+    const validFiles = acceptedFiles.filter(f => {
+      if (f.size > 1048576) {
+        alert(`${f.name} exceeds 1MB limit.`);
+        return false;
+      }
+      return true;
+    });
+    const mapped = validFiles.map((f) => ({ file: f, previewUrl: URL.createObjectURL(f), status: "ready", progress: 0 }));
     setFiles((s) => [...s, ...mapped]);
   };
 
@@ -928,6 +946,10 @@ const NoticesTab = ({ notices = [], onAdd, onDelete, uploadFile }) => {
   const onDrop = async (acceptedFiles) => {
     const file = acceptedFiles[0];
     if (!file) return;
+    if (file.size > 1048576) {
+      alert("File exceeds 1MB limit.");
+      return;
+    }
 
     setIsUploading(true);
     setUploadProgress(0);

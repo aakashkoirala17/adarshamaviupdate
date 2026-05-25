@@ -41,6 +41,11 @@ export const DownloadsTab = () => {
   }, []);
 
   const handleFileUpload = async (file: File) => {
+    if (!file) return;
+    if (file.size > 1048576) {
+      toast({ title: "File too large", description: "File exceeds 1MB limit.", variant: "destructive" });
+      return;
+    }
     try {
       setLoading(true);
       const fileExt = file.name.split('.').pop();
@@ -49,7 +54,7 @@ export const DownloadsTab = () => {
 
       const { error: uploadError } = await supabase.storage
         .from('school-images')
-        .upload(filePath, file);
+        .upload(filePath, file, { cacheControl: "31536000", upsert: false });
 
       if (uploadError) throw uploadError;
 

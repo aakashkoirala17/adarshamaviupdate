@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,20 +9,17 @@ import Linkify from "@/components/Linkify";
 
 const BlogPost = () => {
   const { id } = useParams();
-  const [blog, setBlog] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBlog = async () => {
+  const { data: blog, isLoading: loading } = useQuery({
+    queryKey: ['blogPost', id],
+    queryFn: async () => {
       const { data } = await (supabase.from("blogs" as any) as any)
         .select("*")
         .eq("id", id)
         .single();
-      setBlog(data);
-      setLoading(false);
-    };
-    fetchBlog();
-  }, [id]);
+      return data;
+    },
+    enabled: !!id,
+  });
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   if (!blog) return <div className="min-h-screen flex items-center justify-center">Post not found.</div>;

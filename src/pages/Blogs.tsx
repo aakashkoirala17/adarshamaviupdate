@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
 import { CardContent } from "@/components/ui/card";
@@ -8,20 +8,16 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Blogs = () => {
-  const [blogs, setBlogs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
+  const { data: blogs = [], isLoading: loading } = useQuery({
+    queryKey: ['blogsList'],
+    queryFn: async () => {
       const { data } = await (supabase.from("blogs" as any) as any)
         .select("*")
         .eq("is_active", true)
         .order("published_at", { ascending: false });
-      setBlogs(data || []);
-      setLoading(false);
-    };
-    fetchBlogs();
-  }, []);
+      return data || [];
+    }
+  });
 
   return (
     <Layout>

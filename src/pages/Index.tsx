@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Layout from "@/components/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -657,14 +658,9 @@ const QuickInfo = ({ contact = {} as any }: { contact: any }) => (
    Main Page
    ----------------------------- */
 const Index = () => {
-  const [heroImages, setHeroImages] = useState<any[]>([]);
-  const [team, setTeam] = useState<any[]>([]);
-  const [notices, setNotices] = useState<any[]>([]);
-  const [blogs, setBlogs] = useState<any[]>([]);
-  const { settings } = useSettings();
-
-  useEffect(() => {
-    const load = async () => {
+  const { data: homeData, isLoading } = useQuery({
+    queryKey: ['homeData'],
+    queryFn: async () => {
       const [hero, teamRes, noticeRes, blogRes] = await Promise.all([
         supabase.from("hero_images").select("*").eq("is_active", true).order("display_order"),
         supabase.from("team_members").select("*").eq("is_active", true).order("display_order"),
@@ -672,14 +668,17 @@ const Index = () => {
         (supabase.from("blogs" as any) as any).select("*").eq("is_active", true).order("published_at", { ascending: false }).limit(3),
       ]);
 
-      setHeroImages(hero.data || []);
-      setTeam(teamRes.data || []);
-      setNotices(noticeRes.data || []);
-      setBlogs(blogRes.data || []);
-    };
+      return {
+        heroImages: hero.data || [],
+        team: teamRes.data || [],
+        notices: noticeRes.data || [],
+        blogs: blogRes.data || []
+      };
+    }
+  });
 
-    load();
-  }, []);
+  const { heroImages, team, notices, blogs } = homeData || { heroImages: [], team: [], notices: [], blogs: [] };
+  const { settings } = useSettings();
 
   return (
     <Layout>
